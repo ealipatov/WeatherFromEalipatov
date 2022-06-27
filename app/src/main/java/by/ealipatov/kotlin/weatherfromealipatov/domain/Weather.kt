@@ -3,7 +3,7 @@ package by.ealipatov.kotlin.weatherfromealipatov.domain
 data class Weather (
     val city: City = getDefaultCity(),
     val temperature: Int = 20,
-    val feelsLike: Int = 20
+    val feelsLike: Int = 25
 )
 
 data class City(

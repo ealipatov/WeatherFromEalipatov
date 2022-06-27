@@ -15,7 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 
 class WeatherListFragment : Fragment() {
 
-    lateinit var binding: FragmentWeatherListBinding
+    var binding: FragmentWeatherListBinding? = null
     lateinit var viewModel: WeatherListViewModel
 
     override fun onCreateView(
@@ -24,7 +24,7 @@ class WeatherListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View { //binding не бывает null, удалили знак вопроса View?
         binding = FragmentWeatherListBinding.inflate(inflater)
-        return binding.root
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,35 +38,41 @@ class WeatherListFragment : Fragment() {
             }
         })
         viewModel.sendRequest()
-
     }
 
     fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Error -> {
-                binding.loadingLayout.visibility = View.GONE
+                binding!!.loadingLayout.visibility = View.GONE
 
                 Snackbar
-                    .make(requireView(), appState.error.message.toString(), Snackbar.LENGTH_INDEFINITE)
+                    .make(
+                        requireView(),
+                        appState.error.message.toString(),
+                        Snackbar.LENGTH_INDEFINITE
+                    )
                     .setAction(getString(R.string.reload)) { viewModel.sendRequest() }
                     .show()
             }
 
             is AppState.Loading -> {
-                binding.loadingLayout.visibility = View.VISIBLE
+                binding!!.loadingLayout.visibility = View.VISIBLE
             }
 
             is AppState.Success -> {
+                binding!!.loadingLayout.visibility = View.GONE
                 val result = appState.weatherData
-                binding.cityName.text = result.city.name
-                binding.temperatureValue.text = result.temperature.toString()
-                binding.feelsLikeValue.text = result.feelsLike.toString()
-                binding.cityCoordinates.text = "${result.city.lat} / ${result.city.lon}"
-
-                binding.loadingLayout.visibility = View.GONE
+                binding!!.cityName.text = result.city.name
+                binding!!.temperatureValue.text = result.temperature.toString()
+                binding!!.feelsLikeValue.text = result.feelsLike.toString()
+                binding!!.cityCoordinates.text = "${result.city.lat} / ${result.city.lon}"
             }
         }
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 
     companion object {
@@ -76,6 +82,5 @@ class WeatherListFragment : Fragment() {
         // Сокращенная запись кода функции сверху
         // fun newInstance() = WeatherListFragment()
     }
-
 
 }
