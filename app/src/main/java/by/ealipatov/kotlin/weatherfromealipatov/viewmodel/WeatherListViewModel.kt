@@ -5,40 +5,54 @@ import androidx.lifecycle.ViewModel
 import by.ealipatov.kotlin.weatherfromealipatov.model.Repository
 import by.ealipatov.kotlin.weatherfromealipatov.model.RepositoryLocalImpl
 import by.ealipatov.kotlin.weatherfromealipatov.model.RepositoryRemoteImpl
-import java.lang.Thread.sleep
+import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.AppState.*
 
 //Создадим liveData сразу в конструкторе
 class WeatherListViewModel
     (
     private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>(),
-    var repository: Repository
 ) : ViewModel() {
 
-    fun getLiveData(): MutableLiveData<AppState>{
+    private lateinit var repository: Repository
+
+    /***
+     * Получение (запрос к) liveData
+     */
+    fun getLiveData(): MutableLiveData<AppState> {
+        //Выбираем репозиторий
         switchRepository()
         return liveData
     }
 
-    private fun switchRepository(){
-        repository = if(isConnection()){
+    /***
+     * В зависимости от наличия подключения выбирается репозиторий (локальный/удаленный)
+     */
+    fun switchRepository() {
+        repository = if (isConnection()) {
             RepositoryRemoteImpl()
         } else {
             RepositoryLocalImpl()
         }
     }
 
-
+    /***
+     * Отправка запроса
+     */
     fun sendRequest() {
-        liveData.value = AppState.Loading
+        liveData.value = Loading
+        if ((1..3).random() == 1) {
+            liveData.postValue(Error(error = IllegalStateException("ой, что-то сломалось")))
+        } else {
+            liveData.postValue(Success(repository.getCityWeather(55.755826, 37.617299900000035)))
+        }
 
-        Thread {
-            sleep(2000L)
-            //postValue - передача значений из другого потока
-            liveData.postValue(AppState.Success(Any()))
-        }.start()
+
     }
 
-    fun isConnection(): Boolean{
+    /***
+     * Проверка наличия подключения. Пока заглушка
+     */
+    fun isConnection(): Boolean {
         return false
     }
 

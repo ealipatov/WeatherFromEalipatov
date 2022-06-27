@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,7 +11,7 @@ import by.ealipatov.kotlin.weatherfromealipatov.R
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentWeatherListBinding
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.AppState
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.WeatherListViewModel
-
+import com.google.android.material.snackbar.Snackbar
 
 class WeatherListFragment : Fragment() {
 
@@ -38,9 +35,7 @@ class WeatherListFragment : Fragment() {
         viewModel.getLiveData().observe(viewLifecycleOwner, object : Observer<AppState> {
             override fun onChanged(t: AppState) {
                 renderData(t)
-
             }
-
         })
         viewModel.sendRequest()
 
@@ -49,17 +44,26 @@ class WeatherListFragment : Fragment() {
     fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Error -> {
-                /*Todo*/
+                binding.loadingLayout.visibility = View.GONE
+
+                Snackbar
+                    .make(requireView(), appState.error.message.toString(), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(getString(R.string.reload)) { viewModel.sendRequest() }
+                    .show()
             }
+
             is AppState.Loading -> {
-                /*Todo*/
-
-                binding.loadingLayout.isVisible //Не работает
-
+                binding.loadingLayout.visibility = View.VISIBLE
             }
+
             is AppState.Success -> {
                 val result = appState.weatherData
-                Toast.makeText(requireContext(), "AppState.Success: $result", Toast.LENGTH_LONG).show()
+                binding.cityName.text = result.city.name
+                binding.temperatureValue.text = result.temperature.toString()
+                binding.feelsLikeValue.text = result.feelsLike.toString()
+                binding.cityCoordinates.text = "${result.city.lat} / ${result.city.lon}"
+
+                binding.loadingLayout.visibility = View.GONE
             }
         }
 
