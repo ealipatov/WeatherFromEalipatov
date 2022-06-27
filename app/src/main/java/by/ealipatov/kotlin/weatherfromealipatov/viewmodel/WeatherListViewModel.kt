@@ -2,24 +2,44 @@ package by.ealipatov.kotlin.weatherfromealipatov.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import by.ealipatov.kotlin.weatherfromealipatov.R
-import java.io.IOException
+import by.ealipatov.kotlin.weatherfromealipatov.model.Repository
+import by.ealipatov.kotlin.weatherfromealipatov.model.RepositoryLocalImpl
+import by.ealipatov.kotlin.weatherfromealipatov.model.RepositoryRemoteImpl
 import java.lang.Thread.sleep
 
 //Создадим liveData сразу в конструкторе
 class WeatherListViewModel
-    (val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>()) : ViewModel() {
+    (
+    private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>(),
+    var repository: Repository
+) : ViewModel() {
 
-        fun sendRequest(){
-            liveData.value = AppState.Loading
+    fun getLiveData(): MutableLiveData<AppState>{
+        switchRepository()
+        return liveData
+    }
 
-            Thread {
-                sleep(2000L)
-                //postValue - передача значений из другого потока
-                liveData.postValue(AppState.Success(Any()))
-            }.start()
-
-
+    private fun switchRepository(){
+        repository = if(isConnection()){
+            RepositoryRemoteImpl()
+        } else {
+            RepositoryLocalImpl()
         }
+    }
+
+
+    fun sendRequest() {
+        liveData.value = AppState.Loading
+
+        Thread {
+            sleep(2000L)
+            //postValue - передача значений из другого потока
+            liveData.postValue(AppState.Success(Any()))
+        }.start()
+    }
+
+    fun isConnection(): Boolean{
+        return false
+    }
 
 }

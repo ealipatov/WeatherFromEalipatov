@@ -35,7 +35,7 @@ class WeatherListFragment : Fragment() {
         //Получим viewModel из "списка" моделей по шаблону WeatherListViewModel::class.java
         viewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java)
         //Подпишемся на liveData
-        viewModel.liveData.observe(viewLifecycleOwner, object : Observer<AppState> {
+        viewModel.getLiveData().observe(viewLifecycleOwner, object : Observer<AppState> {
             override fun onChanged(t: AppState) {
                 renderData(t)
 
@@ -53,6 +53,8 @@ class WeatherListFragment : Fragment() {
             }
             is AppState.Loading -> {
                 /*Todo*/
+
+                binding.loadingLayout.isVisible //Не работает
 
             }
             is AppState.Success -> {
