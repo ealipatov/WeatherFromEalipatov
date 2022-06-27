@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import by.ealipatov.kotlin.weatherfromealipatov.R
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentWeatherListBinding
+import by.ealipatov.kotlin.weatherfromealipatov.model.Location
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.AppState
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.WeatherListViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -41,7 +42,7 @@ class WeatherListFragment : Fragment() {
                 renderData(t)
             }
         })
-        viewModel.sendRequest()
+        viewModel.getWeatherListFor(Location.Belarus)
     }
 
     fun renderData(appState: AppState) {
@@ -55,7 +56,7 @@ class WeatherListFragment : Fragment() {
                         appState.error.message.toString(),
                         Snackbar.LENGTH_INDEFINITE
                     )
-                    .setAction(getString(R.string.reload)) { viewModel.sendRequest() }
+                    .setAction(getString(R.string.reload)) { viewModel.getWeatherListFor(Location.Belarus) }
                     .show()
             }
 
@@ -71,6 +72,9 @@ class WeatherListFragment : Fragment() {
                 binding.feelsLikeValue.text = result.feelsLike.toString()
                 val coordinates = "${result.city.lat} / ${result.city.lon}"
                 binding.cityCoordinates.text = coordinates
+            }
+            is AppState.SuccessList ->{
+
             }
         }
     }
