@@ -65,7 +65,8 @@ class WeatherListFragment : Fragment() {
                 binding!!.cityName.text = result.city.name
                 binding!!.temperatureValue.text = result.temperature.toString()
                 binding!!.feelsLikeValue.text = result.feelsLike.toString()
-                binding!!.cityCoordinates.text = "${result.city.lat} / ${result.city.lon}"
+                val coordinates: String = "${result.city.lat} / ${result.city.lon}"
+                binding!!.cityCoordinates.text = coordinates
             }
         }
     }
