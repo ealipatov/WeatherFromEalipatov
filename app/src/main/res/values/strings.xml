@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">WeatherFromEalipatov</string>
+    <string name="test_text">test binding</string>
+    <string name="main_fragment">MainFragment</string>
+    <string name="there_was_some_exception">Возникло некторое исключение</string>
+    <string name="error">Ошибка</string>
+
+    <string name="temperature_label">Температура</string>
+    <string name="feels_like_label">Ощущается как</string>
+    <string name="city_coordinates">lt/ln: %s, %s"</string>
+    <string name="reload">Reload</string>
+
 </resources>
