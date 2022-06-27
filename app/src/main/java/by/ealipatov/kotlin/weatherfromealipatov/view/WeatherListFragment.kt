@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentWeatherListBinding
+import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.AppState
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.WeatherListViewModel
 
 
@@ -31,14 +32,15 @@ class WeatherListFragment : Fragment() {
     //Получим viewModel из "списка" моделей по шаблону WeatherListViewModel::class.java
         viewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java)
     //Подпишемся на liveData
-        viewModel.liveData.observe(viewLifecycleOwner, object : Observer<Any>{
-            override fun onChanged(t: Any?) {
+        viewModel.liveData.observe(viewLifecycleOwner, object : Observer<AppState>{
+            override fun onChanged(t: AppState) {
                Toast.makeText(requireContext(), "tested", Toast.LENGTH_LONG).show()
             }
 
         })
-
+        viewModel.sendRequest()
     }
+
 
     companion object{
         fun newInstance() : Fragment{
@@ -47,5 +49,6 @@ class WeatherListFragment : Fragment() {
         // Сокращенная запись кода функции сверху
         // fun newInstance() = WeatherListFragment()
     }
+
 
 }
