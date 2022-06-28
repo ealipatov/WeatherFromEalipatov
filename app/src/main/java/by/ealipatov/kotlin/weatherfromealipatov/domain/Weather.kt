@@ -1,22 +1,28 @@
 package by.ealipatov.kotlin.weatherfromealipatov.domain
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Weather(
     val city: City = getDefaultCity(),
     val temperature: Int = 20,
     val feelsLike: Int = 25
-)
+) : Parcelable
 
+@Parcelize
 data class City(
     val name: String,
     val lat: Double,
     val lon: Double
-)
+) : Parcelable
+
 fun getBelarusianCities(): List<Weather> {
     return listOf(
-        Weather(City("Минск", 53.9,27.5667),27, 35),
-        Weather(City("Брест", 52.0975,23.6877),33, 35),
-        Weather(City("Витебска", 55.1904, 30.2049), 25, 29),
-        Weather(City("Гомеля", 52.4345, 30.9754), 35,35),
+        Weather(City("Минск", 53.9, 27.5667), 27, 35),
+        Weather(City("Брест", 52.0975, 23.6877), 33, 35),
+        Weather(City("Витебск", 55.1904, 30.2049), 25, 29),
+        Weather(City("Гомель", 52.4345, 30.9754), 35, 35),
         Weather(City("Гродно", 53.6884, 23.8258), 28, 30),
         Weather(City("Лида", 53.8833, 25.2997), 27, 29),
         Weather(City("Могилёв", 53.9168, 30.3449), 28, 28)
