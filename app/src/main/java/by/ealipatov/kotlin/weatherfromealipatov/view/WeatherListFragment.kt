@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,18 +16,19 @@ import by.ealipatov.kotlin.weatherfromealipatov.model.Location
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.AppState
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.WeatherListViewModel
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_weather_list.*
 
 
 class WeatherListFragment : Fragment(), OnItemClick {
 
     private var _binding: FragmentWeatherListBinding? = null
     private val binding: FragmentWeatherListBinding
-    get() {
-        return _binding!!
-    }
+        get() {
+            return _binding!!
+        }
     lateinit var viewModel: WeatherListViewModel
 
-    var isRussian = true
+    val countries = arrayOf("Мир", "Беларусь", "Россия")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,16 +50,37 @@ class WeatherListFragment : Fragment(), OnItemClick {
             }
         })
 
-        binding.weatherListFragmentFAB.setOnClickListener{
-            isRussian = !isRussian
-            if(isRussian){
-                viewModel.getWeatherListFor(Location.Russian)
-            } else {
-                viewModel.getWeatherListFor(Location.World)
+        //Реализуем выбор страны отображения списка городов через всплывающий список spinner
+        if (spinner != null) {
+            val adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item, countries
+            )
+            binding.spinner.adapter = adapter
+
+            spinner.onItemSelectedListener = object :
+                AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View, position: Int, id: Long
+                ) {
+                    when (countries[position]) {
+                        "Мир" -> {
+                            viewModel.getWeatherListFor(Location.World)
+                        }
+                        "Беларусь" -> {
+                            viewModel.getWeatherListFor(Location.Belarus)
+                        }
+                        "Россия" -> {
+                            viewModel.getWeatherListFor(Location.Russian)
+                        }
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                }
             }
         }
-
-        viewModel.getWeatherListFor(Location.World)
     }
 
     fun renderData(appState: AppState) {
@@ -71,7 +95,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
                         appState.error.message.toString(),
                         Snackbar.LENGTH_INDEFINITE
                     )
-                    .setAction(getString(R.string.reload)) { viewModel.getWeatherListFor(Location.Belarus) }
+                    .setAction(getString(R.string.reload)) { viewModel.getWeatherListFor(Location.World) }
                     .show()
             }
             //Показ прогрессбара во время загрузки
@@ -82,15 +106,14 @@ class WeatherListFragment : Fragment(), OnItemClick {
             //Отображение погоды в одном городе
             is AppState.Success -> {
                 binding.weatherListLoadingLayout.visibility = View.GONE
-                val result = appState.weatherData
+             //   val result = appState.weatherData
             }
             //Отображение погоды в списке городов
-            is AppState.SuccessList ->{
+            is AppState.SuccessList -> {
                 binding.weatherListLoadingLayout.visibility = View.GONE
-                val result = appState.weatherList
 
-                binding.weatherListRecyclerView.adapter = WeatherListAdapter(appState.weatherList, this)
-
+                binding.weatherListRecyclerView.adapter =
+                    WeatherListAdapter(appState.weatherList, this)
             }
         }
     }
@@ -110,5 +133,6 @@ class WeatherListFragment : Fragment(), OnItemClick {
     companion object {
         fun newInstance() = WeatherListFragment()
     }
+
 
 }

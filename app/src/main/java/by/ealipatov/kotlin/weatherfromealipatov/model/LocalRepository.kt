@@ -5,7 +5,7 @@ import by.ealipatov.kotlin.weatherfromealipatov.domain.getBelarusianCities
 import by.ealipatov.kotlin.weatherfromealipatov.domain.getRussianCities
 import by.ealipatov.kotlin.weatherfromealipatov.domain.getWorldCities
 
-class RepositoryLocalImpl : Repository, RepositoryYandex {
+class LocalRepository : RepositoryLocal,RepositoryRetrofit {
     override fun getAllCityWeather(location: Location): List<Weather> {
         return when (location){
             Location.Belarus -> getBelarusianCities()

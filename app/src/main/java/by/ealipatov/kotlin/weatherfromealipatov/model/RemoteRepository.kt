@@ -2,7 +2,7 @@ package by.ealipatov.kotlin.weatherfromealipatov.model
 
 import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 
-class RepositoryRemoteImpl : RepositoryYandex {
+class RemoteRepository : RepositoryRetrofit {
 
     override fun getCityWeather(lat: Double, lon: Double): Weather {
         Thread {
@@ -10,4 +10,5 @@ class RepositoryRemoteImpl : RepositoryYandex {
         }.start()
         return Weather()
     }
+
 }

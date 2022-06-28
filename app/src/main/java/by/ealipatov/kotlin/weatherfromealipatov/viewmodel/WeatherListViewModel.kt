@@ -11,8 +11,9 @@ class WeatherListViewModel
     private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>(),
 ) : ViewModel() {
 
-    private lateinit var repository: Repository
-    private lateinit var repositoryYandex: RepositoryYandex
+    private lateinit var repositoryLocal: RepositoryLocal
+    private lateinit var repositoryRetrofit: RepositoryRetrofit
+
 
     /***
      * Получение (запрос к) liveData
@@ -27,20 +28,25 @@ class WeatherListViewModel
      * В зависимости от наличия подключения выбирается репозиторий (локальный/удаленный)
      */
     fun switchRepository() {
-        repositoryYandex = if (isConnection()) {
-            RepositoryRemoteImpl()
+        repositoryRetrofit = if (isConnection()) {
+            RemoteRepository()
         } else {
-            RepositoryLocalImpl()
+            LocalRepository()
         }
-        repository = RepositoryLocalImpl()
+        repositoryLocal = LocalRepository()
     }
 
-
-    fun getWeatherListFor(location: Location){
-        when (location){
-            Location.Belarus -> {sendRequest(Location.Belarus)}
-            Location.Russian -> {sendRequest(Location.Russian)}
-            Location.World -> {sendRequest(Location.World)}
+    fun getWeatherListFor(location: Location) {
+        when (location) {
+            Location.Belarus -> {
+                sendRequest(Location.Belarus)
+            }
+            Location.Russian -> {
+                sendRequest(Location.Russian)
+            }
+            Location.World -> {
+                sendRequest(Location.World)
+            }
         }
     }
 
@@ -52,11 +58,8 @@ class WeatherListViewModel
         if ((1..3).random() == 1) {
             liveData.postValue(Error(error = IllegalStateException("ой, что-то сломалось")))
         } else {
-            //liveData.postValue(Success(repositoryYandex.getCityWeather(55.755826, 37.617299900000035)))
-            liveData.postValue(SuccessList(repository.getAllCityWeather(location)))
+            liveData.postValue(SuccessList(repositoryLocal.getAllCityWeather(location)))
         }
-
-
     }
 
     /***
@@ -65,5 +68,4 @@ class WeatherListViewModel
     fun isConnection(): Boolean {
         return false
     }
-
 }
