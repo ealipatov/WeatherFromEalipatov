@@ -14,6 +14,7 @@ import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.AppState
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.WeatherListViewModel
 import com.google.android.material.snackbar.Snackbar
 
+
 class WeatherListFragment : Fragment() {
 
     private var _binding: FragmentWeatherListBinding? = null
@@ -22,6 +23,8 @@ class WeatherListFragment : Fragment() {
         return _binding!!
     }
     lateinit var viewModel: WeatherListViewModel
+
+    var isRussian = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,13 +45,28 @@ class WeatherListFragment : Fragment() {
                 renderData(t)
             }
         })
-        viewModel.getWeatherListFor(Location.Belarus)
+
+        //viewModel.getWeatherListFor(Location.Belarus)
+
+        binding.weatherListFragmentFAB.setOnClickListener{
+            isRussian = !isRussian
+            if(isRussian){
+                viewModel.getWeatherListFor(Location.Russian)
+            } else {
+                viewModel.getWeatherListFor(Location.World)
+            }
+        }
+
+
     }
+
+
 
     fun renderData(appState: AppState) {
         when (appState) {
+            //Обработка ошибки (исключения)
             is AppState.Error -> {
-                binding.loadingLayout.visibility = View.GONE
+                binding.weatherListLoadingLayout.visibility = View.GONE
 
                 Snackbar
                     .make(
@@ -59,26 +77,35 @@ class WeatherListFragment : Fragment() {
                     .setAction(getString(R.string.reload)) { viewModel.getWeatherListFor(Location.Belarus) }
                     .show()
             }
-
+            //Показ прогрессбара во время загрузки
             is AppState.Loading -> {
-                binding.loadingLayout.visibility = View.VISIBLE
+                binding.weatherListLoadingLayout.visibility = View.VISIBLE
             }
 
+            //Отображение погоды в одном городе
             is AppState.Success -> {
-                binding.loadingLayout.visibility = View.GONE
+                binding.weatherListLoadingLayout.visibility = View.GONE
                 val result = appState.weatherData
-                binding.cityName.text = result.city.name
-                binding.temperatureValue.text = result.temperature.toString()
-                binding.feelsLikeValue.text = result.feelsLike.toString()
-                val coordinates = "${result.city.lat} / ${result.city.lon}"
-                binding.cityCoordinates.text = coordinates
+
+//                binding.cityName.text = result.city.name
+//                binding.temperatureValue.text = result.temperature.toString()
+//                binding.feelsLikeValue.text = result.feelsLike.toString()
+//                val coordinates = "${result.city.lat} / ${result.city.lon}"
+//                binding.cityCoordinates.text = coordinates
             }
+            //Отображение погоды в списке городов
             is AppState.SuccessList ->{
+                binding.weatherListLoadingLayout.visibility = View.GONE
+                val result = appState.weatherList
+
+                binding.weatherListRecyclerView.adapter
+
 
             }
         }
     }
 
+    //Обнуление binding для предотвращения утечки памяти
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
