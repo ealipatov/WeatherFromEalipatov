@@ -57,10 +57,8 @@ class WeatherListFragment : Fragment() {
             }
         }
 
-
+        viewModel.getWeatherListFor(Location.World)
     }
-
-
 
     fun renderData(appState: AppState) {
         when (appState) {
@@ -98,8 +96,7 @@ class WeatherListFragment : Fragment() {
                 binding.weatherListLoadingLayout.visibility = View.GONE
                 val result = appState.weatherList
 
-                binding.weatherListRecyclerView.adapter
-
+                binding.weatherListRecyclerView.adapter = WeatherListAdapter(appState.weatherList)
 
             }
         }
