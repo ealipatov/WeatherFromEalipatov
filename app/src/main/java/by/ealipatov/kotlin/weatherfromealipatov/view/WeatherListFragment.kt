@@ -56,8 +56,8 @@ class WeatherListFragment : Fragment(), OnItemClick {
                 requireContext(),
                 android.R.layout.simple_spinner_item, countries
             )
-            binding.spinner.adapter = adapter
 
+            binding.spinner.adapter = adapter
             spinner.onItemSelectedListener = object :
                 AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -66,13 +66,13 @@ class WeatherListFragment : Fragment(), OnItemClick {
                 ) {
                     when (countries[position]) {
                         "Мир" -> {
-                            viewModel.getWeatherListFor(Location.World)
+                            viewModel.getWeatherListForLocation(Location.World)
                         }
                         "Беларусь" -> {
-                            viewModel.getWeatherListFor(Location.Belarus)
+                            viewModel.getWeatherListForLocation(Location.Belarus)
                         }
                         "Россия" -> {
-                            viewModel.getWeatherListFor(Location.Russian)
+                            viewModel.getWeatherListForLocation(Location.Russian)
                         }
                     }
                 }
@@ -89,13 +89,10 @@ class WeatherListFragment : Fragment(), OnItemClick {
             is AppState.Error -> {
                 binding.weatherListLoadingLayout.visibility = View.GONE
 
-                Snackbar
-                    .make(
-                        requireView(),
-                        appState.error.message.toString(),
-                        Snackbar.LENGTH_INDEFINITE
-                    )
-                    .setAction(getString(R.string.reload)) { viewModel.getWeatherListFor(Location.World) }
+                Snackbar.make(
+                    requireView(), appState.error.message.toString(), Snackbar.LENGTH_INDEFINITE
+                )
+                    .setAction(getString(R.string.reload)) { viewModel.getWeatherListForLocation(Location.World) }
                     .show()
             }
             //Показ прогрессбара во время загрузки
@@ -106,7 +103,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
             //Отображение погоды в одном городе
             is AppState.Success -> {
                 binding.weatherListLoadingLayout.visibility = View.GONE
-             //   val result = appState.weatherData
+                //   val result = appState.weatherData
             }
             //Отображение погоды в списке городов
             is AppState.SuccessList -> {
