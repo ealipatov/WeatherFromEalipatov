@@ -3,6 +3,7 @@ package by.ealipatov.kotlin.weatherfromealipatov.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import by.ealipatov.kotlin.weatherfromealipatov.model.*
+import by.ealipatov.kotlin.weatherfromealipatov.model.Dependencies.weatherRepository
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.AppState.*
 import java.util.*
 
@@ -11,10 +12,6 @@ class WeatherListViewModel
     (
     private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>(),
 ) : ViewModel() {
-
-    private lateinit var repositoryLocal: RepositoryLocal
-    private lateinit var repositoryRetrofit: RepositoryRetrofit
-
 
     /**
      * Получение (запрос к) liveData
@@ -29,12 +26,11 @@ class WeatherListViewModel
      * В зависимости от наличия подключения выбирается репозиторий (локальный/удаленный)
      */
     private fun switchRepository() {
-        repositoryRetrofit = if (isConnection()) {
+        weatherRepository = if (isConnection()) {
             RemoteRepository()
         } else {
             LocalRepository()
         }
-        repositoryLocal = LocalRepository()
     }
 
     /**
@@ -57,18 +53,15 @@ class WeatherListViewModel
     /**
      * Отправка запроса
      */
-
-    val rand = Random(System.nanoTime())
-
     private fun sendRequest(location: Location) {
         liveData.value = Loading
-        // Изначаольный вариант((1..3).random() == 1)
-        //(0..3).random(rand) == 1 Предложенный вариант преподавателем
+        // Изначальный вариант((1..3).random() == 1)
+        //val rand = Random(System.nanoTime())  (0..3).random(rand) == 1 Предложенный вариант преподавателем
         //Попробуем использовать такой рандом ((1..3).shuffled().last() == 1)
         if ((1..3).shuffled().last() == 1) {
             liveData.postValue(Error(error = IllegalStateException("ой, что-то сломалось")))
         } else {
-            liveData.postValue(SuccessList(repositoryLocal.getAllCityWeather(location)))
+            liveData.postValue(SuccessList(weatherRepository.getAllCityWeather(location)))
         }
     }
 
