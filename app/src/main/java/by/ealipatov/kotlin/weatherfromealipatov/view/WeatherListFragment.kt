@@ -44,11 +44,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
         //Получим viewModel из "списка" моделей по шаблону WeatherListViewModel::class.java
         viewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java)
         //Подпишемся на liveData
-        viewModel.getLiveData().observe(viewLifecycleOwner, object : Observer<AppState> {
-            override fun onChanged(t: AppState) {
-                renderData(t)
-            }
-        })
+        viewModel.getLiveData().observe(viewLifecycleOwner) { t -> renderData(t) }
 
         //Реализуем выбор страны отображения списка городов через всплывающий список spinner
         if (spinner != null) {
@@ -87,7 +83,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
         when (appState) {
             //Обработка ошибки (исключения)
             is AppState.Error -> {
-                binding.weatherListLoadingLayout.visibility = View.GONE
+                binding.showResult()
 
                 Snackbar.make(
                     requireView(), appState.error.message.toString(), Snackbar.LENGTH_INDEFINITE
@@ -97,23 +93,34 @@ class WeatherListFragment : Fragment(), OnItemClick {
             }
             //Показ прогрессбара во время загрузки
             is AppState.Loading -> {
-                binding.weatherListLoadingLayout.visibility = View.VISIBLE
+                binding.loading()
+//                binding.weatherListLoadingLayout.visibility = View.VISIBLE
             }
 
             //Отображение погоды в одном городе
             is AppState.Success -> {
-                binding.weatherListLoadingLayout.visibility = View.GONE
+                binding.showResult()
                 //   val result = appState.weatherData
             }
             //Отображение погоды в списке городов
             is AppState.SuccessList -> {
-                binding.weatherListLoadingLayout.visibility = View.GONE
+                binding.showResult()
 
                 binding.weatherListRecyclerView.adapter =
                     WeatherListAdapter(appState.weatherList, this)
             }
         }
     }
+    
+    fun FragmentWeatherListBinding.loading(){
+        this.weatherListLoadingLayout.visibility = View.VISIBLE
+        this.weatherListLoadingLayout.visibility = View.GONE
+    }
+    fun FragmentWeatherListBinding.showResult(){
+        this.weatherListLoadingLayout.visibility = View.GONE
+        this.weatherListLoadingLayout.visibility = View.VISIBLE
+    }
+    
 
     override fun onItemClick(weather: Weather) {
         requireActivity().supportFragmentManager.beginTransaction().hide(this).add(
