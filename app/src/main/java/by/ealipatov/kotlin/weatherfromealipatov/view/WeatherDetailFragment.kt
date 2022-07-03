@@ -51,9 +51,15 @@ class WeatherDetailFragment: Fragment() {
         fun newInstance(weather: Weather): WeatherDetailFragment {
             val bundle = Bundle()
             bundle.putParcelable(BUNDLE_WEATHER_EXTRA, weather)
-            val fragment = WeatherDetailFragment()
-            fragment.arguments = bundle
-            return fragment
+
+            WeatherDetailFragment().let{
+                it.arguments = bundle
+                return it
+            }
+
+//            val fragment = WeatherDetailFragment()
+//            fragment.arguments = bundle
+//            return fragment
         }
     }
 

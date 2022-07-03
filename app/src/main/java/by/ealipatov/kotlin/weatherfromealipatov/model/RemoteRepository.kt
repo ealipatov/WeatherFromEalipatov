@@ -8,6 +8,7 @@ class RemoteRepository : Repository {
         Thread {
             Thread.sleep(500L)
         }.start()
+        Thread.currentThread().join() // проверить работу
         return listOf() // тут подумать
     }
 
