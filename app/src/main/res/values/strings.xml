@@ -10,5 +10,7 @@
     <string name="city_coordinates">lt/ln: %s, %s"</string>
     <string name="reload">Reload</string>
     <string name="degree_сelsius">°С</string>
+    <string name="ok">OK</string>
+    <string name="https_geekbrains_ru">https://geekbrains.ru/</string>
 
 </resources>

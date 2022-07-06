@@ -45,6 +45,12 @@ class WeatherListFragment : Fragment(), OnItemClick {
         //Подпишемся на liveData
         viewModel.getLiveData().observe(viewLifecycleOwner) { t -> renderData(t) }
 
+        binding.weatherListFragmentWebView.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction().hide(this).add(
+                R.id.container, WebViewFragment()
+            ).addToBackStack("").commit()
+        }
+
         //Реализуем выбор страны отображения списка городов через всплывающий список spinner
         spinner?.let {
             val adapter = ArrayAdapter(
@@ -87,8 +93,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
                 //Вариант вызова снекбара из ДЗ (код из вэбинара)
                 binding.root.snakeBarErr(
                     appState.error.message.toString(), Snackbar.LENGTH_INDEFINITE,
-                    "RELOAD"
-                ) {
+                "RELOAD") {
                     viewModel.getWeatherListForLocation(Location.World)
                 }
             }
@@ -123,12 +128,8 @@ class WeatherListFragment : Fragment(), OnItemClick {
         this.weatherListLoadingLayout.visibility = View.GONE
     }
 
-    private fun View.snakeBarErr(
-        string: String,
-        duration: Int,
-        actionText: String,
-        block: (v: View) -> Unit
-    ) {
+
+    private fun View.snakeBarErr(string: String, duration: Int, actionText:String, block: (v: View) -> Unit) {
         Snackbar.make(this, string, duration).setAction(actionText, block).show()
     }
 
@@ -147,4 +148,6 @@ class WeatherListFragment : Fragment(), OnItemClick {
     companion object {
         fun newInstance() = WeatherListFragment()
     }
+
+
 }
