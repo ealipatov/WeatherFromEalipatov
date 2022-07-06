@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import by.ealipatov.kotlin.weatherfromealipatov.model.*
 import by.ealipatov.kotlin.weatherfromealipatov.model.Dependencies.weatherRepository
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.AppState.*
-import java.util.*
 
 //Создадим liveData сразу в конструкторе
 class WeatherListViewModel
@@ -55,9 +54,6 @@ class WeatherListViewModel
      */
     private fun sendRequest(location: Location) {
         liveData.value = Loading
-        // Изначальный вариант((1..3).random() == 1)
-        //val rand = Random(System.nanoTime())  (0..3).random(rand) == 1 Предложенный вариант преподавателем
-        //Попробуем использовать такой рандом ((1..3).shuffled().last() == 1)
         if ((1..3).shuffled().last() == 1) {
             liveData.postValue(Error(error = IllegalStateException("ой, что-то сломалось")))
         } else {

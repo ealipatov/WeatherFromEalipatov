@@ -11,5 +11,6 @@
     <dimen name="marginVertical">5dp</dimen>
     <dimen name="paddingHorizontal">16dp</dimen>
     <dimen name="paddingVertical">5dp</dimen>
+    <dimen name="margin_50_dp">50dp</dimen>
 
 </resources>

@@ -26,17 +26,16 @@ class WeatherListAdapter(private val dataList: List<Weather>, private val callba
     }
 
     //Количество элементов
-    override fun getItemCount(): Int {
-        return dataList.size
-    }
+    override fun getItemCount() = dataList.size
 
     inner class WeatherViewHolder(view: View): RecyclerView.ViewHolder(view){
         fun bind(weather: Weather) {
-            val binding = FragmentWeatherListItemViewBinding.bind(itemView)
-            binding.cityName.text = weather.city.name
-            binding.temperatureValue.text = weather.temperature.toString()
-            binding.root.setOnClickListener {
-                callback.onItemClick(weather)
+            FragmentWeatherListItemViewBinding.bind(itemView).apply {
+                cityName.text = weather.city.name
+                temperatureValue.text = weather.temperature.toString()
+                root.setOnClickListener {
+                    callback.onItemClick(weather)
+                }
             }
         }
     }

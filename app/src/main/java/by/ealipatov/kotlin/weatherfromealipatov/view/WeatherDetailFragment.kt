@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentWeatherDetailBinding
 import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 
-class WeatherDetailFragment: Fragment() {
+class WeatherDetailFragment : Fragment() {
 
     private var _binding: FragmentWeatherDetailBinding? = null
     private val binding: FragmentWeatherDetailBinding
@@ -33,34 +33,32 @@ class WeatherDetailFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val weather = (arguments?.getParcelable<Weather>(BUNDLE_WEATHER_EXTRA))
-        if (weather != null)
+        arguments?.run { getParcelable<Weather>(BUNDLE_WEATHER_EXTRA) }?.let { weather ->
             renderData(weather)
+        }
     }
 
+    //Проверяем работу with
     private fun renderData(weather: Weather) {
-        binding.cityName.text = weather.city.name
-        binding.temperatureValue.text = weather.temperature.toString()
-        binding.feelsLikeValue.text = weather.feelsLike.toString()
-        val coordinates = "${weather.city.lat} / ${weather.city.lon}"
-        binding.cityCoordinates.text = coordinates
+        //Используем переменную функционального типа, для преобразования координат в строку.
+        val coordinates = fun(lat: Double, lon: Double) = "$lat / $lon"
+        with(binding) {
+            cityName.text = weather.city.name
+            temperatureValue.text = weather.temperature.toString()
+            feelsLikeValue.text = weather.feelsLike.toString()
+            cityCoordinates.text = coordinates(weather.city.lat, weather.city.lat)
+        }
     }
 
     companion object {
         const val BUNDLE_WEATHER_EXTRA = "BUNDLE_WEATHER_EXTRA"
         fun newInstance(weather: Weather): WeatherDetailFragment {
-            val bundle = Bundle()
-            bundle.putParcelable(BUNDLE_WEATHER_EXTRA, weather)
 
-            WeatherDetailFragment().let{
-                it.arguments = bundle
-                return it
+            //На вебинаре использовали вместо run apply можно ли использовать run? (работает)
+            WeatherDetailFragment().run {
+                arguments = Bundle().apply { putParcelable(BUNDLE_WEATHER_EXTRA, weather) }
+                return this
             }
-
-//            val fragment = WeatherDetailFragment()
-//            fragment.arguments = bundle
-//            return fragment
         }
     }
-
 }

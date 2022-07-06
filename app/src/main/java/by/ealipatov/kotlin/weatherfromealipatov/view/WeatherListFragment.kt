@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import by.ealipatov.kotlin.weatherfromealipatov.R
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentWeatherListBinding
@@ -47,14 +46,14 @@ class WeatherListFragment : Fragment(), OnItemClick {
         viewModel.getLiveData().observe(viewLifecycleOwner) { t -> renderData(t) }
 
         //Реализуем выбор страны отображения списка городов через всплывающий список spinner
-        if (spinner != null) {
+        spinner?.let {
             val adapter = ArrayAdapter(
                 requireContext(),
                 android.R.layout.simple_spinner_item, countries
             )
 
             binding.spinner.adapter = adapter
-            spinner.onItemSelectedListener = object :
+            it.onItemSelectedListener = object :
                 AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>,
@@ -79,28 +78,30 @@ class WeatherListFragment : Fragment(), OnItemClick {
         }
     }
 
-    fun renderData(appState: AppState) {
+    private fun renderData(appState: AppState) {
         when (appState) {
             //Обработка ошибки (исключения)
             is AppState.Error -> {
                 binding.showResult()
 
-                Snackbar.make(
-                    requireView(), appState.error.message.toString(), Snackbar.LENGTH_INDEFINITE
-                )
-                    .setAction(getString(R.string.reload)) { viewModel.getWeatherListForLocation(Location.World) }
-                    .show()
+                //Вариант вызова снекбара из ДЗ (код из вэбинара)
+                binding.root.snakeBarErr(
+                    appState.error.message.toString(), Snackbar.LENGTH_INDEFINITE,
+                    "RELOAD"
+                ) {
+                    viewModel.getWeatherListForLocation(Location.World)
+                }
             }
+
             //Показ прогрессбара во время загрузки
             is AppState.Loading -> {
                 binding.loading()
-//                binding.weatherListLoadingLayout.visibility = View.VISIBLE
             }
 
             //Отображение погоды в одном городе
             is AppState.Success -> {
                 binding.showResult()
-                //   val result = appState.weatherData
+
             }
             //Отображение погоды в списке городов
             is AppState.SuccessList -> {
@@ -111,16 +112,25 @@ class WeatherListFragment : Fragment(), OnItemClick {
             }
         }
     }
-    
-    fun FragmentWeatherListBinding.loading(){
-        this.weatherListLoadingLayout.visibility = View.VISIBLE
-        this.weatherListLoadingLayout.visibility = View.GONE
-    }
-    fun FragmentWeatherListBinding.showResult(){
+
+    private fun FragmentWeatherListBinding.loading() {
         this.weatherListLoadingLayout.visibility = View.GONE
         this.weatherListLoadingLayout.visibility = View.VISIBLE
     }
-    
+
+    private fun FragmentWeatherListBinding.showResult() {
+        this.weatherListLoadingLayout.visibility = View.VISIBLE
+        this.weatherListLoadingLayout.visibility = View.GONE
+    }
+
+    private fun View.snakeBarErr(
+        string: String,
+        duration: Int,
+        actionText: String,
+        block: (v: View) -> Unit
+    ) {
+        Snackbar.make(this, string, duration).setAction(actionText, block).show()
+    }
 
     override fun onItemClick(weather: Weather) {
         requireActivity().supportFragmentManager.beginTransaction().hide(this).add(
@@ -137,6 +147,4 @@ class WeatherListFragment : Fragment(), OnItemClick {
     companion object {
         fun newInstance() = WeatherListFragment()
     }
-
-
 }

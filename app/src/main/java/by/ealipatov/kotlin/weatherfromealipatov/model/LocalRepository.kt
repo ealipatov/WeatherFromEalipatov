@@ -14,7 +14,5 @@ class LocalRepository : Repository {
         }
     }
 
-    override fun getCityWeather(lat: Double, lon: Double): Weather {
-        return Weather()
-    }
+    override fun getCityWeather(lat: Double, lon: Double) =  Weather()
 }
