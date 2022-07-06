@@ -13,10 +13,7 @@ class RemoteRepository : Repository {
     }
 
     override fun getCityWeather(lat: Double, lon: Double): Weather {
-        Thread {
-            Thread.sleep(200L)
-        }.start()
-        return Weather()
-    }
+            return Weather()
+        }
 
 }
