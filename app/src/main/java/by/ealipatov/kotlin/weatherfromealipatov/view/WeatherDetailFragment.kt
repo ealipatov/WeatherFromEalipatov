@@ -64,6 +64,7 @@ class WeatherDetailFragment : Fragment() {
             renderData(weatherLocal.apply {
                 weatherLocal.feelsLike = weatherDTO.fact.feels_like
                 weatherLocal.temperature = weatherDTO.fact.temp
+                weatherLocal.condition = weatherDTO.fact.condition
             })
         }
     }
@@ -77,6 +78,7 @@ class WeatherDetailFragment : Fragment() {
             temperatureValue.text = weather.temperature.toString()
             feelsLikeValue.text = weather.feelsLike.toString()
             cityCoordinates.text = coordinates(weather.city.lat, weather.city.lat)
+            weatherCondition.text = weather.condition
         }
     }
 
