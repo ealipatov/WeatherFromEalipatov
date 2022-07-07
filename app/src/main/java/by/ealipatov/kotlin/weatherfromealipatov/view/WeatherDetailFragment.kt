@@ -12,7 +12,6 @@ import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 import by.ealipatov.kotlin.weatherfromealipatov.model.dto.WeatherDTO
 import by.ealipatov.kotlin.weatherfromealipatov.utils.WeatherLoader
 
-
 class WeatherDetailFragment : Fragment() {
 
     private var _binding: FragmentWeatherDetailBinding? = null
