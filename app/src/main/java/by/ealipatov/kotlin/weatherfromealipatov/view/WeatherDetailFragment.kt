@@ -38,10 +38,8 @@ class WeatherDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        arguments?.run { getParcelable<Weather>(BUNDLE_WEATHER_EXTRA) }?.let { weather ->
-//            renderData(weather)
-//        }
         val weather = arguments?.getParcelable<Weather>(BUNDLE_WEATHER_EXTRA)
+
 
         weather?.let { weatherLocal ->
 
@@ -78,11 +76,11 @@ class WeatherDetailFragment : Fragment() {
             feelsLikeValue.text = weather.feelsLike.toString()
             cityCoordinates.text = coordinates(weather.city.lat, weather.city.lat)
             //weatherCondition.text = weather.condition
-            weatherCondition.text = d(weather.condition)
+            weatherCondition.text = translate(weather.condition)
 
         }
     }
-    fun d(f:String):String{
+    private fun translate(f:String):String{
       return when(f){
           "clear" -> "Ясно"
           "partly_cloudy" -> "Малооблачно"

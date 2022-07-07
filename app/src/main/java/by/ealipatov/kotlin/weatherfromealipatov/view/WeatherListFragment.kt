@@ -45,12 +45,6 @@ class WeatherListFragment : Fragment(), OnItemClick {
         //Подпишемся на liveData
         viewModel.getLiveData().observe(viewLifecycleOwner) { t -> renderData(t) }
 
-        binding.weatherListFragmentWebView.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction().hide(this).add(
-                R.id.container, WebViewFragment()
-            ).addToBackStack("").commit()
-        }
-
         //Реализуем выбор страны отображения списка городов через всплывающий список spinner
         spinner?.let {
             val adapter = ArrayAdapter(
