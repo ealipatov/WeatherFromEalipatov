@@ -4,7 +4,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import by.ealipatov.kotlin.weatherfromealipatov.BuildConfig
-import by.ealipatov.kotlin.weatherfromealipatov.model.DTO.WeatherDTO
+import by.ealipatov.kotlin.weatherfromealipatov.model.dto.WeatherDTO
 import com.google.gson.Gson
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -12,7 +12,7 @@ import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
 
-object WeatherLoader {// TODO HW 5 try catch
+object WeatherLoader {
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun request(lat: Double, lon: Double, block: (weather: WeatherDTO) -> Unit) {

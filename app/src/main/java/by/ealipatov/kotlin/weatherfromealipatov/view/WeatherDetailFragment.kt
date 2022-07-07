@@ -9,8 +9,9 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentWeatherDetailBinding
 import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
-import by.ealipatov.kotlin.weatherfromealipatov.model.DTO.WeatherDTO
+import by.ealipatov.kotlin.weatherfromealipatov.model.dto.WeatherDTO
 import by.ealipatov.kotlin.weatherfromealipatov.utils.WeatherLoader
+
 
 class WeatherDetailFragment : Fragment() {
 
@@ -41,9 +42,7 @@ class WeatherDetailFragment : Fragment() {
 //        arguments?.run { getParcelable<Weather>(BUNDLE_WEATHER_EXTRA) }?.let { weather ->
 //            renderData(weather)
 //        }
-        val weather = arguments?.let { arg ->
-            arg.getParcelable<Weather>(BUNDLE_WEATHER_EXTRA)
-        }
+        val weather = arguments?.getParcelable<Weather>(BUNDLE_WEATHER_EXTRA)
 
         weather?.let { weatherLocal ->
 
@@ -64,7 +63,8 @@ class WeatherDetailFragment : Fragment() {
             renderData(weatherLocal.apply {
                 weatherLocal.feelsLike = weatherDTO.fact.feels_like
                 weatherLocal.temperature = weatherDTO.fact.temp
-                weatherLocal.condition = weatherDTO.fact.condition
+                weatherLocal.condition = weatherDTO.fact.condition.replace("-","_")
+
             })
         }
     }
@@ -78,8 +78,34 @@ class WeatherDetailFragment : Fragment() {
             temperatureValue.text = weather.temperature.toString()
             feelsLikeValue.text = weather.feelsLike.toString()
             cityCoordinates.text = coordinates(weather.city.lat, weather.city.lat)
-            weatherCondition.text = weather.condition
+            //weatherCondition.text = weather.condition
+            weatherCondition.text = d(weather.condition)
+
         }
+    }
+    fun d(f:String):String{
+      return when(f){
+          "clear" -> "Ясно"
+          "partly_cloudy" -> "Малооблачно"
+          "cloudy" -> "Облачно с прояснениями"
+          "overcast" -> "Пасмурно"
+          "drizzle" -> "Морось"
+          "light_rain" -> "Небольшой дождь"
+          "rain" -> "Дождь"
+          "moderate_rain" -> "Умеренно сильный дождь"
+          "heavy_rain" -> "Сильный дождь"
+          "continuous_heavy_rain" -> "Длительный сильный дождь"
+          "showers" -> "Ливень"
+          "wet_snow" -> "Дождь со снегом"
+          "light_snow" -> "Небольшой снег"
+          "snow" -> "Снег"
+          "snow_showers" -> "Снегопад"
+          "hail" -> "Град"
+          "thunderstorm" -> "Гроза"
+          "thunderstorm_with_rain" -> "Дождь с грозой"
+          "thunderstorm_with_hail" -> "Гроза с градом"
+          else -> {f}
+      }
     }
 
     companion object {

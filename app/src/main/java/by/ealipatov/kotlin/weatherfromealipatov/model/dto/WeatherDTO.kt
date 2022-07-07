@@ -1,4 +1,4 @@
-package by.ealipatov.kotlin.weatherfromealipatov.model.DTO
+package by.ealipatov.kotlin.weatherfromealipatov.model.dto
 
 data class WeatherDTO(
     val fact: Fact,

@@ -1,21 +1,17 @@
-package by.ealipatov.kotlin.weatherfromealipatov.model.DTO
+package by.ealipatov.kotlin.weatherfromealipatov.model.dto
 
-data class Part(
+data class Fact(
     val condition: String,
     val daytime: String,
     val feels_like: Int,
     val humidity: Int,
     val icon: String,
-    val part_name: String,
+    val obs_time: Int,
     val polar: Boolean,
-    val prec_mm: Int,
-    val prec_period: Int,
-    val prec_prob: Int,
     val pressure_mm: Int,
     val pressure_pa: Int,
-    val temp_avg: Int,
-    val temp_max: Int,
-    val temp_min: Int,
+    val season: String,
+    val temp: Int,
     val temp_water: Int,
     val wind_dir: String,
     val wind_gust: Double,

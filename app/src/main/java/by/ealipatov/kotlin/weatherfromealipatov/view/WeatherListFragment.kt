@@ -93,7 +93,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
                 //Вариант вызова снекбара из ДЗ (код из вэбинара)
                 binding.root.snakeBarErr(
                     appState.error.message.toString(), Snackbar.LENGTH_INDEFINITE,
-                "RELOAD") {
+                getString(R.string.reload)) {
                     viewModel.getWeatherListForLocation(Location.World)
                 }
             }
