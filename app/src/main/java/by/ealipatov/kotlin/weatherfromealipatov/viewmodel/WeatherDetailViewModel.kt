@@ -20,8 +20,8 @@ class WeatherDetailViewModel: ViewModel() {
         return liveDataDetail
     }
     //Для проверки работы на примере локального репозитория
-    fun getLiveDataDetailLocal(weather: Weather): MutableLiveData<Weather> {
-        liveDataDetail.postValue(weather)
-        return liveDataDetail
-    }
+//    fun getLiveDataDetailLocal(weather: Weather): MutableLiveData<Weather> {
+//        liveDataDetail.postValue(weather)
+//        return liveDataDetail
+//    }
 }

@@ -15,6 +15,7 @@ import java.net.MalformedURLException
 import java.net.URL
 
 object WeatherLoader {
+//{"message":"forbidden"} - ответ при блокировке
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun request(lat: Double, lon: Double, onResponse: OnResponse){

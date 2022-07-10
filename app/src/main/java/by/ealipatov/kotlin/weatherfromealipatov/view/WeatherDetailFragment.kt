@@ -49,14 +49,14 @@ class WeatherDetailFragment : Fragment() {
 
         if (weather != null) {
             //Зависает программа на выборе списка городов при отсутствии подключения.
-          //  viewModelDetail.getLiveDataDetailRemoteRepository(weather)
-            viewModelDetail.getLiveDataDetailLocal(weather)
+            viewModelDetail.getLiveDataDetailRemoteRepository(weather)
+            // viewModelDetail.getLiveDataDetailLocal(weather)
         }
 
-        val observer = Observer<Weather>{
+        val observer = Observer<Weather> {
             renderData(it)
         }
-            viewModelDetail.liveDataDetail.observe(viewLifecycleOwner, observer)
+        viewModelDetail.liveDataDetail.observe(viewLifecycleOwner, observer)
 
     }
 
@@ -72,36 +72,40 @@ class WeatherDetailFragment : Fragment() {
 
         }
     }
-    private fun translate(f:String):String{
-      return when(f){
-          "clear" -> "Ясно"
-          "partly_cloudy" -> "Малооблачно"
-          "cloudy" -> "Облачно с прояснениями"
-          "overcast" -> "Пасмурно"
-          "drizzle" -> "Морось"
-          "light_rain" -> "Небольшой дождь"
-          "rain" -> "Дождь"
-          "moderate_rain" -> "Умеренно сильный дождь"
-          "heavy_rain" -> "Сильный дождь"
-          "continuous_heavy_rain" -> "Длительный сильный дождь"
-          "showers" -> "Ливень"
-          "wet_snow" -> "Дождь со снегом"
-          "light_snow" -> "Небольшой снег"
-          "snow" -> "Снег"
-          "snow_showers" -> "Снегопад"
-          "hail" -> "Град"
-          "thunderstorm" -> "Гроза"
-          "thunderstorm_with_rain" -> "Дождь с грозой"
-          "thunderstorm_with_hail" -> "Гроза с градом"
-          else -> {f}
-      }
+
+    private fun translate(f: String): String {
+        return when (f) {
+            "clear" -> "Ясно"
+            "partly_cloudy" -> "Малооблачно"
+            "cloudy" -> "Облачно с прояснениями"
+            "overcast" -> "Пасмурно"
+            "drizzle" -> "Морось"
+            "light_rain" -> "Небольшой дождь"
+            "rain" -> "Дождь"
+            "moderate_rain" -> "Умеренно сильный дождь"
+            "heavy_rain" -> "Сильный дождь"
+            "continuous_heavy_rain" -> "Длительный сильный дождь"
+            "showers" -> "Ливень"
+            "wet_snow" -> "Дождь со снегом"
+            "light_snow" -> "Небольшой снег"
+            "snow" -> "Снег"
+            "snow_showers" -> "Снегопад"
+            "hail" -> "Град"
+            "thunderstorm" -> "Гроза"
+            "thunderstorm_with_rain" -> "Дождь с грозой"
+            "thunderstorm_with_hail" -> "Гроза с градом"
+            else -> {
+                f
+            }
+        }
     }
 
     companion object {
         const val BUNDLE_WEATHER_EXTRA = "BUNDLE_WEATHER_EXTRA"
+
         //Исправление кода согласно замечанию преподавателя
         fun newInstance(weather: Weather) = WeatherDetailFragment().also {
-                it.arguments = Bundle().apply { putParcelable(BUNDLE_WEATHER_EXTRA, weather) }
+            it.arguments = Bundle().apply { putParcelable(BUNDLE_WEATHER_EXTRA, weather) }
 
         }
     }
