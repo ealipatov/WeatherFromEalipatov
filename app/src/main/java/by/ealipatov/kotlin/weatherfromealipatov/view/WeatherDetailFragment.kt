@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentWeatherDetailBinding
 import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 import by.ealipatov.kotlin.weatherfromealipatov.model.dto.WeatherDTO
@@ -37,6 +38,12 @@ class WeatherDetailFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+//        override fun onActivityCreated(savedInstanceState: Bundle?) {
+//            super.onActivityCreated(savedInstanceState)
+//            viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+//           
+//        }
 
         val weather = arguments?.getParcelable<Weather>(BUNDLE_WEATHER_EXTRA)
 
@@ -75,7 +82,6 @@ class WeatherDetailFragment : Fragment() {
             temperatureValue.text = weather.temperature.toString()
             feelsLikeValue.text = weather.feelsLike.toString()
             cityCoordinates.text = coordinates(weather.city.lat, weather.city.lat)
-            //weatherCondition.text = weather.condition
             weatherCondition.text = translate(weather.condition)
 
         }
@@ -107,13 +113,10 @@ class WeatherDetailFragment : Fragment() {
 
     companion object {
         const val BUNDLE_WEATHER_EXTRA = "BUNDLE_WEATHER_EXTRA"
-        fun newInstance(weather: Weather): WeatherDetailFragment {
+        //Исправление кода согласно замечанию преподавателя
+        fun newInstance(weather: Weather) = WeatherDetailFragment().also {
+                it.arguments = Bundle().apply { putParcelable(BUNDLE_WEATHER_EXTRA, weather) }
 
-            //На вебинаре использовали вместо run apply можно ли использовать run? (работает)
-            WeatherDetailFragment().run {
-                arguments = Bundle().apply { putParcelable(BUNDLE_WEATHER_EXTRA, weather) }
-                return this
-            }
         }
     }
 }

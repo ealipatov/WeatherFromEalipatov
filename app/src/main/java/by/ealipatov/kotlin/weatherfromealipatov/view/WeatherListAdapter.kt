@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentWeatherListItemViewBinding
 import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 
+
 class WeatherListAdapter(private val dataList: List<Weather>, private val callback: OnItemClick) :
     RecyclerView.Adapter<WeatherListAdapter.WeatherViewHolder>() {
 
@@ -16,7 +17,7 @@ class WeatherListAdapter(private val dataList: List<Weather>, private val callba
         val binding =
             FragmentWeatherListItemViewBinding.inflate(LayoutInflater.from(parent.context))
         //Передали в корневой макет
-        return WeatherViewHolder(binding.root)
+       return WeatherViewHolder(binding)
     }
 
     //Заполнение контейнера
@@ -28,15 +29,26 @@ class WeatherListAdapter(private val dataList: List<Weather>, private val callba
     //Количество элементов
     override fun getItemCount() = dataList.size
 
-    inner class WeatherViewHolder(view: View): RecyclerView.ViewHolder(view){
+    inner class WeatherViewHolder(private val binding:FragmentWeatherListItemViewBinding):
+        RecyclerView.ViewHolder(binding.root){
         fun bind(weather: Weather) {
-            FragmentWeatherListItemViewBinding.bind(itemView).apply {
-                cityName.text = weather.city.name
-                temperatureValue.text = weather.temperature.toString()
-                root.setOnClickListener {
-                    callback.onItemClick(weather)
-                }
+            binding.cityName.text = weather.city.name
+            binding.temperatureValue.text = weather.temperature.toString()
+            binding.root.setOnClickListener {
+                callback.onItemClick(weather)
             }
         }
     }
+
+//    inner class WeatherViewHolder(view: View): RecyclerView.ViewHolder(view){
+//        fun bind(weather: Weather) {
+//            FragmentWeatherListItemViewBinding.bind(itemView).apply {
+//                cityName.text = weather.city.name
+//                temperatureValue.text = weather.temperature.toString()
+//                root.setOnClickListener {
+//                    callback.onItemClick(weather)
+//                }
+//            }
+//        }
+//    }
 }

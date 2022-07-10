@@ -9,6 +9,10 @@ import by.ealipatov.kotlin.weatherfromealipatov.model.RemoteRepository
 class WeatherDetailViewModel (private val liveDataDetailViewModel: MutableLiveData<Weather> = MutableLiveData<Weather>()) :
     ViewModel() {
 
+//    class MainViewModel : ViewModel() {
+//
+//    }
+
         /**
          * Получение (запрос к) liveData
          */
