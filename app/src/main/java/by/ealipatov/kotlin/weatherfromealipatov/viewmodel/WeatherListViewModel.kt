@@ -54,7 +54,7 @@ class WeatherListViewModel
      */
     private fun sendRequest(location: Location) {
         liveData.value = Loading
-        if ((1..3).shuffled().last() == 1) {
+        if ((1..3).shuffled().last() == 4) {
             liveData.postValue(Error(error = IllegalStateException("ой, что-то сломалось")))
         } else {
             liveData.postValue(SuccessList(weatherRepository.getAllCityWeather(location)))

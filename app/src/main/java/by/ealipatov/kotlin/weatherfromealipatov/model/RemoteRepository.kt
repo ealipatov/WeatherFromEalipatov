@@ -17,13 +17,18 @@ class RemoteRepository : Repository {
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun getCityWeather(weather: Weather): Weather {
-        WeatherLoader.request(
-            weather.city.lat,
-            weather.city.lon
-        ) { weatherDTO ->
-            weather.temperature = weatherDTO.fact.temp
-            weather.feelsLike = weatherDTO.fact.feels_like
+
+        weather.let{
+            WeatherLoader.request(
+                it.city.lat,
+                it.city.lon
+            ) { weatherDTO ->
+                weather.temperature = weatherDTO.fact.temp
+                weather.feelsLike = weatherDTO.fact.feels_like
+                weather.condition = weatherDTO.fact.condition.replace("-","_")
+            }
         }
-        return Weather()
+        return weather
     }
 }
+

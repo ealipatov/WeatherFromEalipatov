@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentWeatherDetailBinding
 import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
-import by.ealipatov.kotlin.weatherfromealipatov.model.dto.WeatherDTO
-import by.ealipatov.kotlin.weatherfromealipatov.utils.WeatherLoader
+import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.WeatherDetailViewModel
 
 class WeatherDetailFragment : Fragment() {
 
@@ -20,6 +20,8 @@ class WeatherDetailFragment : Fragment() {
         get() {
             return _binding!!
         }
+
+    lateinit var viewModelDetail: WeatherDetailViewModel
 
     override fun onDestroy() {
         super.onDestroy()
@@ -39,41 +41,25 @@ class WeatherDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        override fun onActivityCreated(savedInstanceState: Bundle?) {
-//            super.onActivityCreated(savedInstanceState)
-//            viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-//           
-//        }
+        viewModelDetail = ViewModelProvider(this).get((WeatherDetailViewModel::class.java))
 
         val weather = arguments?.getParcelable<Weather>(BUNDLE_WEATHER_EXTRA)
 
+        //Не разобрался как во вьюмодель не передавать текущую погроду.
 
-        weather?.let { weatherLocal ->
-
-            WeatherLoader.request(
-                weatherLocal.city.lat,
-                weatherLocal.city.lon
-            ) { weatherDTO ->
-                bindWeatherLocalWithWeatherDTO(weatherLocal, weatherDTO)
-            }
+        if (weather != null) {
+            //Зависает программа на выборе списка городов при отсутствии подключения.
+          //  viewModelDetail.getLiveDataDetailRemoteRepository(weather)
+            viewModelDetail.getLiveDataDetailLocal(weather)
         }
+
+        val observer = Observer<Weather>{
+            renderData(it)
+        }
+            viewModelDetail.liveDataDetail.observe(viewLifecycleOwner, observer)
+
     }
 
-    private fun bindWeatherLocalWithWeatherDTO(
-        weatherLocal: Weather,
-        weatherDTO: WeatherDTO
-    ) {
-        requireActivity().runOnUiThread{
-            renderData(weatherLocal.apply {
-                weatherLocal.feelsLike = weatherDTO.fact.feels_like
-                weatherLocal.temperature = weatherDTO.fact.temp
-                weatherLocal.condition = weatherDTO.fact.condition.replace("-","_")
-
-            })
-        }
-    }
-
-    //Проверяем работу with
     private fun renderData(weather: Weather) {
         //Используем переменную функционального типа, для преобразования координат в строку.
         val coordinates = fun(lat: Double, lon: Double) = "$lat / $lon"
