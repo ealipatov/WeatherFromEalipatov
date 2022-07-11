@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.ActivityMainBinding
-import by.ealipatov.kotlin.weatherfromealipatov.lesson06.ThreadsFragment
+import by.ealipatov.kotlin.weatherfromealipatov.view.AboutFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.WeatherListFragment
 
 class MainActivity : AppCompatActivity() {
@@ -30,10 +30,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.threads -> {
+            R.id.about -> {
                 supportFragmentManager.apply {
                     beginTransaction()
-                        .add(R.id.container, ThreadsFragment())
+                        .add(R.id.container, AboutFragment())
                         .addToBackStack("")
                         .commitAllowingStateLoss()
                 }
