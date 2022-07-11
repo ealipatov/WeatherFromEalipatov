@@ -11,5 +11,5 @@
     <item
         android:id="@+id/threads"
         android:title="@string/threads"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 </menu>
