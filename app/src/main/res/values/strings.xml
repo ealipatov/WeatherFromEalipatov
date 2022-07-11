@@ -4,6 +4,9 @@
     <string name="main_fragment">MainFragment</string>
     <string name="there_was_some_exception">Возникло некторое исключение</string>
     <string name="error">Ошибка</string>
+    <string name="calculate">Сalculate</string>
+    <string name="threads">Потоки</string>
+
 
     <string name="temperature_label">Температура</string>
     <string name="feels_like_label">Ощущается как</string>
@@ -32,5 +35,5 @@
     <string name="thunderstorm">Гроза</string>
     <string name="thunderstorm_with_rain">Дождь с грозой</string>
     <string name="thunderstorm_with_hail">Гроза с градом</string>
-
+    <string name="new_fragment">Новый фрагмент</string>
 </resources>
