@@ -10,7 +10,7 @@ import by.ealipatov.kotlin.weatherfromealipatov.R
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentWeatherListBinding
 import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 import by.ealipatov.kotlin.weatherfromealipatov.model.Location
-import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.AppState
+import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.AppStateListViewModel
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.WeatherListViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_weather_list.*
@@ -78,10 +78,10 @@ class WeatherListFragment : Fragment(), OnItemClick {
         }
     }
 
-    private fun renderData(appState: AppState) {
+    private fun renderData(appState: AppStateListViewModel) {
         when (appState) {
             //Обработка ошибки (исключения)
-            is AppState.Error -> {
+            is AppStateListViewModel.Error -> {
                 binding.showResult()
 
                 //Вариант вызова снекбара из ДЗ (код из вэбинара)
@@ -93,17 +93,17 @@ class WeatherListFragment : Fragment(), OnItemClick {
             }
 
             //Показ прогрессбара во время загрузки
-            is AppState.Loading -> {
+            is AppStateListViewModel.Loading -> {
                 binding.loading()
             }
 
             //Отображение погоды в одном городе
-            is AppState.Success -> {
+            is AppStateListViewModel.Success -> {
                 binding.showResult()
 
             }
             //Отображение погоды в списке городов
-            is AppState.SuccessList -> {
+            is AppStateListViewModel.SuccessList -> {
                 binding.showResult()
 
                 binding.weatherListRecyclerView.adapter =

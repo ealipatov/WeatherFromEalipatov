@@ -4,18 +4,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import by.ealipatov.kotlin.weatherfromealipatov.model.*
 import by.ealipatov.kotlin.weatherfromealipatov.model.Dependencies.weatherRepository
-import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.AppState.*
+import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.AppStateListViewModel.*
 
 //Создадим liveData сразу в конструкторе
 class WeatherListViewModel
     (
-    private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>(),
+    private val liveData: MutableLiveData<AppStateListViewModel> = MutableLiveData<AppStateListViewModel>(),
 ) : ViewModel() {
 
     /**
      * Получение (запрос к) liveData
      */
-    fun getLiveData(): MutableLiveData<AppState> {
+    fun getLiveData(): MutableLiveData<AppStateListViewModel> {
         //Выбираем репозиторий
         switchRepository()
         return liveData
@@ -26,9 +26,9 @@ class WeatherListViewModel
      */
     private fun switchRepository() {
         weatherRepository = if (isConnection()) {
-            RemoteRepository()
+            RepositoryRemoteServicesWeatherLoader()
         } else {
-            LocalRepository()
+            RepositoryListCityLocal()
         }
     }
 
