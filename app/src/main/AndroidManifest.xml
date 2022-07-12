@@ -29,6 +29,16 @@
         <service
             android:name=".view.LoadWeatherService"
             android:exported="true" />
+
+        <receiver
+            android:name=".utils.MyBroadCastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="CONNEC" />
+            </intent-filter>
+
+        </receiver>
     </application>
 
 </manifest>

@@ -74,7 +74,7 @@ class WeatherDetailFragment : Fragment() {
                     requireContext(),
                     LoadWeatherService::class.java
                 ).apply {
-                    putExtra(BUNDLE_CITY_KEY, weatherLocal?.city)
+                    putExtra(BUNDLE_CITY_KEY, weatherLocal.city)
                 })
         }
     }

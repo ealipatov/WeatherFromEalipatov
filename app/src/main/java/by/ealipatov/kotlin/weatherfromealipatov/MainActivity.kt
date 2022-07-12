@@ -1,10 +1,13 @@
 package by.ealipatov.kotlin.weatherfromealipatov
 
+
+import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.ActivityMainBinding
+import by.ealipatov.kotlin.weatherfromealipatov.utils.MyBroadCastReceiver
 import by.ealipatov.kotlin.weatherfromealipatov.view.AboutFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.WeatherListFragment
 
@@ -21,6 +24,10 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, WeatherListFragment.newInstance()).commit()
         }
+
+        val receiver= MyBroadCastReceiver()
+        registerReceiver(receiver, IntentFilter("android.intent.action.AIRPLANE_MODE"))
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
