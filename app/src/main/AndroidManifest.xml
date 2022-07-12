@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="by.ealipatov.kotlin.weatherfromealipatov">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WeatherFromEalipatov"
         tools:targetApi="31">
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -22,6 +25,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".view.LoadWeatherService"
+            android:exported="true" />
+
+        <receiver
+            android:name=".utils.MyBroadCastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="CONNEC" />
+            </intent-filter>
+
+        </receiver>
     </application>
 
 </manifest>
