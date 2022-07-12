@@ -1,9 +1,7 @@
 package by.ealipatov.kotlin.weatherfromealipatov.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
@@ -25,6 +23,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
         get() {
             return _binding!!
         }
+
     lateinit var viewModel: WeatherListViewModel
 
     val countries = arrayOf("Мир", "Беларусь", "Россия")
@@ -40,6 +39,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         //Получим viewModel из "списка" моделей по шаблону WeatherListViewModel::class.java
         viewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java)
         //Подпишемся на liveData

@@ -1,5 +1,9 @@
 package by.ealipatov.kotlin.weatherfromealipatov.model.dto
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Fact(
     val condition: String,
     val daytime: String,
@@ -16,4 +20,4 @@ data class Fact(
     val wind_dir: String,
     val wind_gust: Double,
     val wind_speed: Double
-)
+): Parcelable

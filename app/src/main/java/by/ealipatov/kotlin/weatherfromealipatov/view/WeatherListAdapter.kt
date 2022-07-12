@@ -1,7 +1,6 @@
 package by.ealipatov.kotlin.weatherfromealipatov.view
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentWeatherListItemViewBinding
@@ -39,16 +38,4 @@ class WeatherListAdapter(private val dataList: List<Weather>, private val callba
             }
         }
     }
-
-//    inner class WeatherViewHolder(view: View): RecyclerView.ViewHolder(view){
-//        fun bind(weather: Weather) {
-//            FragmentWeatherListItemViewBinding.bind(itemView).apply {
-//                cityName.text = weather.city.name
-//                temperatureValue.text = weather.temperature.toString()
-//                root.setOnClickListener {
-//                    callback.onItemClick(weather)
-//                }
-//            }
-//        }
-//    }
 }
