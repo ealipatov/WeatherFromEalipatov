@@ -2,7 +2,6 @@ package by.ealipatov.kotlin.weatherfromealipatov.model
 
 import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 
-interface Repository {
+fun interface RepositoryListCity {
     fun getAllCityWeather(location: Location): List<Weather>
-    fun getCityWeather(weather: Weather): Weather
 }

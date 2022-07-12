@@ -1,6 +1,6 @@
 package by.ealipatov.kotlin.weatherfromealipatov.model
 
 object Dependencies {
-    var weatherRepository: Repository = LocalRepository()
+    var weatherRepository: RepositoryListCity = RepositoryListCityLocal()
 }
 
