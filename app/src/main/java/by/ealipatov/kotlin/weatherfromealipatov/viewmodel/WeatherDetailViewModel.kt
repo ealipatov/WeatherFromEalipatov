@@ -1,5 +1,8 @@
 package by.ealipatov.kotlin.weatherfromealipatov.viewmodel
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import by.ealipatov.kotlin.weatherfromealipatov.model.*
@@ -17,7 +20,8 @@ class WeatherDetailViewModel(private val liveData: MutableLiveData<AppStateDetai
     }
 
     private fun choiceRepository() {
-        repository = when (2) {
+
+        repository = when (1) {
             1 -> {
                 RepositoryRemoteServicesOkHttp()
             }
@@ -46,8 +50,11 @@ class WeatherDetailViewModel(private val liveData: MutableLiveData<AppStateDetai
         }
     }
 
-    private fun isConnection(): Boolean {
-        return false
+    fun isConnection(context: Context): Boolean {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        var activeNetworkInfo: NetworkInfo? = null
+        activeNetworkInfo = cm.activeNetworkInfo
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting
     }
 
     override fun onCleared() { // TODO HW ***

@@ -41,6 +41,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/cityName"
                 tools:text="lt/ln: 55.755826, 37.617299900000035" />
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/weatherIcon"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cityCoordinates"
+                app:layout_constraintBottom_toTopOf="@id/weatherCondition"
+                tools:text="Москва"
+                android:src="@drawable/ic_baseline_no_photography_24"/>
+
             <TextView
                 android:id="@+id/weatherCondition"
                 android:layout_width="wrap_content"
@@ -50,7 +61,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cityCoordinates"
+                app:layout_constraintTop_toBottomOf="@+id/weatherIcon"
                 tools:text="@string/cloudy" />
 
             <TextView
@@ -76,6 +87,14 @@
                 tools:text="+15" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/degree_сelsius"
+                android:textSize="@dimen/temperature_value_text_size"
+                app:layout_constraintStart_toEndOf="@id/temperatureValue"
+                app:layout_constraintTop_toTopOf="@id/temperatureValue" />
+
+            <TextView
                 android:id="@+id/feelsLikeLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -98,6 +117,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/feelsLikeLabel"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:text="-23" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/degree_сelsius"
+                android:textSize="@dimen/feels_like_text_size"
+                app:layout_constraintStart_toEndOf="@id/feelsLikeValue"
+                app:layout_constraintTop_toTopOf="@id/feelsLikeValue" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>

@@ -6,30 +6,19 @@ import by.ealipatov.kotlin.weatherfromealipatov.model.*
 import by.ealipatov.kotlin.weatherfromealipatov.model.Dependencies.weatherRepository
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.AppStateListViewModel.*
 
-//Создадим liveData сразу в конструкторе
 class WeatherListViewModel
     (
     private val liveData: MutableLiveData<AppStateListViewModel> = MutableLiveData<AppStateListViewModel>(),
 ) : ViewModel() {
 
-    /**
-     * Получение (запрос к) liveData
-     */
     fun getLiveData(): MutableLiveData<AppStateListViewModel> {
-        //Выбираем репозиторий
         switchRepository()
         return liveData
     }
 
-    /**
-     * В зависимости от наличия подключения выбирается репозиторий (локальный/удаленный)
-     */
     private fun switchRepository() {
-        weatherRepository = if (isConnection()) {
-            RepositoryRemoteServicesWeatherLoader()
-        } else {
-            RepositoryListCityLocal()
-        }
+        //Пока один репозиторий
+        weatherRepository = RepositoryListCityLocal()
     }
 
     /**
@@ -57,14 +46,8 @@ class WeatherListViewModel
         if ((1..3).shuffled().last() == 4) {
             liveData.postValue(Error(error = IllegalStateException("ой, что-то сломалось")))
         } else {
-            liveData.postValue(SuccessList(weatherRepository.getAllCityWeather(location)))
+            liveData.postValue(Success(weatherRepository.getAllCityWeather(location)))
         }
     }
 
-    /**
-     * Проверка наличия подключения. Пока заглушка
-     */
-    private fun isConnection(): Boolean {
-        return false
-    }
 }

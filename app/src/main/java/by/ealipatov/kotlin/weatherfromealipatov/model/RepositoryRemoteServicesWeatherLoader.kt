@@ -21,7 +21,7 @@ class RepositoryRemoteServicesWeatherLoader : RepositoryRemoteServices {
             val myConnection: HttpURLConnection?
             myConnection = uri.openConnection() as HttpURLConnection
 
-            Thread{
+            Thread {
                 try {
                     myConnection.readTimeout = 5000
                     myConnection.addRequestProperty(YANDEX_API_KEY, BuildConfig.WEATHER_API_KEY)

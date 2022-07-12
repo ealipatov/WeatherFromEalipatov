@@ -97,15 +97,9 @@ class WeatherListFragment : Fragment(), OnItemClick {
                 binding.loading()
             }
 
-            //Отображение погоды в одном городе
+            //Отображение погоды в списке городов
             is AppStateListViewModel.Success -> {
                 binding.showResult()
-
-            }
-            //Отображение погоды в списке городов
-            is AppStateListViewModel.SuccessList -> {
-                binding.showResult()
-
                 binding.weatherListRecyclerView.adapter =
                     WeatherListAdapter(appState.weatherList, this)
             }
@@ -121,7 +115,6 @@ class WeatherListFragment : Fragment(), OnItemClick {
         this.weatherListLoadingLayout.visibility = View.VISIBLE
         this.weatherListLoadingLayout.visibility = View.GONE
     }
-
 
     private fun View.snakeBarErr(string: String, duration: Int, actionText:String, block: (v: View) -> Unit) {
         Snackbar.make(this, string, duration).setAction(actionText, block).show()
@@ -142,6 +135,5 @@ class WeatherListFragment : Fragment(), OnItemClick {
     companion object {
         fun newInstance() = WeatherListFragment()
     }
-
 
 }
