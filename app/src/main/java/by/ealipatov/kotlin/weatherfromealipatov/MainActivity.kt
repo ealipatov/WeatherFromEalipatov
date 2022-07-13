@@ -1,9 +1,15 @@
 package by.ealipatov.kotlin.weatherfromealipatov
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.ActivityMainBinding
 import by.ealipatov.kotlin.weatherfromealipatov.view.AboutFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.WeatherListFragment
@@ -20,6 +26,21 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, WeatherListFragment.newInstance()).commit()
+        }
+
+        val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        registerReceiver(networkStateReceiver, filter)
+    }
+
+    private var networkStateReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val noConnectivity =
+                intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)
+            if (!noConnectivity) {
+                Toast.makeText(context,"Connection found", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(context, "Connection lost", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
