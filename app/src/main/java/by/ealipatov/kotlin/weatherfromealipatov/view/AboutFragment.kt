@@ -1,11 +1,22 @@
 package by.ealipatov.kotlin.weatherfromealipatov.view
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import by.ealipatov.kotlin.weatherfromealipatov.BuildConfig
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentAboutBinding
+import by.ealipatov.kotlin.weatherfromealipatov.model.geo.CityCoordinates
+import com.google.gson.Gson
+import okhttp3.*
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 
 class AboutFragment: Fragment() {
 
@@ -33,6 +44,6 @@ class AboutFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.aboutText.text = "Проект программы отображения погоды по городам"
-    }
 
+    }
 }

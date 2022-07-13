@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.ActivityMainBinding
 import by.ealipatov.kotlin.weatherfromealipatov.view.AboutFragment
+import by.ealipatov.kotlin.weatherfromealipatov.view.SearchFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.WeatherListFragment
 
 class MainActivity : AppCompatActivity() {
@@ -55,6 +56,15 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager.apply {
                     beginTransaction()
                         .add(R.id.container, AboutFragment())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+            R.id.search -> {
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .add(R.id.container, SearchFragment())
                         .addToBackStack("")
                         .commitAllowingStateLoss()
                 }

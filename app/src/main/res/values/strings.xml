@@ -37,4 +37,5 @@
     <string name="thunderstorm_with_hail">Гроза с градом</string>
     <string name="new_fragment">Новый фрагмент</string>
     <string name="about">О программе</string>
+    <string name="search">Поиск</string>
 </resources>

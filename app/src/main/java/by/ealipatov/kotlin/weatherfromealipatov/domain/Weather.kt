@@ -14,8 +14,8 @@ data class Weather(
 @Parcelize
 data class City(
     val country: String,
-    val name: String,
-    val lat: Double,
+    var name: String,
+    var lat: Double,
     val lon: Double
 ) : Parcelable
 
