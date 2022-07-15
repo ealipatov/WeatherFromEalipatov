@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -94,7 +93,7 @@ class WeatherDetailFragment : Fragment() {
                     weatherCondition.text = translate(weatherDTO.fact.condition)
 
                     Coil.setImageLoader(imageLoader)
-                    binding.weatherIcon.load("https://yastatic.net/weather/i/icons/funky/dark/${weatherDTO.fact.icon}.svg")
+                    weatherIcon.load("https://yastatic.net/weather/i/icons/funky/dark/${weatherDTO.fact.icon}.svg")
                     {
                         error(R.drawable.ic_baseline_no_photography_24)
                         placeholder(R.drawable.loadingfast)
