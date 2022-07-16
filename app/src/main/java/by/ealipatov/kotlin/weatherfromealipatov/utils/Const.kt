@@ -12,3 +12,5 @@ const val CITY_SHARED_PREFERENCE_KEY = "CitySPKey"
 const val SPINNER_SHARED_PREFERENCE_NAME = "SpinnerSPName"
 const val SPINNER_SHARED_PREFERENCE_KEY = "SpinnerSPKey"
 
+const val ROOM_DB_NAME = "historyWeatherDB"
+
