@@ -1,8 +1,10 @@
 package by.ealipatov.kotlin.weatherfromealipatov.view
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,9 @@ import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentSearchBindin
 import by.ealipatov.kotlin.weatherfromealipatov.domain.City
 import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 import by.ealipatov.kotlin.weatherfromealipatov.model.geo.CityCoordinates
+import by.ealipatov.kotlin.weatherfromealipatov.utils.CITY_SHARED_PREFERENCE_KEY
+import by.ealipatov.kotlin.weatherfromealipatov.utils.CITY_SHARED_PREFERENCE_NAME
+import by.ealipatov.kotlin.weatherfromealipatov.utils.SPINNER_SHARED_PREFERENCE_NAME
 import com.google.gson.Gson
 import org.json.JSONException
 import java.io.BufferedReader
@@ -45,9 +50,24 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val spCityName = requireActivity().getSharedPreferences(
+            CITY_SHARED_PREFERENCE_NAME,
+            Context.MODE_PRIVATE
+        )
+
+        //Урок 8 Почему-то не отображает введенный ранее город. Разобраться позже.
+        binding.cityName.text = Editable.Factory.getInstance()
+            .newEditable(spCityName.getString(CITY_SHARED_PREFERENCE_KEY, ""))
+
         binding.searchSendBtn.setOnClickListener() {
             getCityCoordinates(binding.cityName.text.toString())
         }
+
+        spCityName.edit().apply() {
+            putString(CITY_SHARED_PREFERENCE_KEY, binding.cityName.text.toString())
+            apply()
+        }
+
     }
 
     private fun getCityCoordinates(name: String) {

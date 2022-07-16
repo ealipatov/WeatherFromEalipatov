@@ -1,5 +1,6 @@
 package by.ealipatov.kotlin.weatherfromealipatov.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
@@ -10,6 +11,8 @@ import by.ealipatov.kotlin.weatherfromealipatov.R
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentWeatherListBinding
 import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 import by.ealipatov.kotlin.weatherfromealipatov.model.Location
+import by.ealipatov.kotlin.weatherfromealipatov.utils.SPINNER_SHARED_PREFERENCE_KEY
+import by.ealipatov.kotlin.weatherfromealipatov.utils.SPINNER_SHARED_PREFERENCE_NAME
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.AppStateListViewModel
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.WeatherListViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -26,7 +29,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
 
     lateinit var viewModel: WeatherListViewModel
 
-    val countries = arrayOf("Мир", "Беларусь", "Россия")
+    val countries = arrayOf("Выберете страну:","Мир", "Беларусь", "Россия")//Костыль*
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,6 +48,8 @@ class WeatherListFragment : Fragment(), OnItemClick {
         //Подпишемся на liveData
         viewModel.getLiveData().observe(viewLifecycleOwner) { t -> renderData(t) }
 
+        val spSpinner = requireActivity().getSharedPreferences(SPINNER_SHARED_PREFERENCE_NAME,Context.MODE_PRIVATE)
+
         //Реализуем выбор страны отображения списка городов через всплывающий список spinner
         spinner?.let {
             val adapter = ArrayAdapter(
@@ -53,27 +58,39 @@ class WeatherListFragment : Fragment(), OnItemClick {
             )
 
             binding.spinner.adapter = adapter
+
             it.onItemSelectedListener = object :
                 AdapterView.OnItemSelectedListener {
+
                 override fun onItemSelected(
                     parent: AdapterView<*>,
                     view: View, position: Int, id: Long
                 ) {
-                    when (countries[position]) {
-                        "Мир" -> {
-                            viewModel.getWeatherListForLocation(Location.World)
-                        }
-                        "Беларусь" -> {
-                            viewModel.getWeatherListForLocation(Location.Belarus)
-                        }
-                        "Россия" -> {
-                            viewModel.getWeatherListForLocation(Location.Russian)
+                    if(position!=0){ //Костыль*
+                        spSpinner.edit().apply(){
+                            putInt(SPINNER_SHARED_PREFERENCE_KEY,position)
+                            apply()
                         }
                     }
+                    selectCountry(spSpinner.getInt(SPINNER_SHARED_PREFERENCE_KEY,0))
                 }
-
                 override fun onNothingSelected(parent: AdapterView<*>) {
                 }
+            }
+        }
+
+    }
+
+    private fun selectCountry(cont: Int){
+        when (countries[cont]) {
+            "Мир" -> {
+                viewModel.getWeatherListForLocation(Location.World)
+            }
+            "Беларусь" -> {
+                viewModel.getWeatherListForLocation(Location.Belarus)
+            }
+            "Россия" -> {
+                viewModel.getWeatherListForLocation(Location.Russian)
             }
         }
     }
