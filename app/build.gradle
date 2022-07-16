@@ -47,6 +47,10 @@ android {
 
 dependencies {
 
+    //Room
+    apply plugin: 'kotlin-kapt'
+    implementation 'androidx.room:room-runtime:2.4.2'
+    kapt 'androidx.room:room-compiler:2.4.2'
     // okhttp
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     // retrofit2
@@ -60,9 +64,11 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     //glide
     implementation 'com.github.bumptech.glide:glide:4.13.2'
-
-    implementation 'com.google.firebase:firebase-firestore:24.2.0'
+    //firestore
+    implementation 'com.google.firebase:firebase-firestore:24.2.1'
+    //Gson
     implementation 'com.google.code.gson:gson:2.9.0'
+
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'
