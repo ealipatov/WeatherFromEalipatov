@@ -2,8 +2,10 @@ package by.ealipatov.kotlin.weatherfromealipatov.model
 
 import android.util.Log
 import by.ealipatov.kotlin.weatherfromealipatov.BuildConfig
+import by.ealipatov.kotlin.weatherfromealipatov.domain.City
 import by.ealipatov.kotlin.weatherfromealipatov.model.dto.WeatherDTO
 import by.ealipatov.kotlin.weatherfromealipatov.utils.YANDEX_API_KEY
+import by.ealipatov.kotlin.weatherfromealipatov.utils.converterWeatherDTOWithCityToWeather
 import com.google.gson.Gson
 import org.json.JSONException
 import java.io.BufferedReader
@@ -13,11 +15,11 @@ import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
 
-class RepositoryRemoteServicesWeatherLoader : RepositoryRemoteServices {
+class RepositoryWeatherByCityLoader : RepositoryWeatherByCity {
 
-    override fun getWeather(lat: Double, lon: Double, callback: CallbackResponse) {
+    override fun getWeather(city: City, callback: CallbackWeather) {
         try {
-            val uri = URL("https://api.weather.yandex.ru/v2/informers?lat=${lat}&lon=${lon}")
+            val uri = URL("https://api.weather.yandex.ru/v2/informers?lat=${city.lat}&lon=${city.lon}")
             val myConnection: HttpURLConnection?
             myConnection = uri.openConnection() as HttpURLConnection
 
@@ -27,7 +29,7 @@ class RepositoryRemoteServicesWeatherLoader : RepositoryRemoteServices {
                     myConnection.addRequestProperty(YANDEX_API_KEY, BuildConfig.WEATHER_API_KEY)
                     val reader = BufferedReader(InputStreamReader(myConnection.inputStream))
                     val weatherDTO = Gson().fromJson(reader, WeatherDTO::class.java)
-                    callback.onResponse(weatherDTO)
+                    callback.onResponse(converterWeatherDTOWithCityToWeather(weatherDTO,city))
                 } catch (e: IOException) {
                     Log.e("***", "Fail connection", e)
                     e.printStackTrace()

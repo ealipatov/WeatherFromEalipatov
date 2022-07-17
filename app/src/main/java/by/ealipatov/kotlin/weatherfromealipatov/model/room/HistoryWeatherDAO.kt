@@ -8,7 +8,7 @@ import androidx.room.Query
 @Dao
 interface HistoryWeatherDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert (historyWeatherEntity: HistoryWeatherEntity)
+    fun insertRoom (historyWeatherEntity: HistoryWeatherEntity)
 
     @Query("SELECT * FROM history_weather_entity_table WHERE lat= :sLat AND lon= :sLon") //* - прочитать все поля, можно отдельное поле
     fun getHistoryWeatherByCoordinates(sLat: Double, sLon: Double): List<HistoryWeatherEntity>

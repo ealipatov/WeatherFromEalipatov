@@ -46,19 +46,18 @@ class WeatherDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //Урок 7.
-        weather = arguments?.getParcelable(BUNDLE_WEATHER_EXTRA)!! //костыль наверное
+        //Урок 8.
+        val weather = arguments?.getParcelable<Weather>(BUNDLE_WEATHER_EXTRA)
 
-        //Урок 7.
-        weather.let { localWeather ->
-            //Проверка наличия интернета
+        //Урок 8.
+        weather?.let { weatherLocal ->
             if (viewModel.isConnection(requireContext())) {
-                viewModel.getWeather(localWeather.city.lat, localWeather.city.lon)
                 viewModel.getLiveData().observe(viewLifecycleOwner) { appState ->
                     renderData(appState)
                 }
+                viewModel.getWeather(weatherLocal.city)
             } else Toast.makeText(requireContext(), "Нет подключения интернета", Toast.LENGTH_LONG)
-                .show()
+//                .show()
         }
     }
 
@@ -85,15 +84,15 @@ class WeatherDetailFragment : Fragment() {
             is AppStateDetailViewModel.Success -> {
                 with(binding) {
                     val coordinates = fun(lat: Double, lon: Double) = "$lat / $lon"
-                    val weatherDTO = appState.weatherData
+                    val weather = appState.weatherData
                     cityName.text = weather.city.name
-                    temperatureValue.text = weatherDTO.fact.temp.toString()
-                    feelsLikeValue.text = weatherDTO.fact.feels_like.toString()
+                    temperatureValue.text = weather.temperature.toString()
+                    feelsLikeValue.text = weather.feelsLike.toString()
                     cityCoordinates.text = coordinates(weather.city.lat, weather.city.lat)
-                    weatherCondition.text = translate(weatherDTO.fact.condition)
+                    weatherCondition.text = translate(weather.condition)
 
                     Coil.setImageLoader(imageLoader)
-                    weatherIcon.load("https://yastatic.net/weather/i/icons/funky/dark/${weatherDTO.fact.icon}.svg")
+                    weatherIcon.load("https://yastatic.net/weather/i/icons/funky/dark/${weather.icon}.svg")
                     {
                         error(R.drawable.ic_baseline_no_photography_24)
                         placeholder(R.drawable.loadingfast)

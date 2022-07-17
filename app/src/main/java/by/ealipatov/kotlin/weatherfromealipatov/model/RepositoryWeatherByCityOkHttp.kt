@@ -1,18 +1,20 @@
 package by.ealipatov.kotlin.weatherfromealipatov.model
 
 import by.ealipatov.kotlin.weatherfromealipatov.BuildConfig
+import by.ealipatov.kotlin.weatherfromealipatov.domain.City
 import by.ealipatov.kotlin.weatherfromealipatov.model.dto.WeatherDTO
 import by.ealipatov.kotlin.weatherfromealipatov.utils.YANDEX_API_KEY
+import by.ealipatov.kotlin.weatherfromealipatov.utils.converterWeatherDTOWithCityToWeather
 import com.google.gson.Gson
 import okhttp3.*
 import java.io.IOException
 
-class RepositoryRemoteServicesOkHttp: RepositoryRemoteServices {
-    override fun getWeather(lat: Double, lon: Double, callback: CallbackResponse) {
+class RepositoryWeatherByCityOkHttp: RepositoryWeatherByCity {
+    override fun getWeather(city: City, callback: CallbackWeather) {
         val client = OkHttpClient()
         val builder = Request.Builder()
         builder.addHeader(YANDEX_API_KEY, BuildConfig.WEATHER_API_KEY)
-        builder.url("https://api.weather.yandex.ru/v2/informers?lat=${lat}&lon=${lon}")
+        builder.url("https://api.weather.yandex.ru/v2/informers?lat=${city.lat}&lon=${city.lon}")
         val request: Request = builder.build()
         val call: Call = client.newCall(request)
         call.enqueue(object : Callback {
@@ -25,7 +27,7 @@ class RepositoryRemoteServicesOkHttp: RepositoryRemoteServices {
                         val responseString = it.string()
                         val weatherDTO =
                             Gson().fromJson((responseString), WeatherDTO::class.java)
-                        callback.onResponse(weatherDTO)
+                        callback.onResponse(converterWeatherDTOWithCityToWeather(weatherDTO,city))
                     }
                 } else {
                     // TODO HW callback.on??? 403 404

@@ -5,14 +5,16 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import by.ealipatov.kotlin.weatherfromealipatov.domain.City
+import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 import by.ealipatov.kotlin.weatherfromealipatov.model.*
-import by.ealipatov.kotlin.weatherfromealipatov.model.dto.WeatherDTO
 import java.io.IOException
 
 class WeatherDetailViewModel(private val liveData: MutableLiveData<AppStateDetailViewModel> = MutableLiveData<AppStateDetailViewModel>()) :
     ViewModel() {
 
-    lateinit var repository: RepositoryRemoteServices
+    lateinit var repositoryWeatherByCity: RepositoryWeatherByCity
+    lateinit var repositoryWeatherSaveToDB: RepositoryWeatherSave
 
     fun getLiveData(): MutableLiveData<AppStateDetailViewModel> {
         choiceRepository()
@@ -21,28 +23,44 @@ class WeatherDetailViewModel(private val liveData: MutableLiveData<AppStateDetai
 
     private fun choiceRepository() {
 
-        repository = when (1) {
+        repositoryWeatherByCity = when (2) {
             1 -> {
-                RepositoryRemoteServicesOkHttp()
+                RepositoryWeatherByCityOkHttp()
             }
             2 -> {
                 RepositoryRemoteServicesRetrofit()
             }
+            3 -> {
+                RepositoryWeatherByCityLoader()
+            }
+            4 -> {
+                RepositoryRoomDB()
+            }
             else -> {
-                RepositoryRemoteServicesWeatherLoader()
+                RepositoryWeatherByCityLocal()
             }
         }
+
+        repositoryWeatherSaveToDB = when (0) {
+            1 -> {
+                RepositoryRoomDB()
+            }
+            else -> {
+                RepositoryRoomDB()
+            }
+        }
+
     }
 
-    fun getWeather(lat: Double, lon: Double) {
+    fun getWeather(city: City) {
         choiceRepository()
         liveData.value = AppStateDetailViewModel.Loading
-        repository.getWeather(lat, lon,callback)
+        repositoryWeatherByCity.getWeather(city,callback)
     }
 
-    private val callback = object :CallbackResponse{
-        override fun onResponse(weatherDTO: WeatherDTO) {
-            liveData.postValue(AppStateDetailViewModel.Success(weatherDTO))
+    private val callback = object :CallbackWeather{
+        override fun onResponse(weather: Weather) {
+            liveData.postValue(AppStateDetailViewModel.Success(weather))
         }
 
         override fun onFailure(e: IOException) {

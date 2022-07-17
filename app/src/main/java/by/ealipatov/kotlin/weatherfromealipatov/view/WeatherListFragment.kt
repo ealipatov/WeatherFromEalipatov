@@ -35,7 +35,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View { //binding не бывает null, удалили знак вопроса View?
+    ): View {
         _binding = FragmentWeatherListBinding.inflate(inflater)
         return binding.root
     }
@@ -43,14 +43,11 @@ class WeatherListFragment : Fragment(), OnItemClick {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //Получим viewModel из "списка" моделей по шаблону WeatherListViewModel::class.java
         viewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java)
-        //Подпишемся на liveData
         viewModel.getLiveData().observe(viewLifecycleOwner) { t -> renderData(t) }
 
         val spSpinner = requireActivity().getSharedPreferences(SPINNER_SHARED_PREFERENCE_NAME,Context.MODE_PRIVATE)
 
-        //Реализуем выбор страны отображения списка городов через всплывающий список spinner
         spinner?.let {
             val adapter = ArrayAdapter(
                 requireContext(),
@@ -78,7 +75,6 @@ class WeatherListFragment : Fragment(), OnItemClick {
                 }
             }
         }
-
     }
 
     private fun selectCountry(cont: Int){
@@ -97,11 +93,9 @@ class WeatherListFragment : Fragment(), OnItemClick {
 
     private fun renderData(appState: AppStateListViewModel) {
         when (appState) {
-            //Обработка ошибки (исключения)
             is AppStateListViewModel.Error -> {
                 binding.showResult()
 
-                //Вариант вызова снекбара из ДЗ (код из вэбинара)
                 binding.root.snakeBarErr(
                     appState.error.message.toString(), Snackbar.LENGTH_INDEFINITE,
                 getString(R.string.reload)) {
@@ -109,12 +103,10 @@ class WeatherListFragment : Fragment(), OnItemClick {
                 }
             }
 
-            //Показ прогрессбара во время загрузки
             is AppStateListViewModel.Loading -> {
                 binding.loading()
             }
 
-            //Отображение погоды в списке городов
             is AppStateListViewModel.Success -> {
                 binding.showResult()
                 binding.weatherListRecyclerView.adapter =
@@ -142,8 +134,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
             R.id.container, WeatherDetailFragment.newInstance(weather)
         ).addToBackStack("").commit()
     }
-
-    //Обнуление binding для предотвращения утечки памяти
+    
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

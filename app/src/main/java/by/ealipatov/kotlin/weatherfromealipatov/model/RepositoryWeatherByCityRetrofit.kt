@@ -1,8 +1,10 @@
 package by.ealipatov.kotlin.weatherfromealipatov.model
 
 import by.ealipatov.kotlin.weatherfromealipatov.BuildConfig
+import by.ealipatov.kotlin.weatherfromealipatov.domain.City
 import by.ealipatov.kotlin.weatherfromealipatov.model.dto.WeatherDTO
 import by.ealipatov.kotlin.weatherfromealipatov.utils.YANDEX_API_KEY
+import by.ealipatov.kotlin.weatherfromealipatov.utils.converterWeatherDTOWithCityToWeather
 import com.google.gson.GsonBuilder
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,16 +26,16 @@ interface WeatherAPI {
     ):Call<WeatherDTO>
 }
 
-class RepositoryRemoteServicesRetrofit: RepositoryRemoteServices {
-    override fun getWeather(lat: Double, lon: Double, callback: CallbackResponse) {
+class RepositoryRemoteServicesRetrofit: RepositoryWeatherByCity {
+    override fun getWeather(city: City, callback: CallbackWeather) {
         val retrofitImpl = Retrofit.Builder()
         retrofitImpl.baseUrl("https://api.weather.yandex.ru")
         retrofitImpl.addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
         val api = retrofitImpl.build().create(WeatherAPI::class.java)
-        api.getWeather(BuildConfig.WEATHER_API_KEY,lat,lon).enqueue(object : Callback<WeatherDTO> {
+        api.getWeather(BuildConfig.WEATHER_API_KEY,city.lat,city.lon).enqueue(object : Callback<WeatherDTO> {
             override fun onResponse(call: Call<WeatherDTO>, response: Response<WeatherDTO>) {
                 if(response.isSuccessful&&response.body()!=null){
-                    callback.onResponse(response.body()!!)
+                    callback.onResponse(converterWeatherDTOWithCityToWeather(response.body()!!,city))
                 }else {
                     // TODO HW callback.on??? 403 404
                     callback.onFailure(IOException("403 404"))
