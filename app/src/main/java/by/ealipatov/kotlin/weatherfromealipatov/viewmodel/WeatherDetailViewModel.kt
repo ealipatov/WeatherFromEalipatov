@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import by.ealipatov.kotlin.weatherfromealipatov.MyApp.Companion.getMyApp
 import by.ealipatov.kotlin.weatherfromealipatov.domain.City
 import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 import by.ealipatov.kotlin.weatherfromealipatov.model.*
@@ -23,43 +24,66 @@ class WeatherDetailViewModel(private val liveData: MutableLiveData<AppStateDetai
 
     private fun choiceRepository() {
 
-        repositoryWeatherByCity = when (2) {
-            1 -> {
-                RepositoryWeatherByCityOkHttp()
+        if (isConnection(getMyApp().applicationContext)){
+            repositoryWeatherByCity = when (2) {
+                1 -> {
+                    RepositoryWeatherByCityOkHttp()
+                }
+                2 -> {
+                    RepositoryRemoteServicesRetrofit()
+                }
+                3 -> {
+                    RepositoryWeatherByCityLoader()
+                }
+                4 -> {
+                    RepositoryRoomDB()
+                }
+                else -> {
+                    RepositoryWeatherByCityLocal()
+                }
             }
-            2 -> {
-                RepositoryRemoteServicesRetrofit()
-            }
-            3 -> {
-                RepositoryWeatherByCityLoader()
-            }
-            4 -> {
-                RepositoryRoomDB()
-            }
-            else -> {
-                RepositoryWeatherByCityLocal()
-            }
-        }
 
-        repositoryWeatherSaveToDB = when (0) {
-            1 -> {
-                RepositoryRoomDB()
+            repositoryWeatherSaveToDB = when (0) {
+                1 -> {
+                    RepositoryRoomDB()
+                }
+                else -> {
+                    RepositoryRoomDB()
+                }
             }
-            else -> {
-                RepositoryRoomDB()
+        } else {
+            repositoryWeatherByCity = when (1) {
+                1 -> {
+                    RepositoryRoomDB()
+                }
+                2 -> {
+                    RepositoryWeatherByCityLocal()
+                }
+                else -> {
+                    RepositoryWeatherByCityLocal()
+                }
+            }
+            repositoryWeatherSaveToDB = when (0) {
+                1 -> {
+                    RepositoryRoomDB()
+                }
+                else -> {
+                    RepositoryRoomDB()
+                }
             }
         }
 
     }
 
     fun getWeather(city: City) {
-        choiceRepository()
         liveData.value = AppStateDetailViewModel.Loading
         repositoryWeatherByCity.getWeather(city,callback)
     }
 
     private val callback = object :CallbackWeather{
         override fun onResponse(weather: Weather) {
+            if (isConnection(getMyApp().applicationContext))
+                repositoryWeatherSaveToDB.addWeather(weather)
             liveData.postValue(AppStateDetailViewModel.Success(weather))
         }
 
@@ -68,10 +92,10 @@ class WeatherDetailViewModel(private val liveData: MutableLiveData<AppStateDetai
         }
     }
 
+    @Suppress("DEPRECATION")
     fun isConnection(context: Context): Boolean {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        var activeNetworkInfo: NetworkInfo? = null
-        activeNetworkInfo = cm.activeNetworkInfo
+        val activeNetworkInfo: NetworkInfo? = cm.activeNetworkInfo
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting
     }
 

@@ -13,5 +13,6 @@ data class HistoryWeatherEntity (
     val lon: Double,
     var temperature: Int,
     var feelsLike: Int,
-    var condition: String
+    var condition: String,
+    var icon: String
 )

@@ -14,7 +14,7 @@ class MyApp : Application() {
     companion object {
         private var myApp: MyApp? = null
         private var historyWeatherDatabase: HistoryWeatherDatabase? = null
-        private fun getMyApp() = myApp!!
+        fun getMyApp() = myApp!!
         fun getHistoryWeatherDatabase(): HistoryWeatherDatabase {
             if (historyWeatherDatabase == null) {
                 historyWeatherDatabase = Room.databaseBuilder(

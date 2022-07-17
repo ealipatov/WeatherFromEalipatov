@@ -24,7 +24,7 @@ class RepositoryRoomDB : RepositoryWeatherByCity, RepositoryWeatherAll, Reposito
 
     private fun convertHistoryWeatherEntityToWeather(entityList: List<HistoryWeatherEntity>): List<Weather> {
         return entityList.map {
-            Weather(City(it.country, it.name, it.lat, it.lon), it.temperature, it.feelsLike, it.condition)
+            Weather(City(it.country, it.name, it.lat, it.lon), it.temperature, it.feelsLike, it.condition, it.icon)
         }
     }
     private fun convertWeatherToEntity(weather: Weather): HistoryWeatherEntity {
@@ -36,7 +36,8 @@ class RepositoryRoomDB : RepositoryWeatherByCity, RepositoryWeatherAll, Reposito
             weather.city.lon,
             weather.temperature,
             weather.feelsLike,
-            weather.condition
+            weather.condition,
+            weather.icon
         )
     }
 }
