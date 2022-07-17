@@ -1,4 +1,4 @@
-package by.ealipatov.kotlin.weatherfromealipatov.view
+package by.ealipatov.kotlin.weatherfromealipatov.view.citylist
 
 import android.content.Context
 import android.os.Bundle
@@ -13,13 +13,14 @@ import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 import by.ealipatov.kotlin.weatherfromealipatov.model.Location
 import by.ealipatov.kotlin.weatherfromealipatov.utils.SPINNER_SHARED_PREFERENCE_KEY
 import by.ealipatov.kotlin.weatherfromealipatov.utils.SPINNER_SHARED_PREFERENCE_NAME
+import by.ealipatov.kotlin.weatherfromealipatov.view.WeatherDetailFragment
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.citieslist.AppStateCitiesListViewModel
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.citieslist.CitiesListViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_weather_list.*
 
 
-class WeatherListFragment : Fragment(), OnItemClick {
+class CityListFragment : Fragment(), OnItemClick {
 
     private var _binding: FragmentWeatherListBinding? = null
     private val binding: FragmentWeatherListBinding
@@ -110,7 +111,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
             is AppStateCitiesListViewModel.Success -> {
                 binding.showResult()
                 binding.weatherListRecyclerView.adapter =
-                    WeatherListAdapter(appState.weatherList, this)
+                    CityListAdapter(appState.weatherList, this)
             }
         }
     }
@@ -141,7 +142,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
     }
 
     companion object {
-        fun newInstance() = WeatherListFragment()
+        fun newInstance() = CityListFragment()
     }
 
 }

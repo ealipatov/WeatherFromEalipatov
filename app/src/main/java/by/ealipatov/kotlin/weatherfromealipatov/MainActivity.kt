@@ -13,7 +13,8 @@ import android.widget.Toast
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.ActivityMainBinding
 import by.ealipatov.kotlin.weatherfromealipatov.view.AboutFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.SearchFragment
-import by.ealipatov.kotlin.weatherfromealipatov.view.WeatherListFragment
+import by.ealipatov.kotlin.weatherfromealipatov.view.citylist.CityListFragment
+import by.ealipatov.kotlin.weatherfromealipatov.view.weatherhistorylist.WeatherHistoryListFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, WeatherListFragment.newInstance()).commit()
+                .replace(R.id.container, CityListFragment.newInstance()).commit()
         }
 
         val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
@@ -65,6 +66,15 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager.apply {
                     beginTransaction()
                         .add(R.id.container, SearchFragment())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+            R.id.history -> {
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .replace(R.id.container, WeatherHistoryListFragment())
                         .addToBackStack("")
                         .commitAllowingStateLoss()
                 }

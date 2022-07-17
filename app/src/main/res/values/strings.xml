@@ -38,4 +38,5 @@
     <string name="new_fragment">Новый фрагмент</string>
     <string name="about">О программе</string>
     <string name="search">Поиск</string>
+    <string name="history_weather">История погоды</string>
 </resources>

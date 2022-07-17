@@ -90,7 +90,6 @@ class WeatherDetailFragment : Fragment() {
                     {
                         error(R.drawable.ic_baseline_no_photography_24)
                         placeholder(R.drawable.loadingfast)
-                        //transformations(CircleCropTransformation())
                     }
 
                 }

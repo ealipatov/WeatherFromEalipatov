@@ -1,4 +1,4 @@
-package by.ealipatov.kotlin.weatherfromealipatov.view
+package by.ealipatov.kotlin.weatherfromealipatov.view.citylist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,8 +7,8 @@ import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentWeatherListI
 import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 
 
-class WeatherListAdapter(private val dataList: List<Weather>, private val callback: OnItemClick) :
-    RecyclerView.Adapter<WeatherListAdapter.WeatherViewHolder>() {
+class CityListAdapter(private val dataList: List<Weather>, private val callback: OnItemClick) :
+    RecyclerView.Adapter<CityListAdapter.WeatherViewHolder>() {
 
     //Создание контейнера (3.40 lesson)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder {
