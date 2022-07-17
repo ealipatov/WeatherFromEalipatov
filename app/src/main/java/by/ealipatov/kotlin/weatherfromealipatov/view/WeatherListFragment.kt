@@ -13,8 +13,8 @@ import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 import by.ealipatov.kotlin.weatherfromealipatov.model.Location
 import by.ealipatov.kotlin.weatherfromealipatov.utils.SPINNER_SHARED_PREFERENCE_KEY
 import by.ealipatov.kotlin.weatherfromealipatov.utils.SPINNER_SHARED_PREFERENCE_NAME
-import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.AppStateListViewModel
-import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.WeatherListViewModel
+import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.citieslist.AppStateCitiesListViewModel
+import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.citieslist.CitiesListViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_weather_list.*
 
@@ -27,7 +27,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
             return _binding!!
         }
 
-    lateinit var viewModel: WeatherListViewModel
+    lateinit var viewModel: CitiesListViewModel
 
     val countries = arrayOf("Выберете страну:","Мир", "Беларусь", "Россия")//Костыль*
 
@@ -43,7 +43,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(CitiesListViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner) { t -> renderData(t) }
 
         val spSpinner = requireActivity().getSharedPreferences(SPINNER_SHARED_PREFERENCE_NAME,Context.MODE_PRIVATE)
@@ -91,9 +91,9 @@ class WeatherListFragment : Fragment(), OnItemClick {
         }
     }
 
-    private fun renderData(appState: AppStateListViewModel) {
+    private fun renderData(appState: AppStateCitiesListViewModel) {
         when (appState) {
-            is AppStateListViewModel.Error -> {
+            is AppStateCitiesListViewModel.Error -> {
                 binding.showResult()
 
                 binding.root.snakeBarErr(
@@ -103,11 +103,11 @@ class WeatherListFragment : Fragment(), OnItemClick {
                 }
             }
 
-            is AppStateListViewModel.Loading -> {
+            is AppStateCitiesListViewModel.Loading -> {
                 binding.loading()
             }
 
-            is AppStateListViewModel.Success -> {
+            is AppStateCitiesListViewModel.Success -> {
                 binding.showResult()
                 binding.weatherListRecyclerView.adapter =
                     WeatherListAdapter(appState.weatherList, this)

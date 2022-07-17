@@ -1,4 +1,4 @@
-package by.ealipatov.kotlin.weatherfromealipatov.viewmodel
+package by.ealipatov.kotlin.weatherfromealipatov.viewmodel.detail
 
 import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 

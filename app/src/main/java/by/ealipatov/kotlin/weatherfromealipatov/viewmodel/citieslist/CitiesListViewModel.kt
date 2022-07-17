@@ -1,24 +1,25 @@
-package by.ealipatov.kotlin.weatherfromealipatov.viewmodel
+package by.ealipatov.kotlin.weatherfromealipatov.viewmodel.citieslist
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import by.ealipatov.kotlin.weatherfromealipatov.model.*
-import by.ealipatov.kotlin.weatherfromealipatov.model.Dependencies.weatherRepository
-import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.AppStateListViewModel.*
+import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.citieslist.AppStateCitiesListViewModel.*
 
-class WeatherListViewModel
+class CitiesListViewModel
     (
-    private val liveData: MutableLiveData<AppStateListViewModel> = MutableLiveData<AppStateListViewModel>(),
+    private val liveData: MutableLiveData<AppStateCitiesListViewModel> = MutableLiveData<AppStateCitiesListViewModel>(),
 ) : ViewModel() {
 
-    fun getLiveData(): MutableLiveData<AppStateListViewModel> {
+    lateinit var repositoryCitiesList: RepositoryListCity
+
+    fun getLiveData(): MutableLiveData<AppStateCitiesListViewModel> {
         switchRepository()
         return liveData
     }
 
     private fun switchRepository() {
         //Пока один репозиторий
-        weatherRepository = RepositoryListCityLocal()
+        repositoryCitiesList = RepositoryListCityLocal()
     }
 
     /**
@@ -46,7 +47,7 @@ class WeatherListViewModel
         if ((1..3).shuffled().last() == 4) {
             liveData.postValue(Error(error = IllegalStateException("ой, что-то сломалось")))
         } else {
-            liveData.postValue(Success(weatherRepository.getAllCityWeather(location)))
+            liveData.postValue(Success(repositoryCitiesList.getAllCityWeather(location)))
         }
     }
 

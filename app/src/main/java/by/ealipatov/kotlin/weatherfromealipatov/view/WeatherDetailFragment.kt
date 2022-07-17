@@ -11,8 +11,8 @@ import by.ealipatov.kotlin.weatherfromealipatov.R
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentWeatherDetailBinding
 import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 import by.ealipatov.kotlin.weatherfromealipatov.utils.BUNDLE_WEATHER_EXTRA
-import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.AppStateDetailViewModel
-import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.WeatherDetailViewModel
+import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.detail.AppStateDetailViewModel
+import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.detail.WeatherDetailViewModel
 import coil.Coil
 import coil.ImageLoader
 import coil.decode.GifDecoder
