@@ -30,7 +30,7 @@ class CityListFragment : Fragment(), OnItemClick {
 
     lateinit var viewModel: CitiesListViewModel
 
-    val countries = arrayOf("Выберете страну:","Мир", "Беларусь", "Россия")//Костыль*
+    val countries = arrayOf("Выберете страну:", "Мир", "Беларусь", "Россия")//Костыль*
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +47,10 @@ class CityListFragment : Fragment(), OnItemClick {
         viewModel = ViewModelProvider(this).get(CitiesListViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner) { t -> renderData(t) }
 
-        val spSpinner = requireActivity().getSharedPreferences(SPINNER_SHARED_PREFERENCE_NAME,Context.MODE_PRIVATE)
+        val spSpinner = requireActivity().getSharedPreferences(
+            SPINNER_SHARED_PREFERENCE_NAME,
+            Context.MODE_PRIVATE
+        )
 
         spinner?.let {
             val adapter = ArrayAdapter(
@@ -64,21 +67,22 @@ class CityListFragment : Fragment(), OnItemClick {
                     parent: AdapterView<*>,
                     view: View, position: Int, id: Long
                 ) {
-                    if(position!=0){ //Костыль*
-                        spSpinner.edit().apply(){
-                            putInt(SPINNER_SHARED_PREFERENCE_KEY,position)
+                    if (position != 0) { //Костыль*
+                        spSpinner.edit().apply {
+                            putInt(SPINNER_SHARED_PREFERENCE_KEY, position)
                             apply()
                         }
                     }
-                    selectCountry(spSpinner.getInt(SPINNER_SHARED_PREFERENCE_KEY,0))
+                    selectCountry(spSpinner.getInt(SPINNER_SHARED_PREFERENCE_KEY, 0))
                 }
+
                 override fun onNothingSelected(parent: AdapterView<*>) {
                 }
             }
         }
     }
 
-    private fun selectCountry(cont: Int){
+    private fun selectCountry(cont: Int) {
         when (countries[cont]) {
             "Мир" -> {
                 viewModel.getWeatherListForLocation(Location.World)
@@ -99,7 +103,8 @@ class CityListFragment : Fragment(), OnItemClick {
 
                 binding.root.snakeBarErr(
                     appState.error.message.toString(), Snackbar.LENGTH_INDEFINITE,
-                getString(R.string.reload)) {
+                    getString(R.string.reload)
+                ) {
                     viewModel.getWeatherListForLocation(Location.World)
                 }
             }
@@ -126,16 +131,21 @@ class CityListFragment : Fragment(), OnItemClick {
         this.weatherListLoadingLayout.visibility = View.GONE
     }
 
-    private fun View.snakeBarErr(string: String, duration: Int, actionText:String, block: (v: View) -> Unit) {
+    private fun View.snakeBarErr(
+        string: String,
+        duration: Int,
+        actionText: String,
+        block: (v: View) -> Unit
+    ) {
         Snackbar.make(this, string, duration).setAction(actionText, block).show()
     }
 
     override fun onItemClick(weather: Weather) {
-        requireActivity().supportFragmentManager.beginTransaction().hide(this).add(
+       parentFragmentManager.beginTransaction().hide(this).add(
             R.id.container, WeatherDetailFragment.newInstance(weather)
         ).addToBackStack("").commit()
     }
-    
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
