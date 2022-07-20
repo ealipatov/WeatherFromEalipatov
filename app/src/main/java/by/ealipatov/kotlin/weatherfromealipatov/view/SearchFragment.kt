@@ -11,7 +11,6 @@ import by.ealipatov.kotlin.weatherfromealipatov.domain.City
 import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 import by.ealipatov.kotlin.weatherfromealipatov.model.CallbackCityCoordinates
 import by.ealipatov.kotlin.weatherfromealipatov.model.RepositoryCityCoordinatesByCityNameLoader
-import by.ealipatov.kotlin.weatherfromealipatov.view.citylist.CityListFragment
 import java.io.IOException
 
 class SearchFragment : Fragment() {
