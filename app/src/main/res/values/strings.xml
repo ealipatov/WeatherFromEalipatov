@@ -6,7 +6,11 @@
     <string name="error">Ошибка</string>
     <string name="calculate">Сalculate</string>
     <string name="threads">Потоки</string>
-
+    <string name="new_fragment">Новый фрагмент</string>
+    <string name="about">О программе</string>
+    <string name="search">Поиск по городу</string>
+    <string name="history_weather">История погоды</string>
+    <string name="contacts">Список контактов</string>
 
     <string name="temperature_label">Температура</string>
     <string name="feels_like_label">Ощущается как</string>
@@ -35,8 +39,5 @@
     <string name="thunderstorm">Гроза</string>
     <string name="thunderstorm_with_rain">Дождь с грозой</string>
     <string name="thunderstorm_with_hail">Гроза с градом</string>
-    <string name="new_fragment">Новый фрагмент</string>
-    <string name="about">О программе</string>
-    <string name="search">Поиск</string>
-    <string name="history_weather">История погоды</string>
+
 </resources>
