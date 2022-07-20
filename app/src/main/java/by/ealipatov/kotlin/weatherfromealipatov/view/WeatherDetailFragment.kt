@@ -51,14 +51,13 @@ class WeatherDetailFragment : Fragment() {
             renderData(appState)
         }
 
-        weather?.let { weatherLocal ->
-                viewModel.getWeather(weatherLocal.city)
+        weather?.let {
+            viewModel.getWeather(it.city)
         }
     }
 
     private fun renderData(appState: AppStateDetailViewModel) {
 
-        //Подсказка от преподавателя для отображения "картинок"
         val imageLoader = ImageLoader.Builder(requireContext())
             .components {
                 //GIF

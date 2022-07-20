@@ -15,14 +15,14 @@ class MyApp : Application() {
         private var myApp: MyApp? = null
         private var historyWeatherDatabase: HistoryWeatherDatabase? = null
         fun getMyApp() = myApp!!
+
         fun getHistoryWeatherDatabase(): HistoryWeatherDatabase {
             if (historyWeatherDatabase == null) {
                 historyWeatherDatabase = Room.databaseBuilder(
                     getMyApp(),
                     HistoryWeatherDatabase::class.java,
                     ROOM_DB_NAME
-                ).allowMainThreadQueries() // TODO в ДЗ убрать эту комманду (из главного потока)
-                    .build()
+                ).build()
             }
             return historyWeatherDatabase!!
         }

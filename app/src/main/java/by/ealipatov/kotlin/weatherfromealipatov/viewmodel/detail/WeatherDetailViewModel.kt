@@ -83,7 +83,7 @@ class WeatherDetailViewModel(private val liveData: MutableLiveData<AppStateDetai
     private val callback = object :CallbackWeather{
         override fun onResponse(weather: Weather) {
             if (isConnection(getMyApp().applicationContext))
-                repositoryWeatherSaveToDB.addWeather(weather)
+                repositoryWeatherSaveToDB.addWeather(weather) // Добавим погоду в БД
             liveData.postValue(AppStateDetailViewModel.Success(weather))
         }
 

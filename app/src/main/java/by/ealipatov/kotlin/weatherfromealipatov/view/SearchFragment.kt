@@ -18,7 +18,6 @@ import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 import by.ealipatov.kotlin.weatherfromealipatov.model.geo.CityCoordinates
 import by.ealipatov.kotlin.weatherfromealipatov.utils.CITY_SHARED_PREFERENCE_KEY
 import by.ealipatov.kotlin.weatherfromealipatov.utils.CITY_SHARED_PREFERENCE_NAME
-import by.ealipatov.kotlin.weatherfromealipatov.utils.SPINNER_SHARED_PREFERENCE_NAME
 import com.google.gson.Gson
 import org.json.JSONException
 import java.io.BufferedReader
@@ -67,7 +66,6 @@ class SearchFragment : Fragment() {
             putString(CITY_SHARED_PREFERENCE_KEY, binding.cityName.text.toString())
             apply()
         }
-
     }
 
     private fun getCityCoordinates(name: String) {
