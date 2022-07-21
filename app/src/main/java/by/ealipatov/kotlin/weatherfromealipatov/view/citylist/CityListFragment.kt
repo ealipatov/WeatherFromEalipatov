@@ -13,12 +13,15 @@ import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 import by.ealipatov.kotlin.weatherfromealipatov.model.Location
 import by.ealipatov.kotlin.weatherfromealipatov.utils.SPINNER_SHARED_PREFERENCE_KEY
 import by.ealipatov.kotlin.weatherfromealipatov.utils.SPINNER_SHARED_PREFERENCE_NAME
+import by.ealipatov.kotlin.weatherfromealipatov.view.AboutFragment
+import by.ealipatov.kotlin.weatherfromealipatov.view.SearchFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.WeatherDetailFragment
+import by.ealipatov.kotlin.weatherfromealipatov.view.contactlist.ContactListFragment
+import by.ealipatov.kotlin.weatherfromealipatov.view.weatherhistorylist.WeatherHistoryListFragment
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.citieslist.AppStateCitiesListViewModel
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.citieslist.CitiesListViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_weather_list.*
-
 
 class CityListFragment : Fragment(), OnItemClick {
 
@@ -32,6 +35,59 @@ class CityListFragment : Fragment(), OnItemClick {
 
     val countries = arrayOf("Выберете страну:", "Мир", "Беларусь", "Россия")//Костыль*
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_city_list, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.about -> {
+                requireActivity().supportFragmentManager.apply {
+                    beginTransaction()
+                        .add(R.id.container, AboutFragment())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+            R.id.search -> {
+                requireActivity().supportFragmentManager.apply {
+                    beginTransaction()
+                        .add(R.id.container, SearchFragment())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+            R.id.history -> {
+                requireActivity().supportFragmentManager.apply {
+                    beginTransaction()
+                        .add(R.id.container, WeatherHistoryListFragment())
+                        .hide(CityListFragment())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+            R.id.menu_content_provider -> {
+                requireActivity().supportFragmentManager.apply {
+                    beginTransaction()
+                        .add(R.id.container, ContactListFragment())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,6 +99,7 @@ class CityListFragment : Fragment(), OnItemClick {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         viewModel = ViewModelProvider(this).get(CitiesListViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner) { t -> renderData(t) }
@@ -141,7 +198,7 @@ class CityListFragment : Fragment(), OnItemClick {
     }
 
     override fun onItemClick(weather: Weather) {
-       parentFragmentManager.beginTransaction().hide(this).add(
+        requireActivity().supportFragmentManager.beginTransaction().hide(this).add(
             R.id.container, WeatherDetailFragment.newInstance(weather)
         ).addToBackStack("").commit()
     }
@@ -154,5 +211,4 @@ class CityListFragment : Fragment(), OnItemClick {
     companion object {
         fun newInstance() = CityListFragment()
     }
-
 }

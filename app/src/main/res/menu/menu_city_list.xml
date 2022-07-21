@@ -7,7 +7,7 @@
         android:id="@+id/menu_content_provider"
         android:icon="@drawable/ic_baseline_contact_phone_24"
         android:title="@string/contacts"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/history"
         android:orderInCategory="100"

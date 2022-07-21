@@ -54,7 +54,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun onSearchClick(weather: Weather) {
-        parentFragmentManager.beginTransaction().hide(SearchFragment()).add(
+        requireActivity().supportFragmentManager.beginTransaction().hide(SearchFragment()).add(
             R.id.container, WeatherDetailFragment.newInstance(weather)
         ).addToBackStack("").commit()
     }

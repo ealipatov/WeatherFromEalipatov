@@ -7,15 +7,9 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.Toast
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.ActivityMainBinding
-import by.ealipatov.kotlin.weatherfromealipatov.view.AboutFragment
-import by.ealipatov.kotlin.weatherfromealipatov.view.contactlist.ContactListFragment
-import by.ealipatov.kotlin.weatherfromealipatov.view.SearchFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.citylist.CityListFragment
-import by.ealipatov.kotlin.weatherfromealipatov.view.weatherhistorylist.WeatherHistoryListFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,54 +38,6 @@ class MainActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(context, "Connection lost", Toast.LENGTH_LONG).show()
             }
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.about -> {
-                supportFragmentManager.apply {
-                    beginTransaction()
-                        .add(R.id.container, AboutFragment())
-                        .addToBackStack("")
-                        .commitAllowingStateLoss()
-                }
-                true
-            }
-            R.id.search -> {
-                supportFragmentManager.apply {
-                    beginTransaction()
-                        .add(R.id.container, SearchFragment())
-                        .addToBackStack("")
-                        .commitAllowingStateLoss()
-                }
-                true
-            }
-            R.id.history -> {
-                supportFragmentManager.apply {
-                    beginTransaction()
-                        .add(R.id.container, WeatherHistoryListFragment())
-                        .hide(CityListFragment())
-                        .addToBackStack("")
-                        .commitAllowingStateLoss()
-                }
-                true
-            }
-            R.id.menu_content_provider -> {
-                supportFragmentManager.apply {
-                    beginTransaction()
-                        .add(R.id.container, ContactListFragment())
-                        .addToBackStack("")
-                        .commitAllowingStateLoss()
-                }
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
         }
     }
 }
