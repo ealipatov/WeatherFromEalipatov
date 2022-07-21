@@ -8,3 +8,5 @@ const val SPINNER_SHARED_PREFERENCE_KEY = "SpinnerSPKey"
 
 const val ROOM_DB_NAME = "historyWeatherDB"
 
+const val REQUEST_CODE_READ_CONTACTS = 999
+const val REQUEST_CODE_CALL = 998

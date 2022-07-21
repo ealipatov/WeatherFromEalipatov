@@ -12,7 +12,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.ActivityMainBinding
 import by.ealipatov.kotlin.weatherfromealipatov.view.AboutFragment
-import by.ealipatov.kotlin.weatherfromealipatov.view.ContentProviderFragment
+import by.ealipatov.kotlin.weatherfromealipatov.view.contactlist.ContactListFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.SearchFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.citylist.CityListFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.weatherhistorylist.WeatherHistoryListFragment
@@ -75,7 +75,8 @@ class MainActivity : AppCompatActivity() {
             R.id.history -> {
                 supportFragmentManager.apply {
                     beginTransaction()
-                        .replace(R.id.container, WeatherHistoryListFragment())
+                        .add(R.id.container, WeatherHistoryListFragment())
+                        .hide(CityListFragment())
                         .addToBackStack("")
                         .commitAllowingStateLoss()
                 }
@@ -84,7 +85,7 @@ class MainActivity : AppCompatActivity() {
             R.id.menu_content_provider -> {
                 supportFragmentManager.apply {
                     beginTransaction()
-                        .replace(R.id.container, ContentProviderFragment())
+                        .add(R.id.container, ContactListFragment())
                         .addToBackStack("")
                         .commitAllowingStateLoss()
                 }

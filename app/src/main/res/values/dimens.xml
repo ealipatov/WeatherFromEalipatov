@@ -14,5 +14,7 @@
     <dimen name="margin_50_dp">50dp</dimen>
     <dimen name="image_size">56dp</dimen>
     <dimen name="text_size_20sp">20sp</dimen>
+    <dimen name="phone_number_text_size">16sp</dimen>
+    <dimen name="contact_name_text_size">26sp</dimen>
 
 </resources>
