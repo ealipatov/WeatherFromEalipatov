@@ -4,6 +4,11 @@
     tools:context=".MainActivity">
 
     <item
+        android:id="@+id/maps"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="@string/googleMap"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/menu_content_provider"
         android:icon="@drawable/ic_baseline_contact_phone_24"
         android:title="@string/contacts"

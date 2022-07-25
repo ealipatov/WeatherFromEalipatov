@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -22,6 +23,7 @@ import by.ealipatov.kotlin.weatherfromealipatov.utils.REQUEST_CODE_LOCATION
 import by.ealipatov.kotlin.weatherfromealipatov.utils.SPINNER_SHARED_PREFERENCE_KEY
 import by.ealipatov.kotlin.weatherfromealipatov.utils.SPINNER_SHARED_PREFERENCE_NAME
 import by.ealipatov.kotlin.weatherfromealipatov.view.AboutFragment
+import by.ealipatov.kotlin.weatherfromealipatov.view.MapsFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.SearchFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.WeatherDetailFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.contactlist.ContactListFragment
@@ -98,9 +100,21 @@ class CityListFragment : Fragment(), OnItemClick {
                             .addToBackStack("")
                             .commitAllowingStateLoss()
                     }
-
                 }
                 true
+
+            }
+            R.id.maps -> {
+                if (requireActivity().supportFragmentManager.findFragmentByTag("maps")==null){
+                    requireActivity().supportFragmentManager.apply {
+                        beginTransaction()
+                            .add(R.id.container, MapsFragment(), "maps")
+                            .addToBackStack("")
+                            .commitAllowingStateLoss()
+                    }
+                }
+                true
+
             }
             else -> super.onOptionsItemSelected(item)
         }
@@ -157,7 +171,6 @@ class CityListFragment : Fragment(), OnItemClick {
         binding.myLocationFAB.setOnClickListener {
            checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)
         }
-
     }
 
     private fun getAddress(location: Location) {
@@ -178,17 +191,15 @@ class CityListFragment : Fragment(), OnItemClick {
         ) {
             val locationManager =
                 requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-               val criteria = Criteria()
-                val provider = locationManager.getBestProvider(criteria,true)
-                val location = provider?.let {
-                    locationManager.getLastKnownLocation(it)
-                }
-                if (location != null) {
-                    getAddress(location)
-                }
-
+            val criteria = Criteria()
+            val provider = locationManager.getBestProvider(criteria,true)
+            val location = provider?.let {
+                locationManager.getLastKnownLocation(it)
             }
+            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                Toast.makeText(requireContext(),R.string.dialog_title_gps_turned_off,Toast.LENGTH_LONG).show()
+            }
+            location?.let { getAddress(it) }
         }
     }
 
@@ -201,8 +212,8 @@ class CityListFragment : Fragment(), OnItemClick {
             getLocation()
         } else if (shouldShowRequestPermissionRationale(permission)) {
             AlertDialog.Builder(requireContext())
-                .setTitle("Доступ к локации")
-                .setMessage("Объяснение Объяснение Объяснение Объяснение")
+                .setTitle("Разрешение")
+                .setMessage("Для работы приложения требуется разрешение")
                 .setPositiveButton("Предоставить доступ") { _, _ ->
                     permissionRequest(permission)
                 }

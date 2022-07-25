@@ -15,7 +15,11 @@ class RepositoryRoomDB : RepositoryWeatherByCity, RepositoryWeatherAll, Reposito
         GlobalScope.launch{
             callback.onResponse(MyApp.getHistoryWeatherDatabase().historyWeatherDAO()
                 .getHistoryWeatherByCoordinates(city.lat, city.lon).let {
-                    convertHistoryWeatherEntityToWeather(it).last()
+                    if(it.isNotEmpty()){
+                        convertHistoryWeatherEntityToWeather(it).last()
+                    }else{
+                        Weather(city)
+                    }
                 })
         }
     }

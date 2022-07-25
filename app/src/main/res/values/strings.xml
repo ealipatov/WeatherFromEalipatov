@@ -55,5 +55,7 @@
     <string name="thunderstorm_with_hail">Гроза с градом</string>
     <string name="my_location">Мое местоположение</string>
     <string name="call">Позвонить</string>
+    <string name="googleMap">Карта</string>
+    <string name="moscow">Moscow</string>
 
 </resources>
