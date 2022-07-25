@@ -10,7 +10,7 @@ import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentSearchBindin
 import by.ealipatov.kotlin.weatherfromealipatov.domain.City
 import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 import by.ealipatov.kotlin.weatherfromealipatov.model.CallbackCityCoordinates
-import by.ealipatov.kotlin.weatherfromealipatov.model.RepositoryCityCoordinatesByCityNameLoader
+import by.ealipatov.kotlin.weatherfromealipatov.model.RepositoryCityCoordinatesByCityNameRetrofit
 import java.io.IOException
 
 class SearchFragment : Fragment() {
@@ -22,7 +22,7 @@ class SearchFragment : Fragment() {
         }
 
     private lateinit var weatherSearchCity: Weather
-    private val repository = RepositoryCityCoordinatesByCityNameLoader()
+    private val repository = RepositoryCityCoordinatesByCityNameRetrofit()
 
     override fun onCreateView(
         inflater: LayoutInflater,
