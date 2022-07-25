@@ -27,11 +27,24 @@ class WeatherHistoryListViewModel(private val liveData: MutableLiveData<AppState
         repository.getWeatherAll(callback)
     }
 
+    fun getSortedAllHistory() {
+        liveData.value = AppStateHistoryWeatherListViewModel.Loading
+        repository.getWeatherAll(callbackSorted)
+    }
+
     private val callback = object : CallbackWeatherList {
         override fun onResponse(weather: List<Weather>) {
             liveData.postValue(AppStateHistoryWeatherListViewModel.Success(weather))
         }
+        override fun onFailure(e: IOException) {
+            liveData.postValue(AppStateHistoryWeatherListViewModel.Error(e))
+        }
+    }
 
+    private val callbackSorted = object : CallbackWeatherList {
+        override fun onResponse(weather: List<Weather>) {
+            liveData.postValue(AppStateHistoryWeatherListViewModel.Success(weather.sortedBy { it.city.name }))
+        }
         override fun onFailure(e: IOException) {
             liveData.postValue(AppStateHistoryWeatherListViewModel.Error(e))
         }

@@ -1,6 +1,5 @@
 package by.ealipatov.kotlin.weatherfromealipatov.model
 
-
 import by.ealipatov.kotlin.weatherfromealipatov.BuildConfig
 import by.ealipatov.kotlin.weatherfromealipatov.domain.City
 import by.ealipatov.kotlin.weatherfromealipatov.model.geo.CityCoordinates

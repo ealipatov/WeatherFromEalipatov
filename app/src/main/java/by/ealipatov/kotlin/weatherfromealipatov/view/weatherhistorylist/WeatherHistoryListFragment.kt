@@ -68,7 +68,8 @@ class WeatherHistoryListFragment : Fragment(), OnItemClick {
     }
 
     private fun sortList(){
-       Toast.makeText(requireContext(),"Тут будет сортировка списка", Toast.LENGTH_LONG).show()
+      // Toast.makeText(requireContext(),"Тут будет сортировка списка", Toast.LENGTH_LONG).show()
+       viewModel.getSortedAllHistory()
     }
 
     private fun renderData(appStateHistoryWeatherListViewModel: AppStateHistoryWeatherListViewModel) {

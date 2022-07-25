@@ -51,7 +51,7 @@ class ContactListFragment: Fragment(), OnContactClick {
         } else if(shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)){
             AlertDialog.Builder(requireContext())
                 .setTitle("Доступ к контактам")
-                .setMessage("Для отображения списка контактов требуется доступ к контактам.")
+                .setMessage("Для отображения списка контактов требуется разрешение на доступ к контактам.")
                 .setPositiveButton("Разрешить") { _, _ ->
                     permissionRequest(Manifest.permission.READ_CONTACTS)
                 }
