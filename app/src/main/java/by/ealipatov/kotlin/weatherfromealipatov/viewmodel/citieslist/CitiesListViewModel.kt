@@ -25,16 +25,16 @@ class CitiesListViewModel
     /**
      * Функция получения списка городов, согласно выбраной страны
      */
-    fun getWeatherListForLocation(location: Location) {
+    fun getWeatherListForLocation(location: CountryName) {
         when (location) {
-            Location.Belarus -> {
-                sendRequest(Location.Belarus)
+            CountryName.Belarus -> {
+                sendRequest(CountryName.Belarus)
             }
-            Location.Russian -> {
-                sendRequest(Location.Russian)
+            CountryName.Russian -> {
+                sendRequest(CountryName.Russian)
             }
-            Location.World -> {
-                sendRequest(Location.World)
+            CountryName.World -> {
+                sendRequest(CountryName.World)
             }
         }
     }
@@ -42,7 +42,7 @@ class CitiesListViewModel
     /**
      * Отправка запроса
      */
-    private fun sendRequest(location: Location) {
+    private fun sendRequest(location: CountryName) {
         liveData.value = Loading
         if ((1..3).shuffled().last() == 4) {
             liveData.postValue(Error(error = IllegalStateException("ой, что-то сломалось")))

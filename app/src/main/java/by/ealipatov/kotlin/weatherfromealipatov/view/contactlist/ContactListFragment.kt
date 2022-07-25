@@ -9,7 +9,6 @@ import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,7 @@ import by.ealipatov.kotlin.weatherfromealipatov.domain.Contact
 import by.ealipatov.kotlin.weatherfromealipatov.utils.REQUEST_CODE_CALL
 import by.ealipatov.kotlin.weatherfromealipatov.utils.REQUEST_CODE_READ_CONTACTS
 
-class ContactListFragment: Fragment(), OnContactClick {
+class ContactListFragment : Fragment(), OnContactClick {
 
     private var _binding: FragmentContactListBinding? = null
     private val binding: FragmentContactListBinding
@@ -49,7 +48,7 @@ class ContactListFragment: Fragment(), OnContactClick {
         PackageManager.PERMISSION_GRANTED
         if (permResult == PackageManager.PERMISSION_GRANTED) {
             getContacts()
-        } else if(shouldShowRequestPermissionRationale(permission)){
+        } else if (shouldShowRequestPermissionRationale(permission)) {
             AlertDialog.Builder(requireContext())
                 .setTitle("Разрешение")
                 .setMessage("Для работы приложения требуется разрешение")
@@ -97,23 +96,24 @@ class ContactListFragment: Fragment(), OnContactClick {
             null,
             ContactsContract.Contacts.DISPLAY_NAME + " ASC"
         )
-        cursorWithContacts?.let { cursor->
-            for(i in 0 until cursor.count){
+        cursorWithContacts?.let { cursor ->
+            for (i in 0 until cursor.count) {
                 cursor.moveToPosition(i)
-                val name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
+                val name =
+                    cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
                 val contactId =
                     cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
-                val number = getNumberFromID(contentResolver,contactId)
-                contacts.add(Contact(name,number))
+                val number = getNumberFromID(contentResolver, contactId)
+                contacts.add(Contact(name, number))
             }
         }
         cursorWithContacts?.close()
         binding.contactListRecyclerView.adapter =
-            ContactListAdapter(contacts,this)
+            ContactListAdapter(contacts, this)
     }
 
     @SuppressLint("Range")
-    private fun getNumberFromID(cr: ContentResolver, contactId: String) :String {
+    private fun getNumberFromID(cr: ContentResolver, contactId: String): String {
         val phones = cr.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
             ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null
@@ -121,7 +121,8 @@ class ContactListFragment: Fragment(), OnContactClick {
         var number = "none"
         phones?.let { cursor ->
             while (cursor.moveToNext()) {
-                number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                number =
+                    cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
             }
         }
         return number
@@ -129,13 +130,14 @@ class ContactListFragment: Fragment(), OnContactClick {
 
     override fun onContactClick(contact: Contact) {
         val numberCurrent = contact.phoneNumber
-        if(ContextCompat.checkSelfPermission(
+        if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.CALL_PHONE
-            ) == PackageManager.PERMISSION_GRANTED){
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$numberCurrent"))
             startActivity(intent)
-        }else{
+        } else {
             requestPermissions(arrayOf(Manifest.permission.CALL_PHONE), REQUEST_CODE_CALL)
         }
     }

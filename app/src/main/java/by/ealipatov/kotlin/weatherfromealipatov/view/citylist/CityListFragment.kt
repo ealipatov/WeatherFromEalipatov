@@ -4,10 +4,8 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
-import android.location.Criteria
-import android.location.LocationManager
+import android.location.*
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -17,8 +15,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import by.ealipatov.kotlin.weatherfromealipatov.R
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentWeatherListBinding
+import by.ealipatov.kotlin.weatherfromealipatov.domain.City
 import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
-import by.ealipatov.kotlin.weatherfromealipatov.model.Location
+import by.ealipatov.kotlin.weatherfromealipatov.model.CountryName
+import by.ealipatov.kotlin.weatherfromealipatov.utils.REQUEST_CODE_LOCATION
 import by.ealipatov.kotlin.weatherfromealipatov.utils.SPINNER_SHARED_PREFERENCE_KEY
 import by.ealipatov.kotlin.weatherfromealipatov.utils.SPINNER_SHARED_PREFERENCE_NAME
 import by.ealipatov.kotlin.weatherfromealipatov.view.AboutFragment
@@ -30,6 +30,8 @@ import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.citieslist.AppStateCit
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.citieslist.CitiesListViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_weather_list.*
+import java.util.*
+import kotlin.system.measureTimeMillis
 
 class CityListFragment : Fragment(), OnItemClick {
 
@@ -158,6 +160,16 @@ class CityListFragment : Fragment(), OnItemClick {
 
     }
 
+    private fun getAddress(location: Location) {
+        val geocoder = Geocoder(context, Locale("ru_RU"))
+        measureTimeMillis {
+            Thread{
+                val address = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                onItemClick(Weather(City(address.first().countryName, address.first().locality, location.latitude, location.longitude)))
+            }.start()
+        }
+    }
+
     private fun getLocation() {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
@@ -167,27 +179,19 @@ class CityListFragment : Fragment(), OnItemClick {
             val locationManager =
                 requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                val criteria = Criteria()
+               val criteria = Criteria()
                 val provider = locationManager.getBestProvider(criteria,true)
                 val location = provider?.let {
                     locationManager.getLastKnownLocation(it)
                 }
-                Log.d("***", location.toString())
+                if (location != null) {
+                    getAddress(location)
+                }
 
-                    locationManager.requestLocationUpdates(
-                        LocationManager.GPS_PROVIDER,
-                        0L,
-                        100F
-                    ) { }
             }
         }
     }
 
-    private val REQUEST_CODE_LOCATION = 999
-
-    private fun permissionRequest(permission: String) {
-        requestPermissions(arrayOf(permission), REQUEST_CODE_LOCATION)
-    }
 
     private fun checkPermission(permission: String) {
         val permResult =
@@ -208,19 +212,39 @@ class CityListFragment : Fragment(), OnItemClick {
         } else {
             permissionRequest(permission)
         }
+    }
 
+    private fun permissionRequest(permission: String) {
+        requestPermissions(arrayOf(permission), REQUEST_CODE_LOCATION)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == REQUEST_CODE_LOCATION) {
+            for (pIndex in permissions.indices) {
+                if (permissions[pIndex] == Manifest.permission.ACCESS_FINE_LOCATION
+                    && grantResults[pIndex] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    getLocation()
+                }
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     private fun selectCountry(cont: Int) {
         when (countries[cont]) {
             "Мир" -> {
-                viewModel.getWeatherListForLocation(Location.World)
+                viewModel.getWeatherListForLocation(CountryName.World)
             }
             "Беларусь" -> {
-                viewModel.getWeatherListForLocation(Location.Belarus)
+                viewModel.getWeatherListForLocation(CountryName.Belarus)
             }
             "Россия" -> {
-                viewModel.getWeatherListForLocation(Location.Russian)
+                viewModel.getWeatherListForLocation(CountryName.Russian)
             }
         }
     }
@@ -234,7 +258,7 @@ class CityListFragment : Fragment(), OnItemClick {
                     appState.error.message.toString(), Snackbar.LENGTH_INDEFINITE,
                     getString(R.string.reload)
                 ) {
-                    viewModel.getWeatherListForLocation(Location.World)
+                    viewModel.getWeatherListForLocation(CountryName.World)
                 }
             }
 
