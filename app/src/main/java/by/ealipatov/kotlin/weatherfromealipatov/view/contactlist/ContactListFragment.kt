@@ -9,6 +9,7 @@ import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,32 +40,49 @@ class ContactListFragment: Fragment(), OnContactClick {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        checkPermission()
+        checkPermission(Manifest.permission.READ_CONTACTS)
     }
 
-    private fun checkPermission() {
+    private fun checkPermission(permission: String) {
         val permResult =
-            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CONTACTS)
+            ContextCompat.checkSelfPermission(requireContext(), permission)
         PackageManager.PERMISSION_GRANTED
         if (permResult == PackageManager.PERMISSION_GRANTED) {
             getContacts()
-        } else if(shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)){
+        } else if(shouldShowRequestPermissionRationale(permission)){
             AlertDialog.Builder(requireContext())
-                .setTitle("Доступ к контактам")
-                .setMessage("Для отображения списка контактов требуется разрешение на доступ к контактам.")
+                .setTitle("Разрешение")
+                .setMessage("Для работы приложения требуется разрешение")
                 .setPositiveButton("Разрешить") { _, _ ->
-                    permissionRequest(Manifest.permission.READ_CONTACTS)
+                    permissionRequest(permission)
                 }
                 .setNegativeButton("Запретить") { dialog, _ -> dialog.dismiss() }
                 .create()
                 .show()
         } else {
-            permissionRequest(Manifest.permission.READ_CONTACTS)
+            permissionRequest(permission)
         }
     }
 
     private fun permissionRequest(permission: String) {
         requestPermissions(arrayOf(permission), REQUEST_CODE_READ_CONTACTS)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == REQUEST_CODE_READ_CONTACTS) {
+            for (pIndex in permissions.indices) {
+                if (permissions[pIndex] == Manifest.permission.READ_CONTACTS
+                    && grantResults[pIndex] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    getContacts()
+                }
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     @SuppressLint("Range")
