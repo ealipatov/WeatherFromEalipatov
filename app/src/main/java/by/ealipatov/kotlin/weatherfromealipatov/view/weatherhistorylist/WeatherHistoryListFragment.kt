@@ -2,22 +2,15 @@ package by.ealipatov.kotlin.weatherfromealipatov.view.weatherhistorylist
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import by.ealipatov.kotlin.weatherfromealipatov.R
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentWeatherHistoryListBinding
 import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
-import by.ealipatov.kotlin.weatherfromealipatov.model.RepositoryWeatherAll
-import by.ealipatov.kotlin.weatherfromealipatov.view.AboutFragment
-import by.ealipatov.kotlin.weatherfromealipatov.view.SearchFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.WeatherDetailFragment
-import by.ealipatov.kotlin.weatherfromealipatov.view.citylist.CityListFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.citylist.OnItemClick
-import by.ealipatov.kotlin.weatherfromealipatov.view.contactlist.ContactListFragment
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.weatherhistorylist.AppStateHistoryWeatherListViewModel
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.weatherhistorylist.WeatherHistoryListViewModel
-
 
 class WeatherHistoryListFragment : Fragment(), OnItemClick {
 
@@ -49,7 +42,6 @@ class WeatherHistoryListFragment : Fragment(), OnItemClick {
         }
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -68,7 +60,6 @@ class WeatherHistoryListFragment : Fragment(), OnItemClick {
     }
 
     private fun sortList(){
-      // Toast.makeText(requireContext(),"Тут будет сортировка списка", Toast.LENGTH_LONG).show()
        viewModel.getSortedAllHistory()
     }
 
