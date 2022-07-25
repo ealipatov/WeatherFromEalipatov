@@ -1,10 +1,18 @@
 package by.ealipatov.kotlin.weatherfromealipatov.view.citylist
 
+import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Criteria
+import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import by.ealipatov.kotlin.weatherfromealipatov.R
@@ -33,7 +41,7 @@ class CityListFragment : Fragment(), OnItemClick {
 
     lateinit var viewModel: CitiesListViewModel
 
-    val countries = arrayOf("Выберете страну:", "Мир", "Беларусь", "Россия")//Костыль*
+    private val countries = arrayOf("Выберете страну:", "Мир", "Беларусь", "Россия")//Костыль*
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,39 +56,47 @@ class CityListFragment : Fragment(), OnItemClick {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.about -> {
-                requireActivity().supportFragmentManager.apply {
-                    beginTransaction()
-                        .add(R.id.container, AboutFragment())
-                        .addToBackStack("")
-                        .commitAllowingStateLoss()
+                if (requireActivity().supportFragmentManager.findFragmentByTag("about")==null){
+                    requireActivity().supportFragmentManager.apply {
+                        beginTransaction()
+                            .add(R.id.container, AboutFragment(), "about")
+                            .addToBackStack("")
+                            .commitAllowingStateLoss()
+                    }
                 }
                 true
             }
             R.id.search -> {
-                requireActivity().supportFragmentManager.apply {
-                    beginTransaction()
-                        .add(R.id.container, SearchFragment())
-                        .addToBackStack("")
-                        .commitAllowingStateLoss()
+                if (requireActivity().supportFragmentManager.findFragmentByTag("search")==null){
+                    requireActivity().supportFragmentManager.apply {
+                        beginTransaction()
+                            .add(R.id.container, SearchFragment(),"search")
+                            .addToBackStack("")
+                            .commitAllowingStateLoss()
+                    }
                 }
                 true
             }
             R.id.history -> {
-                requireActivity().supportFragmentManager.apply {
-                    beginTransaction()
-                        .add(R.id.container, WeatherHistoryListFragment())
-                        .hide(CityListFragment())
-                        .addToBackStack("")
-                        .commitAllowingStateLoss()
+                if (requireActivity().supportFragmentManager.findFragmentByTag("weatherHistory")==null) {
+                    requireActivity().supportFragmentManager.apply {
+                        beginTransaction()
+                            .add(R.id.container, WeatherHistoryListFragment(), "weatherHistory")
+                            .addToBackStack("")
+                            .commit()
+                    }
                 }
                 true
             }
             R.id.menu_content_provider -> {
-                requireActivity().supportFragmentManager.apply {
-                    beginTransaction()
-                        .add(R.id.container, ContactListFragment())
-                        .addToBackStack("")
-                        .commitAllowingStateLoss()
+                if (requireActivity().supportFragmentManager.findFragmentByTag("contactList")==null){
+                    requireActivity().supportFragmentManager.apply {
+                        beginTransaction()
+                            .add(R.id.container, ContactListFragment(), "contactList")
+                            .addToBackStack("")
+                            .commitAllowingStateLoss()
+                    }
+
                 }
                 true
             }
@@ -99,7 +115,6 @@ class CityListFragment : Fragment(), OnItemClick {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         viewModel = ViewModelProvider(this).get(CitiesListViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner) { t -> renderData(t) }
@@ -137,6 +152,63 @@ class CityListFragment : Fragment(), OnItemClick {
                 }
             }
         }
+        binding.myLocationFAB.setOnClickListener {
+           checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+
+    }
+
+    private fun getLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            val locationManager =
+                requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                val criteria = Criteria()
+                val provider = locationManager.getBestProvider(criteria,true)
+                val location = provider?.let {
+                    locationManager.getLastKnownLocation(it)
+                }
+                Log.d("***", location.toString())
+
+                    locationManager.requestLocationUpdates(
+                        LocationManager.GPS_PROVIDER,
+                        0L,
+                        100F
+                    ) { }
+            }
+        }
+    }
+
+    private val REQUEST_CODE_LOCATION = 999
+
+    private fun permissionRequest(permission: String) {
+        requestPermissions(arrayOf(permission), REQUEST_CODE_LOCATION)
+    }
+
+    private fun checkPermission(permission: String) {
+        val permResult =
+            ContextCompat.checkSelfPermission(requireContext(), permission)
+        PackageManager.PERMISSION_GRANTED
+        if (permResult == PackageManager.PERMISSION_GRANTED) {
+            getLocation()
+        } else if (shouldShowRequestPermissionRationale(permission)) {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Доступ к локации")
+                .setMessage("Объяснение Объяснение Объяснение Объяснение")
+                .setPositiveButton("Предоставить доступ") { _, _ ->
+                    permissionRequest(permission)
+                }
+                .setNegativeButton("Не надо") { dialog, _ -> dialog.dismiss() }
+                .create()
+                .show()
+        } else {
+            permissionRequest(permission)
+        }
+
     }
 
     private fun selectCountry(cont: Int) {
