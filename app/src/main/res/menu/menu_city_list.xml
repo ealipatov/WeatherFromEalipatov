@@ -4,10 +4,15 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/maps"
+        android:id="@+id/maps_yandex"
         android:icon="@android:drawable/ic_dialog_map"
-        android:title="@string/googleMap"
+        android:title="@string/yandex_map"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/maps_google"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="@string/google_map"
+        app:showAsAction="never" />
     <item
         android:id="@+id/menu_content_provider"
         android:icon="@drawable/ic_baseline_contact_phone_24"

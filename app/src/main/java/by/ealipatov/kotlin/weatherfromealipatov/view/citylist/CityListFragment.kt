@@ -27,6 +27,7 @@ import by.ealipatov.kotlin.weatherfromealipatov.view.maps.GoogleMapsFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.SearchFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.WeatherDetailFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.contactlist.ContactListFragment
+import by.ealipatov.kotlin.weatherfromealipatov.view.maps.YandexMapsFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.weatherhistorylist.WeatherHistoryListFragment
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.citieslist.AppStateCitiesListViewModel
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.citieslist.CitiesListViewModel
@@ -102,19 +103,28 @@ class CityListFragment : Fragment(), OnItemClick {
                     }
                 }
                 true
-
             }
-            R.id.maps -> {
-                if (requireActivity().supportFragmentManager.findFragmentByTag("maps")==null){
+            R.id.maps_google -> {
+                if (requireActivity().supportFragmentManager.findFragmentByTag("google_maps")==null){
                     requireActivity().supportFragmentManager.apply {
                         beginTransaction()
-                            .add(R.id.container, GoogleMapsFragment(), "maps")
+                            .add(R.id.container, GoogleMapsFragment(), "google_maps")
                             .addToBackStack("")
                             .commitAllowingStateLoss()
                     }
                 }
                 true
-
+            }
+            R.id.maps_yandex -> {
+                if (requireActivity().supportFragmentManager.findFragmentByTag("yandex_maps")==null){
+                    requireActivity().supportFragmentManager.apply {
+                        beginTransaction()
+                            .add(R.id.container, YandexMapsFragment(), "yandex_maps")
+                            .addToBackStack("")
+                            .commitAllowingStateLoss()
+                    }
+                }
+                true
             }
             else -> super.onOptionsItemSelected(item)
         }

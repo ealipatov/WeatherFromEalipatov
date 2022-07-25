@@ -116,4 +116,8 @@ class GoogleMapsFragment : Fragment() {
                 .icon(BitmapDescriptorFactory.fromResource(resourceId))
         )!!
     }
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

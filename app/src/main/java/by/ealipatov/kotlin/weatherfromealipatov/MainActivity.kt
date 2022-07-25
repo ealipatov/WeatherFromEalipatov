@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         registerReceiver(networkStateReceiver, filter)
     }
 
-    var networkStateReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+    private var networkStateReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val noConnectivity =
                 intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)
