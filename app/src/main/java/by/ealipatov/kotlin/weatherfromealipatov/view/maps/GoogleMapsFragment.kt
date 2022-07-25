@@ -1,4 +1,4 @@
-package by.ealipatov.kotlin.weatherfromealipatov.view
+package by.ealipatov.kotlin.weatherfromealipatov.view.maps
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -12,15 +12,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import by.ealipatov.kotlin.weatherfromealipatov.R
-import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentMapsUiBinding
-
+import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentGoogleMapsUiBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 
-class MapsFragment : Fragment() {
+class GoogleMapsFragment : Fragment() {
 
     lateinit var map: GoogleMap
 
@@ -52,8 +51,8 @@ class MapsFragment : Fragment() {
         googleMap.uiSettings.isMyLocationButtonEnabled = true
     }
 
-    private var _binding: FragmentMapsUiBinding? = null
-    private val binding: FragmentMapsUiBinding
+    private var _binding: FragmentGoogleMapsUiBinding? = null
+    private val binding: FragmentGoogleMapsUiBinding
         get() {
             return _binding!!
         }
@@ -63,7 +62,7 @@ class MapsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMapsUiBinding.inflate(layoutInflater)
+        _binding = FragmentGoogleMapsUiBinding.inflate(layoutInflater)
         return binding.root
     }
 

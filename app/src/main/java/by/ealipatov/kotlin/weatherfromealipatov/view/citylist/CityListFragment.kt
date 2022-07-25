@@ -23,7 +23,7 @@ import by.ealipatov.kotlin.weatherfromealipatov.utils.REQUEST_CODE_LOCATION
 import by.ealipatov.kotlin.weatherfromealipatov.utils.SPINNER_SHARED_PREFERENCE_KEY
 import by.ealipatov.kotlin.weatherfromealipatov.utils.SPINNER_SHARED_PREFERENCE_NAME
 import by.ealipatov.kotlin.weatherfromealipatov.view.AboutFragment
-import by.ealipatov.kotlin.weatherfromealipatov.view.MapsFragment
+import by.ealipatov.kotlin.weatherfromealipatov.view.maps.GoogleMapsFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.SearchFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.WeatherDetailFragment
 import by.ealipatov.kotlin.weatherfromealipatov.view.contactlist.ContactListFragment
@@ -108,7 +108,7 @@ class CityListFragment : Fragment(), OnItemClick {
                 if (requireActivity().supportFragmentManager.findFragmentByTag("maps")==null){
                     requireActivity().supportFragmentManager.apply {
                         beginTransaction()
-                            .add(R.id.container, MapsFragment(), "maps")
+                            .add(R.id.container, GoogleMapsFragment(), "maps")
                             .addToBackStack("")
                             .commitAllowingStateLoss()
                     }
