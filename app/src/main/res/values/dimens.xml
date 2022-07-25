@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="city_name_margin_top">50dp</dimen>
+    <dimen name="margin_15_dp">15dp</dimen>
+    <dimen name="temperature_value_text_size">40sp</dimen>
+    <dimen name="feels_like_text_size">16sp</dimen>
+    <dimen name="city_list_name_size">25sp</dimen>
+    <dimen name="cardCornerRadius">10dp</dimen>
+    <dimen name="marginStart">16dp</dimen>
+    <dimen name="marginHorizontal">5dp</dimen>
+    <dimen name="marginVertical">5dp</dimen>
+    <dimen name="paddingHorizontal">16dp</dimen>
+    <dimen name="paddingVertical">5dp</dimen>
+    <dimen name="margin_50_dp">50dp</dimen>
+    <dimen name="image_size">56dp</dimen>
+    <dimen name="text_size_20sp">20sp</dimen>
+    <dimen name="phone_number_text_size">16sp</dimen>
+    <dimen name="contact_name_text_size">26sp</dimen>
+
+</resources>
