@@ -11,12 +11,17 @@ import by.ealipatov.kotlin.weatherfromealipatov.R
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentYandexMapsBinding
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentYandexMapsUiBinding
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
+import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.mapkit.mapview.MapView
+import com.yandex.runtime.image.ImageProvider
 import kotlinx.android.synthetic.main.fragment_yandex_maps.*
 
 class YandexMapsFragment : Fragment() {
@@ -55,10 +60,19 @@ class YandexMapsFragment : Fragment() {
             binding.searchAddress.text.toString().let { searchText ->
                 val geocoder = Geocoder(requireContext())
                 val result = geocoder.getFromLocationName(searchText, 1)
-                //setMarker(ln, searchText, R.drawable.ic_map_marker)
-                mapMoveToPoint(Point(result.first().latitude, result.first().longitude))
+                val point = Point(result.first().latitude, result.first().longitude)
+                addMarker(point)
+                mapMoveToPoint(point)
             }
         }
+    }
+
+    fun addMarker (point: Point){
+        val mapObjects = yandexMap.map.mapObjects.addCollection()
+        val mark: PlacemarkMapObject = mapObjects.addPlacemark(point)
+        mark.opacity = 0.5f
+        mark.setIcon(ImageProvider.fromResource(requireContext(),R.drawable.ic_map_marker))
+        mark.isDraggable = true
     }
 
     private fun mapMoveToPoint(point: Point) {
