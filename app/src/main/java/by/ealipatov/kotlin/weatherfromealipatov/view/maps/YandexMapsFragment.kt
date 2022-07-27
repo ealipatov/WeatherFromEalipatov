@@ -14,7 +14,7 @@ import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.mapview.MapView
 import kotlinx.android.synthetic.main.fragment_yandex_maps.*
 
-class YandexMapsFragment: Fragment() {
+class YandexMapsFragment : Fragment() {
 
     private lateinit var yandexMap: MapView
 
@@ -43,17 +43,18 @@ class YandexMapsFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       yandexMap = mapYandexView as MapView
+
+        yandexMap = mapYandexView as MapView
 
         mapMoveToPoint(pointPiterburg)
-
     }
 
-    private fun mapMoveToPoint(point: Point){
+    private fun mapMoveToPoint(point: Point) {
         yandexMap.map.move(
             CameraPosition(point, 14.0F, 0.0F, 0.0F),
             Animation(Animation.Type.SMOOTH, 5F),
-            null)
+            null
+        )
     }
 
     override fun onStop() {
