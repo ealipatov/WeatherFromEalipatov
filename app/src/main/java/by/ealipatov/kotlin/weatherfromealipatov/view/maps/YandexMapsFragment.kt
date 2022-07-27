@@ -1,6 +1,5 @@
 package by.ealipatov.kotlin.weatherfromealipatov.view.maps
 
-import android.location.Geocoder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,13 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import by.ealipatov.kotlin.weatherfromealipatov.BuildConfig
 import by.ealipatov.kotlin.weatherfromealipatov.R
-import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentYandexMapsBinding
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentYandexMapsUiBinding
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import by.ealipatov.kotlin.weatherfromealipatov.domain.City
+import by.ealipatov.kotlin.weatherfromealipatov.model.CallbackCityCoordinates
+import by.ealipatov.kotlin.weatherfromealipatov.model.RepositoryCityCoordinatesByCityNameRetrofit
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
@@ -23,12 +19,12 @@ import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
 import kotlinx.android.synthetic.main.fragment_yandex_maps.*
+import java.io.IOException
 
 class YandexMapsFragment : Fragment() {
 
     private lateinit var yandexMap: MapView
-
-    private val pointPiterburg = Point(59.945933, 30.320045)
+    private lateinit var point: Point
 
     private var _binding: FragmentYandexMapsUiBinding? = null
     private val binding: FragmentYandexMapsUiBinding
@@ -56,18 +52,26 @@ class YandexMapsFragment : Fragment() {
 
         yandexMap = mapYandexView as MapView
 
-        binding.buttonSearch.setOnClickListener {
-            binding.searchAddress.text.toString().let { searchText ->
-                val geocoder = Geocoder(requireContext())
-                val result = geocoder.getFromLocationName(searchText, 1)
-                val point = Point(result.first().latitude, result.first().longitude)
+        val callback = object : CallbackCityCoordinates {
+            override fun onResponse(city: City) {
+                point= Point(city.lat,city.lon)
                 addMarker(point)
                 mapMoveToPoint(point)
+            }
+            override fun onFailure(e: IOException) {
+            }
+        }
+
+        binding.buttonSearch.setOnClickListener {
+            binding.searchAddress.text.toString().let { searchText ->
+                val repository = RepositoryCityCoordinatesByCityNameRetrofit()
+                repository.getCityCoordinates(searchText, callback)
             }
         }
     }
 
-    fun addMarker (point: Point){
+
+    private fun addMarker (point: Point){
         val mapObjects = yandexMap.map.mapObjects.addCollection()
         val mark: PlacemarkMapObject = mapObjects.addPlacemark(point)
         mark.opacity = 0.5f
