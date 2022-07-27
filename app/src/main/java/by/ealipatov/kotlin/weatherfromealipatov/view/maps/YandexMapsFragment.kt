@@ -1,12 +1,17 @@
 package by.ealipatov.kotlin.weatherfromealipatov.view.maps
 
+import android.location.Geocoder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import by.ealipatov.kotlin.weatherfromealipatov.BuildConfig
+import by.ealipatov.kotlin.weatherfromealipatov.R
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentYandexMapsBinding
+import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentYandexMapsUiBinding
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.LatLng
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
@@ -20,8 +25,8 @@ class YandexMapsFragment : Fragment() {
 
     private val pointPiterburg = Point(59.945933, 30.320045)
 
-    private var _binding: FragmentYandexMapsBinding? = null
-    private val binding: FragmentYandexMapsBinding
+    private var _binding: FragmentYandexMapsUiBinding? = null
+    private val binding: FragmentYandexMapsUiBinding
         get() {
             return _binding!!
         }
@@ -37,7 +42,7 @@ class YandexMapsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentYandexMapsBinding.inflate(inflater)
+        _binding = FragmentYandexMapsUiBinding.inflate(inflater)
         return binding.root
     }
 
@@ -46,7 +51,14 @@ class YandexMapsFragment : Fragment() {
 
         yandexMap = mapYandexView as MapView
 
-        mapMoveToPoint(pointPiterburg)
+        binding.buttonSearch.setOnClickListener {
+            binding.searchAddress.text.toString().let { searchText ->
+                val geocoder = Geocoder(requireContext())
+                val result = geocoder.getFromLocationName(searchText, 1)
+                //setMarker(ln, searchText, R.drawable.ic_map_marker)
+                mapMoveToPoint(Point(result.first().latitude, result.first().longitude))
+            }
+        }
     }
 
     private fun mapMoveToPoint(point: Point) {
