@@ -11,3 +11,4 @@ const val ROOM_DB_NAME = "historyWeatherDB"
 const val REQUEST_CODE_READ_CONTACTS = 999
 const val REQUEST_CODE_LOCATION = 997
 const val REQUEST_CODE_CALL = 998
+const val REQUEST_FINE_LOCATION = 996

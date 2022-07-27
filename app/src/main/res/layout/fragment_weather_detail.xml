@@ -7,7 +7,7 @@
     android:background="@color/white">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/detail_card_view"
+        android:id="@+id/detailCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/marginHorizontal"
