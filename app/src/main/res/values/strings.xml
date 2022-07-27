@@ -1,3 +1,62 @@
 <resources>
-    <string name="app_name">WeatherFromEalipatov</string>
+    <string name="app_name">Погода</string>
+    <string name="test_text">test binding</string>
+    <string name="main_fragment">MainFragment</string>
+    <string name="there_was_some_exception">Возникло некторое исключение</string>
+    <string name="error">Ошибка</string>
+    <string name="calculate">Сalculate</string>
+    <string name="threads">Потоки</string>
+    <string name="new_fragment">Новый фрагмент</string>
+    <string name="about">О программе</string>
+    <string name="search">Поиск по городу</string>
+    <string name="history_weather">История погоды</string>
+    <string name="contacts">Список контактов</string>
+    <string name="my_location">Мое местоположение</string>
+    <string name="call">Позвонить</string>
+    <string name="google_map">Карта Гугл</string>
+    <string name="yandex_map">Карта Яндекс</string>
+    <string name="moscow">Moscow</string>
+
+    <string name="temperature_label">Температура</string>
+    <string name="feels_like_label">Ощущается как</string>
+    <string name="city_coordinates">lt/ln: %s, %s"</string>
+    <string name="reload">Reload</string>
+    <string name="degree_сelsius">°С</string>
+    <string name="ok">OK</string>
+    <string name="https_geekbrains_ru">https://geekbrains.ru/</string>
+
+    <string name="dialog_button_close">Закрыть</string>
+    <string name="dialog_title_no_gps">Доступ к геолокации закрыт</string>
+    <string name="dialog_message_no_gps">Разрешите доступ к геолокации, если хотите узнать погоду текущего места</string>
+    <string name="dialog_title_gps_turned_off">GPS отключён</string>
+    <string name="dialog_message_last_location_unknown">Местонахождение неизвестно. Включите GPS, если хотите получить погоду по текущему адресу</string>
+    <string name="dialog_message_last_known_location">Показана последняя известная локация. Включите GPS, если хотите обновить местонахождение</string>
+    <string name="dialog_rationale_title">Доступ к геолокации</string>
+    <string name="dialog_rationale_message">Объяснение</string>
+    <string name="dialog_rationale_give_access">Предоставить доступ</string>
+    <string name="dialog_rationale_decline">Не надо</string>
+    <string name="dialog_address_title">Ваш адрес</string>
+    <string name="dialog_address_get_weather">Узнать погоду</string>
+    <string name="maps">maps</string>
+
+    <string name="clear">Ясно</string>
+    <string name="partly_cloudy">Малооблачно</string>
+    <string name="cloudy">Облачно с прояснениями</string>
+    <string name="overcast">Пасмурно</string>
+    <string name="drizzle">Морось</string>
+    <string name="light_rain">Небольшой дождь</string>
+    <string name="rain">Дождь</string>
+    <string name="moderate_rain">Умеренно сильный дождь</string>
+    <string name="heavy_rain">Сильный дождь</string>
+    <string name="continuous_heavy_rain">Длительный сильный дождь</string>
+    <string name="showers">Ливень</string>
+    <string name="wet_snow">Дождь со снегом</string>
+    <string name="light_snow">Небольшой снег</string>
+    <string name="snow">Снег</string>
+    <string name="snow_showers">Снегопад</string>
+    <string name="hail">Град</string>
+    <string name="thunderstorm">Гроза</string>
+    <string name="thunderstorm_with_rain">Дождь с грозой</string>
+    <string name="thunderstorm_with_hail">Гроза с градом</string>
+
 </resources>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "753551696528",
+    "project_id": "weatherfromealipatov",
+    "storage_bucket": "weatherfromealipatov.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:753551696528:android:3eee1a31d8b5a57893ae15",
+        "android_client_info": {
+          "package_name": "by.ealipatov.kotlin.weatherfromealipatov"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "753551696528-8gad84ga483q7abft35gmf86nhubuuef.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "by.ealipatov.kotlin.weatherfromealipatov",
+            "certificate_hash": "fc19ce44e3eb69e7905fe0b3525428b5eea4b33d"
+          }
+        },
+        {
+          "client_id": "753551696528-3ocjfa5c2vjq9gpp9akbjjbqrf6hd0sf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIn7gYC121rwFvVN82RqirbHIyxxFlLdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "753551696528-3ocjfa5c2vjq9gpp9akbjjbqrf6hd0sf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
