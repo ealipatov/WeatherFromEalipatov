@@ -2,6 +2,7 @@ package by.ealipatov.kotlin.weatherfromealipatov
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -34,7 +35,14 @@ class MainActivity : AppCompatActivity() {
         val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
         registerReceiver(networkStateReceiver, filter)
 
-        pushNotification("Погода сегодня", "Какие-то данные о погоде")
+        pushNotification(
+            "Погода сегодня",
+            "Какие-то данные о погоде",
+            "Канал новостей о погоде",
+            CHANNEL_WEATHER_ID,
+            CHANNEL_WEATHER_NAME,
+            NOTIFICATION_WEATHER_ID
+        )
     }
 
     private var networkStateReceiver: BroadcastReceiver = object : BroadcastReceiver() {
@@ -49,26 +57,38 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun pushNotification(title: String, message: String) {
+    private fun pushNotification(
+        message_title: String,
+        message_body: String,
+        channel_description: String,
+        channel_id: String,
+        channel_name: String,
+        notification_id: Int
+    ) {
+
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val notification = NotificationCompat.Builder(this, CHANNEL_WEATHER_ID)
+        val notification = NotificationCompat.Builder(this, channel_id)
+        val pendingIntent =
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
         notification.apply {
-            setContentTitle(title)
-            setContentText(message)
+            setContentTitle(message_title)
+            setContentText(message_body)
             setSmallIcon(R.drawable.ic_baseline_beach_access_24)
             priority = NotificationCompat.PRIORITY_MAX
+            setContentIntent(pendingIntent)
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelWeather = NotificationChannel(
-                CHANNEL_WEATHER_ID,
-                CHANNEL_WEATHER_NAME,
+                channel_id,
+                channel_name,
                 NotificationManager.IMPORTANCE_HIGH
             )
-            channelWeather.description = "Канал уведомлений о погоде"
+            channelWeather.description = channel_description
             notificationManager.createNotificationChannel(channelWeather)
         }
-        notificationManager.notify(NOTIFICATION_WEATHER_ID, notification.build())
+        notificationManager.notify(notification_id, notification.build())
     }
 }
