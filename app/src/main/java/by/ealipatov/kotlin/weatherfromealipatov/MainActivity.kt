@@ -1,5 +1,6 @@
 package by.ealipatov.kotlin.weatherfromealipatov
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -11,11 +12,14 @@ import android.net.ConnectivityManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.ActivityMainBinding
 import by.ealipatov.kotlin.weatherfromealipatov.utils.*
 import by.ealipatov.kotlin.weatherfromealipatov.view.citylist.CityListFragment
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity : AppCompatActivity() {
 
@@ -57,6 +61,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     private fun pushNotification(
         message_title: String,
         message_body: String,
@@ -90,5 +95,18 @@ class MainActivity : AppCompatActivity() {
             notificationManager.createNotificationChannel(channelWeather)
         }
         notificationManager.notify(notification_id, notification.build())
+        getToken()
+    }
+
+
+    private fun getToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("***", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+            val token = task.result
+            Log.d("***", token)
+        })
     }
 }

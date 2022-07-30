@@ -14,4 +14,3 @@ fun convertWeatherToWeatherDTO(weather: Weather): WeatherDTO {
     val fact = Fact(weather.condition, weather.feelsLike, weather.temperature,weather.icon)
     return WeatherDTO(fact)
 }
-

@@ -15,4 +15,7 @@ const val REQUEST_FINE_LOCATION = 996
 
 const val CHANNEL_WEATHER_ID = "Weather321561"
 const val CHANNEL_WEATHER_NAME = "Weather"
+
 const val NOTIFICATION_WEATHER_ID = 32156
+const val NOTIFICATION_KEY_TITLE = "myTitle"
+const val NOTIFICATION_KEY_BODY = "myBody"
