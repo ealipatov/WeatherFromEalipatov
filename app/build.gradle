@@ -2,8 +2,10 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-android-extensions'
+    //id 'kotlin-parcelize'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
     id 'com.google.gms.google-services'
+    //id 'com.huawei.agconnect'
 }
 
 android {
@@ -51,6 +53,8 @@ android {
 }
 
 dependencies {
+    //HMS
+    //implementation 'com.huawei.hms:push:6.5.0.300'
 
     //Yandex maps
     implementation 'com.yandex.android:maps.mobile:4.1.0-lite'
