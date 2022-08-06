@@ -46,7 +46,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         val pendingIntent = PendingIntent.getActivity(
             this, 1,
             notificationIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT)
+            PendingIntent.FLAG_IMMUTABLE)
 
         val notification = NotificationCompat.Builder(this, CHANNEL_WEATHER_ID).apply {
             setContentTitle(title)
