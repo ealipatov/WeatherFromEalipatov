@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import by.ealipatov.kotlin.weatherfromealipatov.R
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentGoogleMapsUiBinding
@@ -45,7 +46,7 @@ class GoogleMapsFragment : Fragment() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            googleMap.isMyLocationEnabled = true
+            googleMap.isMyLocationEnabled
         }
 
         googleMap.uiSettings.isMyLocationButtonEnabled = true
@@ -76,10 +77,13 @@ class GoogleMapsFragment : Fragment() {
             binding.searchAddress.text.toString().let { searchText ->
                 val geocoder = Geocoder(requireContext())
                 val result = geocoder.getFromLocationName(searchText, 1)
-                // TODO HW а не пустой ли result
-                val ln = LatLng(result.first().latitude, result.first().longitude)
-                setMarker(ln, searchText, R.drawable.ic_map_marker)
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(ln, 15f))
+                if (result.size != 0){
+                    val ln = LatLng(result.first().latitude, result.first().longitude)
+                    setMarker(ln, searchText, R.drawable.ic_map_marker)
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(ln, 15f))
+                } else{
+                    Toast.makeText(context,"Не корректный запрос, введите правильное название города",Toast.LENGTH_LONG).show()
+                }
             }
         }
     }
