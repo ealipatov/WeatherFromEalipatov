@@ -41,21 +41,25 @@ class RepositoryCityCoordinatesByCityNameRetrofit : RepositoryCityCoordinatesByC
                 response: Response<CityCoordinates>
             ) {
                 if (response.isSuccessful && response.body() != null) {
-                    val parts =
-                        response.body()!!.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(
-                            " "
-                        )
-                    val searchCity = City(
-                        response.body()!!.response.GeoObjectCollection.featureMember[0]
-                            .GeoObject.metaDataProperty.GeocoderMetaData.AddressDetails.Country.CountryName,
-                        response.body()!!.response.GeoObjectCollection.featureMember[0].GeoObject.name,
-                        parts[1].toDouble(),
-                        parts[0].toDouble()
-                    )
-                    callback.onResponse(searchCity)
-                } else {
-                    // TODO HW callback.on??? 403 404
-                    callback.onFailure(IOException("403 404"))
+                   if (response.body()!!.response.GeoObjectCollection.featureMember.isNotEmpty()) {
+                       val parts =
+                           response.body()!!.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(
+                               " "
+                           )
+                       val searchCity = City(
+                           response.body()!!.response.GeoObjectCollection.featureMember[0]
+                               .GeoObject.metaDataProperty.GeocoderMetaData.AddressDetails.Country.CountryName,
+                           response.body()!!.response.GeoObjectCollection.featureMember[0].GeoObject.name,
+                           parts[1].toDouble(),
+                           parts[0].toDouble()
+                       )
+                       callback.onResponse(searchCity)
+                   } else {
+                       callback.onFailure(IOException("Не корректный запрос, введите правильное название города"))
+                   }
+                }
+                else {
+                    callback.onFailure(IOException("Не удалось выполнить запрос"))
                 }
             }
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import by.ealipatov.kotlin.weatherfromealipatov.BuildConfig
 import by.ealipatov.kotlin.weatherfromealipatov.R
@@ -58,7 +59,9 @@ class YandexMapsFragment : Fragment() {
                 addMarker(point)
                 mapMoveToPoint(point)
             }
+
             override fun onFailure(e: IOException) {
+                Toast.makeText(context,e.toString(), Toast.LENGTH_LONG).show()
             }
         }
 
