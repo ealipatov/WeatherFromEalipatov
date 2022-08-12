@@ -10,22 +10,16 @@ import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 class CityListAdapter(private val dataList: List<Weather>, private val callback: OnItemClick) :
     RecyclerView.Adapter<CityListAdapter.WeatherViewHolder>() {
 
-    //Создание контейнера (3.40 lesson)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder {
-        //"Надули" макет через байдинг
         val binding =
-            FragmentWeatherListItemViewBinding.inflate(LayoutInflater.from(parent.context))
-        //Передали в корневой макет
+            FragmentWeatherListItemViewBinding.inflate(LayoutInflater.from(parent.context),parent,false)
        return WeatherViewHolder(binding)
     }
 
-    //Заполнение контейнера
     override fun onBindViewHolder(holder: WeatherViewHolder, position: Int) {
-        //Передаем погоду
         holder.bind(dataList[position])
     }
 
-    //Количество элементов
     override fun getItemCount() = dataList.size
 
     inner class WeatherViewHolder(private val binding:FragmentWeatherListItemViewBinding):
