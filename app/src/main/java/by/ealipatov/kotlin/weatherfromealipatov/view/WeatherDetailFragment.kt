@@ -90,7 +90,6 @@ class WeatherDetailFragment : Fragment() {
                         error(R.drawable.ic_baseline_no_photography_24)
                         placeholder(R.drawable.loadingfast)
                     }
-
                 }
             }
         }
@@ -124,7 +123,6 @@ class WeatherDetailFragment : Fragment() {
     }
 
     companion object {
-        //Исправление кода согласно замечанию преподавателя
         fun newInstance(weather: Weather) = WeatherDetailFragment().also {
             it.arguments = Bundle().apply { putParcelable(BUNDLE_WEATHER_EXTRA, weather) }
         }

@@ -28,6 +28,8 @@ class ContactListFragment: Fragment(), OnContactClick {
             return _binding!!
         }
 
+    lateinit var phoneNumber: String
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,7 +49,10 @@ class ContactListFragment: Fragment(), OnContactClick {
             ContextCompat.checkSelfPermission(requireContext(), permission)
         PackageManager.PERMISSION_GRANTED
         if (permResult == PackageManager.PERMISSION_GRANTED) {
-            getContacts()
+            when (permission){
+                Manifest.permission.READ_CONTACTS -> {getContacts()}
+                Manifest.permission.CALL_PHONE -> {callOfNumber()}
+            }
         } else if(shouldShowRequestPermissionRationale(permission)){
             AlertDialog.Builder(requireContext())
                 .setTitle("Разрешение")
@@ -64,22 +69,39 @@ class ContactListFragment: Fragment(), OnContactClick {
     }
 
     private fun permissionRequest(permission: String) {
-        requestPermissions(arrayOf(permission), REQUEST_CODE_READ_CONTACTS)
+        when (permission){
+            Manifest.permission.READ_CONTACTS -> {
+                requestPermissions(arrayOf(permission), REQUEST_CODE_READ_CONTACTS)}
+            Manifest.permission.CALL_PHONE -> {
+                requestPermissions(arrayOf(permission), REQUEST_CODE_CALL)}
+        }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if (requestCode == REQUEST_CODE_READ_CONTACTS) {
-            for (pIndex in permissions.indices) {
-                if (permissions[pIndex] == Manifest.permission.READ_CONTACTS
-                    && grantResults[pIndex] == PackageManager.PERMISSION_GRANTED
-                ) {
-                    getContacts()
-                }
-            }
+        when (requestCode){
+           REQUEST_CODE_READ_CONTACTS -> {
+               for (pIndex in permissions.indices) {
+                   if (permissions[pIndex] == Manifest.permission.READ_CONTACTS
+                       && grantResults[pIndex] == PackageManager.PERMISSION_GRANTED
+                   ) {
+                       getContacts()
+                   }
+               }
+                                         }
+           REQUEST_CODE_CALL -> {
+               for (pIndex in permissions.indices) {
+                   if (permissions[pIndex] == Manifest.permission.CALL_PHONE
+                       && grantResults[pIndex] == PackageManager.PERMISSION_GRANTED
+                   ) {
+                       callOfNumber()
+                   }
+               }
+           }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
@@ -102,6 +124,7 @@ class ContactListFragment: Fragment(), OnContactClick {
                 val contactId =
                     cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
                 val number = getNumberFromID(contentResolver,contactId)
+
                 contacts.add(Contact(name,number))
             }
         }
@@ -110,7 +133,7 @@ class ContactListFragment: Fragment(), OnContactClick {
             ContactListAdapter(contacts,this)
     }
 
-    @SuppressLint("Range")
+    @SuppressLint("Range", "Recycle")
     private fun getNumberFromID(cr: ContentResolver, contactId: String) :String {
         val phones = cr.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
@@ -126,16 +149,13 @@ class ContactListFragment: Fragment(), OnContactClick {
     }
 
     override fun onContactClick(contact: Contact) {
-        val numberCurrent = contact.phoneNumber
-        if(ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.CALL_PHONE
-            ) == PackageManager.PERMISSION_GRANTED){
-            val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$numberCurrent"))
-            startActivity(intent)
-        }else{
-            requestPermissions(arrayOf(Manifest.permission.CALL_PHONE), REQUEST_CODE_CALL)
-        }
+        phoneNumber = contact.phoneNumber
+        checkPermission(Manifest.permission.CALL_PHONE)
+    }
+
+    private fun callOfNumber(){
+        val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneNumber"))
+        startActivity(intent)
     }
 
     override fun onDestroy() {

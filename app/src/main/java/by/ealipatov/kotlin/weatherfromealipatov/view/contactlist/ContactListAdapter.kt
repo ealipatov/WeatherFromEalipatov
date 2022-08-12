@@ -12,7 +12,7 @@ class ContactListAdapter(private val dataList: List<Contact>, private val callba
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
         val binding =
-            FragmentContactListItemViewBinding.inflate(LayoutInflater.from(parent.context))
+            FragmentContactListItemViewBinding.inflate(LayoutInflater.from(parent.context),parent,false)
        return ContactViewHolder(binding)
     }
 
@@ -27,7 +27,7 @@ class ContactListAdapter(private val dataList: List<Contact>, private val callba
         fun bind(contact: Contact) {
             binding.name.text = contact.name
             binding.phoneNumber.text = contact.phoneNumber
-            binding.root.setOnClickListener {
+            binding.callFAB.setOnClickListener {
                 callback.onContactClick(contact)
             }
         }
