@@ -61,72 +61,41 @@ class CityListFragment : Fragment(), OnItemClick {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.about -> {
-                if (requireActivity().supportFragmentManager.findFragmentByTag("about")==null){
-                    requireActivity().supportFragmentManager.apply {
-                        beginTransaction()
-                            .add(R.id.container, AboutFragment(), "about")
-                            .addToBackStack("")
-                            .commitAllowingStateLoss()
-                    }
-                }
+                menuItemTo(AboutFragment(),"about")
                 true
             }
             R.id.search -> {
-                if (requireActivity().supportFragmentManager.findFragmentByTag("search")==null){
-                    requireActivity().supportFragmentManager.apply {
-                        beginTransaction()
-                            .add(R.id.container, SearchFragment(),"search")
-                            .addToBackStack("")
-                            .commitAllowingStateLoss()
-                    }
-                }
+                menuItemTo(SearchFragment(),"search")
                 true
             }
             R.id.history -> {
-                if (requireActivity().supportFragmentManager.findFragmentByTag("weatherHistory")==null) {
-                    requireActivity().supportFragmentManager.apply {
-                        beginTransaction()
-                            .add(R.id.container, WeatherHistoryListFragment(), "weatherHistory")
-                            .addToBackStack("")
-                            .commit()
-                    }
-                }
+                menuItemTo(WeatherHistoryListFragment(),"history")
                 true
             }
             R.id.menu_content_provider -> {
-                if (requireActivity().supportFragmentManager.findFragmentByTag("contactList")==null){
-                    requireActivity().supportFragmentManager.apply {
-                        beginTransaction()
-                            .add(R.id.container, ContactListFragment(), "contactList")
-                            .addToBackStack("")
-                            .commitAllowingStateLoss()
-                    }
-                }
+                menuItemTo(ContactListFragment(), "contacts")
                 true
             }
             R.id.maps_google -> {
-                if (requireActivity().supportFragmentManager.findFragmentByTag("google_maps")==null){
-                    requireActivity().supportFragmentManager.apply {
-                        beginTransaction()
-                            .add(R.id.container, GoogleMapsFragment(), "google_maps")
-                            .addToBackStack("")
-                            .commitAllowingStateLoss()
-                    }
-                }
+                menuItemTo(GoogleMapsFragment(), "maps_google")
                 true
             }
             R.id.maps_yandex -> {
-                if (requireActivity().supportFragmentManager.findFragmentByTag("yandex_maps")==null){
-                    requireActivity().supportFragmentManager.apply {
-                        beginTransaction()
-                            .add(R.id.container, YandexMapsFragment(), "yandex_maps")
-                            .addToBackStack("")
-                            .commitAllowingStateLoss()
-                    }
-                }
+                menuItemTo(YandexMapsFragment(),"maps_yandex")
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun menuItemTo (fragment: Fragment,tag: String){
+        if (requireActivity().supportFragmentManager.findFragmentByTag(tag)==null){
+            requireActivity().supportFragmentManager.apply {
+                beginTransaction()
+                    .add(R.id.container, fragment, tag)
+                    .addToBackStack("")
+                    .commitAllowingStateLoss()
+            }
         }
     }
 
@@ -239,6 +208,7 @@ class CityListFragment : Fragment(), OnItemClick {
         requestPermissions(arrayOf(permission), REQUEST_CODE_LOCATION)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -274,7 +244,6 @@ class CityListFragment : Fragment(), OnItemClick {
         when (appState) {
             is AppStateCitiesListViewModel.Error -> {
                 binding.showResult()
-
                 binding.root.snakeBarErr(
                     appState.error.message.toString(), Snackbar.LENGTH_INDEFINITE,
                     getString(R.string.reload)
