@@ -95,8 +95,8 @@ class WeatherDetailFragment : Fragment() {
         }
     }
 
-    private fun translate(f: String): String {
-        return when (f) {
+    private fun translate(word: String): String {
+        return when (word) {
             "clear" -> "Ясно"
             "partly-cloudy" -> "Малооблачно"
             "cloudy" -> "Облачно с прояснениями"
@@ -117,7 +117,7 @@ class WeatherDetailFragment : Fragment() {
             "thunderstorm-with-rain" -> "Дождь с грозой"
             "thunderstorm-with-hail" -> "Гроза с градом"
             else -> {
-                f
+                word
             }
         }
     }

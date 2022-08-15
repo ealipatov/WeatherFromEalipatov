@@ -37,8 +37,26 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
+    signingConfigs {
         release {
+            Properties properties = new Properties()
+            properties.load(rootProject.file("passwordRelease.properties").newDataInputStream())
+            def password = properties.getProperty("password")
+            storeFile file("release.jks")
+            storePassword = password
+            keyAlias 'ealipatov'
+            keyPassword =password
+        }
+    }
+
+    buildTypes {
+        debug{
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            signingConfig = signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -91,14 +109,14 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.13.2'
 
     //firebase
-    implementation 'com.google.firebase:firebase-firestore:24.2.1'
-    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.6'
+    implementation 'com.google.firebase:firebase-firestore:24.2.2'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.7'
 
     //Gson
     implementation 'com.google.code.gson:gson:2.9.0'
 
     implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.5.0'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
