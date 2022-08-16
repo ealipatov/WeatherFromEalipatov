@@ -11,10 +11,15 @@ plugins {
 android {
     compileSdk 32
 
+    viewBinding {
+        enabled = true
+    }
+
     buildFeatures {
         viewBinding true
     }
 
+/*
     buildTypes.each {
         Properties properties = new Properties()
         properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
@@ -26,7 +31,7 @@ android {
         def apiKeyMapKit  = properties.getProperty("yandex_mapkit_api_key", "")
         it.buildConfigField "String", "MAPKIT_API_KEY", apiKeyMapKit
     }
-
+*/
     defaultConfig {
         applicationId "by.ealipatov.kotlin.weatherfromealipatov"
         minSdk 21
@@ -51,13 +56,35 @@ android {
 
     buildTypes {
         debug{
-            minifyEnabled true
+
+                Properties properties = new Properties()
+                properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
+
+                def apiKey  = properties.getProperty("yandex_weather_api_key", "")
+                it.buildConfigField "String", "WEATHER_API_KEY", apiKey
+                def apiKeyGeocoder  = properties.getProperty("yandex_geocoder_api_key", "")
+                it.buildConfigField "String", "GEOCODER_API_KEY", apiKeyGeocoder
+                def apiKeyMapKit  = properties.getProperty("yandex_mapkit_api_key", "")
+                it.buildConfigField "String", "MAPKIT_API_KEY", apiKeyMapKit
+
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
         release {
+
+                Properties properties = new Properties()
+                properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
+
+                def apiKey  = properties.getProperty("yandex_weather_api_key", "")
+                it.buildConfigField "String", "WEATHER_API_KEY", apiKey
+                def apiKeyGeocoder  = properties.getProperty("yandex_geocoder_api_key", "")
+                it.buildConfigField "String", "GEOCODER_API_KEY", apiKeyGeocoder
+                def apiKeyMapKit  = properties.getProperty("yandex_mapkit_api_key", "")
+                it.buildConfigField "String", "MAPKIT_API_KEY", apiKeyMapKit
+
             signingConfig = signingConfigs.release
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

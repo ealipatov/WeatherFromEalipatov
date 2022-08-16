@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import by.ealipatov.kotlin.weatherfromealipatov.R
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentSearchBinding
@@ -43,7 +44,7 @@ class SearchFragment : Fragment() {
             }
 
             override fun onFailure(e: IOException) {
-                //обработать ошибку
+                Toast.makeText(context,e.toString(), Toast.LENGTH_LONG).show()
             }
         }
 
@@ -54,9 +55,12 @@ class SearchFragment : Fragment() {
     }
 
     private fun onSearchClick(weather: Weather) {
-        requireActivity().supportFragmentManager.beginTransaction().hide(SearchFragment()).add(
-            R.id.container, WeatherDetailFragment.newInstance(weather)
+        childFragmentManager.beginTransaction().hide(SearchFragment()).add(
+            R.id.searchContainer, WeatherDetailFragment.newInstance(weather)
         ).addToBackStack("").commit()
+
+
+
     }
 
     override fun onDestroy() {
