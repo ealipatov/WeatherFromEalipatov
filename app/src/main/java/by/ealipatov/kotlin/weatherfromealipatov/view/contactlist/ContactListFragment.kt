@@ -20,7 +20,7 @@ import by.ealipatov.kotlin.weatherfromealipatov.domain.Contact
 import by.ealipatov.kotlin.weatherfromealipatov.utils.REQUEST_CODE_CALL
 import by.ealipatov.kotlin.weatherfromealipatov.utils.REQUEST_CODE_READ_CONTACTS
 
-class ContactListFragment: Fragment(), OnContactClick {
+class ContactListFragment : Fragment(), OnContactClick {
 
     private var _binding: FragmentContactListBinding? = null
     private val binding: FragmentContactListBinding
@@ -49,11 +49,15 @@ class ContactListFragment: Fragment(), OnContactClick {
             ContextCompat.checkSelfPermission(requireContext(), permission)
         PackageManager.PERMISSION_GRANTED
         if (permResult == PackageManager.PERMISSION_GRANTED) {
-            when (permission){
-                Manifest.permission.READ_CONTACTS -> {getContacts()}
-                Manifest.permission.CALL_PHONE -> {callOfNumber()}
+            when (permission) {
+                Manifest.permission.READ_CONTACTS -> {
+                    getContacts()
+                }
+                Manifest.permission.CALL_PHONE -> {
+                    callOfNumber()
+                }
             }
-        } else if(shouldShowRequestPermissionRationale(permission)){
+        } else if (shouldShowRequestPermissionRationale(permission)) {
             AlertDialog.Builder(requireContext())
                 .setTitle("Разрешение")
                 .setMessage("Для работы приложения требуется разрешение")
@@ -69,11 +73,14 @@ class ContactListFragment: Fragment(), OnContactClick {
     }
 
     private fun permissionRequest(permission: String) {
-        when (permission){
+        when (permission) {
             Manifest.permission.READ_CONTACTS -> {
-                requestPermissions(arrayOf(permission), REQUEST_CODE_READ_CONTACTS)}
+                requestPermissions(arrayOf(permission), REQUEST_CODE_READ_CONTACTS)
+
+            }
             Manifest.permission.CALL_PHONE -> {
-                requestPermissions(arrayOf(permission), REQUEST_CODE_CALL)}
+                requestPermissions(arrayOf(permission), REQUEST_CODE_CALL)
+            }
         }
     }
 
@@ -83,25 +90,17 @@ class ContactListFragment: Fragment(), OnContactClick {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        when (requestCode){
-           REQUEST_CODE_READ_CONTACTS -> {
-               for (pIndex in permissions.indices) {
-                   if (permissions[pIndex] == Manifest.permission.READ_CONTACTS
-                       && grantResults[pIndex] == PackageManager.PERMISSION_GRANTED
-                   ) {
-                       getContacts()
-                   }
-               }
-                                         }
-           REQUEST_CODE_CALL -> {
-               for (pIndex in permissions.indices) {
-                   if (permissions[pIndex] == Manifest.permission.CALL_PHONE
-                       && grantResults[pIndex] == PackageManager.PERMISSION_GRANTED
-                   ) {
-                       callOfNumber()
-                   }
-               }
-           }
+        for (pIndex in permissions.indices) {
+            if (permissions[pIndex] == Manifest.permission.READ_CONTACTS
+                && grantResults[pIndex] == PackageManager.PERMISSION_GRANTED
+            ) {
+                getContacts()
+            }
+            else if (permissions[pIndex] == Manifest.permission.CALL_PHONE
+                && grantResults[pIndex] == PackageManager.PERMISSION_GRANTED
+            ) {
+                callOfNumber()
+            }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
@@ -117,24 +116,25 @@ class ContactListFragment: Fragment(), OnContactClick {
             null,
             ContactsContract.Contacts.DISPLAY_NAME + " ASC"
         )
-        cursorWithContacts?.let { cursor->
-            for(i in 0 until cursor.count){
+        cursorWithContacts?.let { cursor ->
+            for (i in 0 until cursor.count) {
                 cursor.moveToPosition(i)
-                val name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
+                val name =
+                    cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
                 val contactId =
                     cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
-                val number = getNumberFromID(contentResolver,contactId)
+                val number = getNumberFromID(contentResolver, contactId)
 
-                contacts.add(Contact(name,number))
+                contacts.add(Contact(name, number))
             }
         }
         cursorWithContacts?.close()
         binding.contactListRecyclerView.adapter =
-            ContactListAdapter(contacts,this)
+            ContactListAdapter(contacts, this)
     }
 
     @SuppressLint("Range", "Recycle")
-    private fun getNumberFromID(cr: ContentResolver, contactId: String) :String {
+    private fun getNumberFromID(cr: ContentResolver, contactId: String): String {
         val phones = cr.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
             ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null
@@ -142,7 +142,8 @@ class ContactListFragment: Fragment(), OnContactClick {
         var number = "none"
         phones?.let { cursor ->
             while (cursor.moveToNext()) {
-                number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                number =
+                    cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
             }
         }
         return number
@@ -153,7 +154,7 @@ class ContactListFragment: Fragment(), OnContactClick {
         checkPermission(Manifest.permission.CALL_PHONE)
     }
 
-    private fun callOfNumber(){
+    private fun callOfNumber() {
         val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneNumber"))
         startActivity(intent)
     }

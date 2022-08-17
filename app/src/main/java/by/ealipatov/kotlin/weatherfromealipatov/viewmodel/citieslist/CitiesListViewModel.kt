@@ -18,7 +18,6 @@ class CitiesListViewModel
     }
 
     private fun switchRepository() {
-        //Пока один репозиторий
         repositoryCitiesList = RepositoryListCityLocal()
     }
 

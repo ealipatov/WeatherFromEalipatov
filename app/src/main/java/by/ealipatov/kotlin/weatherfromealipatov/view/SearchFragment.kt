@@ -22,7 +22,6 @@ class SearchFragment : Fragment() {
             return _binding!!
         }
 
-    private lateinit var weatherSearchCity: Weather
     private val repository = RepositoryCityCoordinatesByCityNameRetrofit()
 
     override fun onCreateView(
@@ -39,28 +38,24 @@ class SearchFragment : Fragment() {
 
         val callback = object : CallbackCityCoordinates {
             override fun onResponse(city: City) {
-                weatherSearchCity = Weather(city, 0, 0)
+                val weatherSearchCity = Weather(city, 0, 0)
                 onSearchClick(weatherSearchCity)
             }
 
             override fun onFailure(e: IOException) {
-                Toast.makeText(context,e.toString(), Toast.LENGTH_LONG).show()
+                Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show()
             }
         }
 
-        binding.searchSendBtn.setOnClickListener() {
+        binding.searchSendBtn.setOnClickListener {
             repository.getCityCoordinates(binding.cityName.text.toString(), callback)
         }
-
     }
 
     private fun onSearchClick(weather: Weather) {
         childFragmentManager.beginTransaction().hide(SearchFragment()).add(
             R.id.searchContainer, WeatherDetailFragment.newInstance(weather)
         ).addToBackStack("").commit()
-
-
-
     }
 
     override fun onDestroy() {

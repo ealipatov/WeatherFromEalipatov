@@ -72,7 +72,6 @@ class WeatherDetailViewModel(private val liveData: MutableLiveData<AppStateDetai
                 }
             }
         }
-
     }
 
     fun getWeather(city: City) {
@@ -98,9 +97,4 @@ class WeatherDetailViewModel(private val liveData: MutableLiveData<AppStateDetai
         val activeNetworkInfo: NetworkInfo? = cm.activeNetworkInfo
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting
     }
-
-    override fun onCleared() { // TODO HW ***
-        super.onCleared()
-    }
-
 }

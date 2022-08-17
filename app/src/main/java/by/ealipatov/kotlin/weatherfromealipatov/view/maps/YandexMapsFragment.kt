@@ -25,7 +25,6 @@ import java.io.IOException
 class YandexMapsFragment : Fragment() {
 
     private lateinit var yandexMap: MapView
-    private lateinit var point: Point
 
     private var _binding: FragmentYandexMapsUiBinding? = null
     private val binding: FragmentYandexMapsUiBinding
@@ -55,13 +54,13 @@ class YandexMapsFragment : Fragment() {
 
         val callback = object : CallbackCityCoordinates {
             override fun onResponse(city: City) {
-                point= Point(city.lat,city.lon)
+                val point = Point(city.lat, city.lon)
                 addMarker(point)
                 mapMoveToPoint(point)
             }
 
             override fun onFailure(e: IOException) {
-                Toast.makeText(context,e.toString(), Toast.LENGTH_LONG).show()
+                Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show()
             }
         }
 
@@ -74,11 +73,11 @@ class YandexMapsFragment : Fragment() {
     }
 
 
-    private fun addMarker (point: Point){
+    private fun addMarker(point: Point) {
         val mapObjects = yandexMap.map.mapObjects.addCollection()
         val mark: PlacemarkMapObject = mapObjects.addPlacemark(point)
         mark.opacity = 0.5f
-        mark.setIcon(ImageProvider.fromResource(requireContext(),R.drawable.ic_map_marker))
+        mark.setIcon(ImageProvider.fromResource(requireContext(), R.drawable.ic_map_marker))
         mark.isDraggable = true
     }
 

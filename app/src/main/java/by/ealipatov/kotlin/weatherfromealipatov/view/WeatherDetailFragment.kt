@@ -11,6 +11,7 @@ import by.ealipatov.kotlin.weatherfromealipatov.R
 import by.ealipatov.kotlin.weatherfromealipatov.databinding.FragmentWeatherDetailBinding
 import by.ealipatov.kotlin.weatherfromealipatov.domain.Weather
 import by.ealipatov.kotlin.weatherfromealipatov.utils.BUNDLE_WEATHER_EXTRA
+import by.ealipatov.kotlin.weatherfromealipatov.utils.translateWeatherCondition
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.detail.AppStateDetailViewModel
 import by.ealipatov.kotlin.weatherfromealipatov.viewmodel.detail.WeatherDetailViewModel
 import coil.Coil
@@ -28,9 +29,8 @@ class WeatherDetailFragment : Fragment() {
             return _binding!!
         }
 
-    lateinit var weather: Weather
     private val viewModel by lazy {
-        ViewModelProvider(this).get(WeatherDetailViewModel::class.java)
+        ViewModelProvider(this)[WeatherDetailViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -82,7 +82,7 @@ class WeatherDetailFragment : Fragment() {
                     temperatureValue.text = weather.temperature.toString()
                     feelsLikeValue.text = weather.feelsLike.toString()
                     cityCoordinates.text = coordinates(weather.city.lat, weather.city.lat)
-                    weatherCondition.text = translate(weather.condition)
+                    weatherCondition.text = translateWeatherCondition(weather.condition)
 
                     Coil.setImageLoader(imageLoader)
                     weatherIcon.load("https://yastatic.net/weather/i/icons/funky/dark/${weather.icon}.svg")
@@ -91,33 +91,6 @@ class WeatherDetailFragment : Fragment() {
                         placeholder(R.drawable.loadingfast)
                     }
                 }
-            }
-        }
-    }
-
-    private fun translate(word: String): String {
-        return when (word) {
-            "clear" -> "Ясно"
-            "partly-cloudy" -> "Малооблачно"
-            "cloudy" -> "Облачно с прояснениями"
-            "overcast" -> "Пасмурно"
-            "drizzle" -> "Морось"
-            "light-rain" -> "Небольшой дождь"
-            "rain" -> "Дождь"
-            "moderate-rain" -> "Умеренно сильный дождь"
-            "heavy-rain" -> "Сильный дождь"
-            "continuous_heavy_rain" -> "Длительный сильный дождь"
-            "showers" -> "Ливень"
-            "wet-snow" -> "Дождь со снегом"
-            "light-snow" -> "Небольшой снег"
-            "snow" -> "Снег"
-            "snow-showers" -> "Снегопад"
-            "hail" -> "Град"
-            "thunderstorm" -> "Гроза"
-            "thunderstorm-with-rain" -> "Дождь с грозой"
-            "thunderstorm-with-hail" -> "Гроза с градом"
-            else -> {
-                word
             }
         }
     }

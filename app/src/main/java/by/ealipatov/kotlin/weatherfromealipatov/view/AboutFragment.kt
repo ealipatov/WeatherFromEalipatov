@@ -47,6 +47,4 @@ class AboutFragment : Fragment() {
             .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
             .into(image_picasso)
     }
-
-
 }
