@@ -61,5 +61,3 @@ fun getWorldCities(): List<Weather> {
         Weather(City("Мир", "Пекин", 39.90419989999999, 116.40739630000007), 19, 20)
     )
 }
-
-//fun getDefaultCity() = City("Россия", "Москва", 55.755826, 37.617299900000035)

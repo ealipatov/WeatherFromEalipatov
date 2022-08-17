@@ -19,19 +19,6 @@ android {
         viewBinding true
     }
 
-/*
-    buildTypes.each {
-        Properties properties = new Properties()
-        properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
-
-        def apiKey  = properties.getProperty("yandex_weather_api_key", "")
-        it.buildConfigField "String", "WEATHER_API_KEY", apiKey
-        def apiKeyGeocoder  = properties.getProperty("yandex_geocoder_api_key", "")
-        it.buildConfigField "String", "GEOCODER_API_KEY", apiKeyGeocoder
-        def apiKeyMapKit  = properties.getProperty("yandex_mapkit_api_key", "")
-        it.buildConfigField "String", "MAPKIT_API_KEY", apiKeyMapKit
-    }
-*/
     defaultConfig {
         applicationId "by.ealipatov.kotlin.weatherfromealipatov"
         minSdk 21
@@ -54,37 +41,28 @@ android {
         }
     }
 
+    buildTypes.each {
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
+
+        def apiKey  = properties.getProperty("yandex_weather_api_key", "")
+        it.buildConfigField "String", "WEATHER_API_KEY", apiKey
+        def apiKeyGeocoder  = properties.getProperty("yandex_geocoder_api_key", "")
+        it.buildConfigField "String", "GEOCODER_API_KEY", apiKeyGeocoder
+        def apiKeyMapKit  = properties.getProperty("yandex_mapkit_api_key", "")
+        it.buildConfigField "String", "MAPKIT_API_KEY", apiKeyMapKit
+    }
+
+
     buildTypes {
         debug{
-
-                Properties properties = new Properties()
-                properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
-
-                def apiKey  = properties.getProperty("yandex_weather_api_key", "")
-                it.buildConfigField "String", "WEATHER_API_KEY", apiKey
-                def apiKeyGeocoder  = properties.getProperty("yandex_geocoder_api_key", "")
-                it.buildConfigField "String", "GEOCODER_API_KEY", apiKeyGeocoder
-                def apiKeyMapKit  = properties.getProperty("yandex_mapkit_api_key", "")
-                it.buildConfigField "String", "MAPKIT_API_KEY", apiKeyMapKit
-
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
         release {
-
-                Properties properties = new Properties()
-                properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
-
-                def apiKey  = properties.getProperty("yandex_weather_api_key", "")
-                it.buildConfigField "String", "WEATHER_API_KEY", apiKey
-                def apiKeyGeocoder  = properties.getProperty("yandex_geocoder_api_key", "")
-                it.buildConfigField "String", "GEOCODER_API_KEY", apiKeyGeocoder
-                def apiKeyMapKit  = properties.getProperty("yandex_mapkit_api_key", "")
-                it.buildConfigField "String", "MAPKIT_API_KEY", apiKeyMapKit
-
             signingConfig = signingConfigs.release
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
