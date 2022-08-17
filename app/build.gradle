@@ -1,10 +1,23 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android-extensions'
+    //id 'kotlin-parcelize'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id 'com.google.gms.google-services'
+//    id 'com.huawei.agconnect'
 }
 
 android {
     compileSdk 32
+
+    viewBinding {
+        enabled = true
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
 
     defaultConfig {
         applicationId "by.ealipatov.kotlin.weatherfromealipatov"
@@ -16,8 +29,38 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
+    signingConfigs {
         release {
+            Properties properties = new Properties()
+            properties.load(rootProject.file("passwordRelease.properties").newDataInputStream())
+            def password = properties.getProperty("password")
+            storeFile file("release.jks")
+            storePassword = password
+            keyAlias 'ealipatov'
+            keyPassword =password
+        }
+    }
+
+    buildTypes.each {
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
+
+        def apiKey  = properties.getProperty("yandex_weather_api_key", "")
+        it.buildConfigField "String", "WEATHER_API_KEY", apiKey
+        def apiKeyGeocoder  = properties.getProperty("yandex_geocoder_api_key", "")
+        it.buildConfigField "String", "GEOCODER_API_KEY", apiKeyGeocoder
+        def apiKeyMapKit  = properties.getProperty("yandex_mapkit_api_key", "")
+        it.buildConfigField "String", "MAPKIT_API_KEY", apiKeyMapKit
+    }
+
+    buildTypes {
+        debug{
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            signingConfig = signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -29,12 +72,64 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    flavorDimensions 'version'
+    productFlavors {
+        PRO {
+            dimension 'version'
+        }
+        FREE {
+            dimension 'version'
+        }
+    }
 }
 
 dependencies {
+    //HMS
+    implementation 'com.huawei.hms:push:6.5.0.300'
+    implementation 'com.huawei.agconnect:agconnect-core:1.6.5.300'
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    //Yandex maps
+    implementation 'com.yandex.android:maps.mobile:4.1.0-lite'
+
+    //Google maps
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+
+    //Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+
+    //Room
+    apply plugin: 'kotlin-kapt'
+    implementation 'androidx.room:room-runtime:2.4.3'
+    kapt 'androidx.room:room-compiler:2.4.3'
+
+    // okhttp
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+
+    // retrofit2
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    // coil
+    implementation 'io.coil-kt:coil:2.1.0'
+    implementation("io.coil-kt:coil-gif:2.1.0")
+    implementation("io.coil-kt:coil-svg:2.1.0")
+
+    //picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
+
+    //firebase
+    implementation 'com.google.firebase:firebase-firestore:24.2.2'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.7'
+
+    //Gson
+    implementation 'com.google.code.gson:gson:2.9.0'
+
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.5.0'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'

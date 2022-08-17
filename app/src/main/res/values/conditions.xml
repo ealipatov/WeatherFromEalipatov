@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="conditions">
+        <item>@string/clear</item>
+        <item>@string/partly_cloudy</item>
+        <item>@string/cloudy</item>
+        <item>@string/overcast</item>
+        <item>@string/drizzle</item>
+        <item>@string/light_rain</item>
+        <item>@string/rain</item>
+        <item>@string/moderate_rain</item>
+        <item>@string/heavy_rain</item>
+        <item>@string/continuous_heavy_rain</item>
+        <item>@string/showers</item>
+        <item>@string/wet_snow</item>
+        <item>@string/light_snow</item>
+        <item>@string/snow</item>
+        <item>@string/snow_showers</item>
+        <item>@string/hail</item>
+        <item>@string/thunderstorm</item>
+        <item>@string/thunderstorm_with_rain</item>
+        <item>@string/thunderstorm_with_hail</item>
+    </string-array>
+
+</resources>
